@@ -9,7 +9,7 @@ import SwiftUI
 
 class GenreSectionViewModel: ObservableObject {
     @Published var genres: [Genre] = []
-
+    
     private var movieService: MoviesServiceProtocol = MovieService()
     
     func fetchGenres() async {
@@ -22,12 +22,10 @@ class GenreSectionViewModel: ObservableObject {
         
         do {
             let request = FetchGenreRequest()
-            let genress = try await movieService.fetchGenres(req: request)
-            DispatchQueue.main.async { [weak self] in
-                self?.genres = genress
-            }
+            let genres = try await movieService.fetchGenres(req: request)
+            self.genres = genres
         } catch {
-            print("Error fetching genres \(error)")
+            print("Error fetching genres: \(error)")
         }
     }
 }
@@ -37,6 +35,7 @@ struct GenreSectionView: View {
     // akkor használjuk ha belső változás kell figyelni
     // és nem int, string stb hanem state?
     @StateObject private var viewModel = GenreSectionViewModel()
+    
 
     var body: some View {
         ZStack (alignment: .topTrailing){
@@ -64,7 +63,14 @@ struct GenreSectionView: View {
                 //.navigationTitle("genreSection.title") // multi langual
                 // lokalizáció, többnyelvűség
                 //.background(Color.cyan)
-                .navigationTitle(Environments.name == .dev ? "DEV" : "PROD")
+                //.navigationTitle(Environments.name == .dev ? "DEV" : "PROD")
+                .navigationTitle({
+                    switch Environments.name{
+                        case .dev: return "DEV"
+                        case .prod: return "PROD"
+                        case .tvlist: return "TVLIST"
+                    }
+                }())
                 .background(Color.clear)
             }
         

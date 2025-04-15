@@ -24,7 +24,11 @@ extension MoviesApi: TargetType {
     var path: String {
         switch self {
         case .fetchGenres:
-            return "genre/movie/list"
+            #if ENV_TVLIST
+                return "genre/tv/list"
+            #else
+                return "genre/movie/list"
+            #endif
         }
     }
     

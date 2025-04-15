@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct movie_app_liveApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate //app lefutásakor futtassa az appdelegate fájlt is
+    
     var body: some Scene {
         WindowGroup {
             GenreSectionView()

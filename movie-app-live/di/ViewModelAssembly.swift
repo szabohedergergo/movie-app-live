@@ -1,0 +1,26 @@
+//
+//  ServiceAssembly.swift
+//  movie-app-live
+//
+//  Created by Gergo Szabo on 2025. 04. 15..
+//
+
+import Swinject
+import Moya
+import Foundation
+
+class ViewModelAssembly: Assembly {
+    //ez adja azokat az objektumokat amiket kérünk tőle
+    //assemble(container) metódussal
+    //container: beletesszük azokat az elemeket, melyek majd a service assemblyn keresztül kikérünk
+    
+    func assemble(container: Container) {
+        container.register((any MovieListViewModelProtocol).self) { _ in
+            return MovieListViewModel()
+        }.inObjectScope(.transient)
+        
+        container.register((any GenreSectionViewModelProtocol).self) { _ in
+            return GenreSectionViewModel()
+        }.inObjectScope(.container)
+    }
+}

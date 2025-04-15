@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C66F8CB2DAE852D00F37365 /* InjectPropertyWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 2C66F8CA2DAE852D00F37365 /* InjectPropertyWrapper */; };
+		2C66F8CE2DAE855A00F37365 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 2C66F8CD2DAE855A00F37365 /* Swinject */; };
 		2CF91EF32DAA653800B29193 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 2CF91EF22DAA653800B29193 /* CombineMoya */; };
 		2CF91EF52DAA653800B29193 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 2CF91EF42DAA653800B29193 /* Moya */; };
 /* End PBXBuildFile section */
@@ -43,6 +45,8 @@
 			files = (
 				2CF91EF52DAA653800B29193 /* Moya in Frameworks */,
 				2CF91EF32DAA653800B29193 /* CombineMoya in Frameworks */,
+				2C66F8CB2DAE852D00F37365 /* InjectPropertyWrapper in Frameworks */,
+				2C66F8CE2DAE855A00F37365 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +91,8 @@
 			packageProductDependencies = (
 				2CF91EF22DAA653800B29193 /* CombineMoya */,
 				2CF91EF42DAA653800B29193 /* Moya */,
+				2C66F8CA2DAE852D00F37365 /* InjectPropertyWrapper */,
+				2C66F8CD2DAE855A00F37365 /* Swinject */,
 			);
 			productName = "movie-app-live";
 			productReference = 2C6121382DA52CE900F554F0 /* movie-app-live.app */;
@@ -119,6 +125,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				2CF91EF12DAA653800B29193 /* XCRemoteSwiftPackageReference "Moya" */,
+				2C66F8C92DAE852D00F37365 /* XCRemoteSwiftPackageReference "InjectPropertyWrapper" */,
+				2C66F8CC2DAE855A00F37365 /* XCRemoteSwiftPackageReference "Swinject" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2C6121392DA52CE900F554F0 /* Products */;
@@ -156,6 +164,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -252,6 +261,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -341,6 +351,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -404,6 +415,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -526,6 +538,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -622,6 +635,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -738,6 +752,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2C66F8C92DAE852D00F37365 /* XCRemoteSwiftPackageReference "InjectPropertyWrapper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/egeniq/InjectPropertyWrapper";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.0;
+			};
+		};
+		2C66F8CC2DAE855A00F37365 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.1;
+			};
+		};
 		2CF91EF12DAA653800B29193 /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya.git";
@@ -749,6 +779,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2C66F8CA2DAE852D00F37365 /* InjectPropertyWrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C66F8C92DAE852D00F37365 /* XCRemoteSwiftPackageReference "InjectPropertyWrapper" */;
+			productName = InjectPropertyWrapper;
+		};
+		2C66F8CD2DAE855A00F37365 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C66F8CC2DAE855A00F37365 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
 		2CF91EF22DAA653800B29193 /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2CF91EF12DAA653800B29193 /* XCRemoteSwiftPackageReference "Moya" */;

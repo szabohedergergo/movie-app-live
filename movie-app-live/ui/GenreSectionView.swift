@@ -22,7 +22,7 @@ class GenreSectionViewModel: ObservableObject {
         
         do {
             let request = FetchGenreRequest()
-            let genres = try await movieService.fetchGenres(req: request)
+            let genres = Environments.name == .tvlist ? try await movieService.fetchTVGenres(req: request) : try await movieService.fetchGenres(req: request)
             self.genres = genres
         } catch {
             print("Error fetching genres: \(error)")

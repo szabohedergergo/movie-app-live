@@ -9,14 +9,24 @@ import SwiftUI
 
 class GenreSectionViewModel: ObservableObject {
     @Published var genres: [Genre] = []
-
-    func loadGenres() {
-        self.genres = [
-            Genre(id: 1, name: "Adventure"),
-            Genre(id: 2, name: "Sci-fi"),
-            Genre(id: 3, name: "Fantasy"),
-            Genre(id: 4, name: "Comedy")
-        ]
+    
+    private var movieService: MoviesServiceProtocol = MovieService()
+    
+    func fetchGenres() async {
+//        self.genres = [
+//            Genre(id: 1, name: "Adventure"),
+//            Genre(id: 2, name: "Sci-fi"),
+//            Genre(id: 3, name: "Fantasy"),
+//            Genre(id: 4, name: "Comedy")
+//        ]
+        
+        do {
+            let request = FetchGenreRequest()
+            let genres = Environments.name == .tvlist ? try await movieService.fetchTVGenres(req: request) : try await movieService.fetchGenres(req: request)
+            self.genres = genres
+        } catch {
+            print("Error fetching genres: \(error)")
+        }
     }
 }
 
@@ -25,6 +35,7 @@ struct GenreSectionView: View {
     // akkor használjuk ha belső változás kell figyelni
     // és nem int, string stb hanem state?
     @StateObject private var viewModel = GenreSectionViewModel()
+    
 
     var body: some View {
         ZStack (alignment: .topTrailing){
@@ -35,7 +46,7 @@ struct GenreSectionView: View {
                             EmptyView()
                         }
                         .opacity(0.2)
-                        .background(Color.blue)
+                        //.background(Color.blue)
                         
                         HStack {
                             Text(genre.name)
@@ -43,24 +54,34 @@ struct GenreSectionView: View {
                                 .foregroundStyle(Color.primary)
                             Spacer()
                             Image(.rightArrow)
-                        }.background(Color.red)
+                        }//.background(Color.red)
                     }
-                    .listRowBackground(Color.green)
+                    //.listRowBackground(Color.green)
                     .listRowSeparator(.hidden)
                 }
                 .listStyle(.plain)
-                .navigationTitle("genreSection.title") // multi langual
+                //.navigationTitle("genreSection.title") // multi langual
                 // lokalizáció, többnyelvűség
                 //.background(Color.cyan)
+                //.navigationTitle(Environments.name == .dev ? "DEV" : "PROD")
+                .navigationTitle({
+                    switch Environments.name{
+                        case .dev: return "DEV"
+                        case .prod: return "PROD"
+                        case .tvlist: return "TVLIST"
+                    }
+                }())
                 .background(Color.clear)
             }
-            .background(Color.green)
         
             Image(.redPiece)
         }
         .ignoresSafeArea(edges: .top)
         .onAppear(){
-            viewModel.loadGenres()
+            //viewModel.fetchGenres()
+            Task{ //maga az async hivás a háttérben fusson le
+                await viewModel.fetchGenres()
+            }
         }
 
         //.onTapGesture {

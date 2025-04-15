@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  movie-app-live
+
+  Created by Gergo Szabo on 2025. 04. 08..
+  
+*/
+//kulcs-érték pár lista
+"genreSection.title" = "Filmek alkalmazás";

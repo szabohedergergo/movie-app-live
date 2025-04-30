@@ -1,0 +1,34 @@
+//
+//  MovieError.swift
+//  movie-app-live
+//
+//  Created by Gergo Szabo on 2025. 04. 28..
+//
+
+import Foundation
+
+enum MovieError: Error{
+    case invalidApiKeyError(message: String)
+    case clientError
+    case unexpectedError
+    
+    var domain: String {
+        switch self{
+        case .invalidApiKeyError, .unexpectedError, .clientError:
+            return "MovieError"
+        }
+    }
+}
+
+extension MovieError: LocalizedError {
+    var errorDescription: String?{
+        switch self{
+        case .invalidApiKeyError(let message):
+            return message
+        case .clientError:
+            return "Client Error Description"
+        case .unexpectedError:
+            return "Unexpected Error"
+        }
+    }
+}

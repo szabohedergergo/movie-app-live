@@ -1,13 +1,13 @@
 //
-//  MovieResponse.swift
+//  TVResponse.swift
 //  movie-app-live
 //
-//  Created by Gergo Szabo on 2025. 04. 15..
+//  Created by Gergo Szabo on 2025. 05. 06..
 //
 
-struct MoviePageResponse: Decodable {
+struct TVPageResponse: Decodable {
     let page: Int
-    let results: [MovieResponse]
+    let results: [TVResponse]
     let totalPages: Int
     let totalResults: Int
 
@@ -19,10 +19,10 @@ struct MoviePageResponse: Decodable {
     }
 }
 
-struct MovieResponse: Decodable {
+struct TVResponse: Decodable {
     let id: Int
-    let title: String
-    let releaseDate: String
+    let name: String
+    let firstAirDate: String?
     let posterPath: String?
     let voteAverage: Double?
     let voteCount: Int?
@@ -30,14 +30,14 @@ struct MovieResponse: Decodable {
     let overview: String?
     let runtime: Int?
     let revenue: Int?
-    let genres: [Genre]?
-    let spokenLanguages: [Language]?
+    let genres: [Genre]
+    let spokenLanguages: [Language]
     let homepage: String?
-    
+
     enum CodingKeys: String, CodingKey {
         case id
-        case title
-        case releaseDate = "release_date"
+        case name
+        case firstAirDate = "first_air_date"
         case posterPath = "poster_path"
         case voteAverage = "vote_average"
         case voteCount = "vote_count"
@@ -48,7 +48,4 @@ struct MovieResponse: Decodable {
         case spokenLanguages = "spoken_languages"
         case homepage
     }
-    
-    // You can implement the initializer if needed, but `Decodable` will automatically synthesize it for you.
 }
-

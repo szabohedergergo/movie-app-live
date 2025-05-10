@@ -31,13 +31,13 @@ struct MovieListView: View {
         }
         .navigationTitle(genre.name)
         .onAppear{
-            Task {
-                await viewModel.loadMovies(by: genre.id)
-            }
+//            viewModel.loadMovies(by: genre.id)
+            viewModel.genreIdSubject.send(genre.id)
         }
     }
 }
 
 #Preview {
-    MovieListView(genre: Genre(id: 28, name: "Action") )
+    MovieListView(genre: Genre(id: 28, name: "Action"))
+        .environmentObject(FavoritesManager.manager)
 }

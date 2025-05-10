@@ -28,8 +28,9 @@ struct MovieAPIErrorResponse: Decodable {
 protocol MoviesServiceProtocol {
     func fetchGenres(req: FetchGenreRequest) async throws -> [Genre]
     func fetchTVGenres(req: FetchGenreRequest) async throws -> [Genre]
-    func fetchMovies(req: FetchMoviesRequest) async throws -> [Movie]
-    func searchMovies(req: SearchMovieRequest) async throws -> [Movie]
+    func fetchMovies(req: FetchMediaListRequest) async throws -> [MediaItem]
+    func searchMovies(req: SearchMovieRequest) async throws -> [MediaItem]
+    func fetchFavoriteMovies(req: FetchFavoriteMoviesRequest) async throws -> [MediaItem]
 }
 
 class MoviesService: MoviesServiceProtocol {
@@ -41,7 +42,10 @@ class MoviesService: MoviesServiceProtocol {
         try await requestAndTransform(
             target: MultiTarget(MoviesApi.fetchGenres(req: req)),
             decodeTo: GenreListResponse.self,
-            transform: { $0.genres.map(Genre.init(dto:)) }
+            //transform: { $0.genres.map(Genre.init(dto:)) }
+            transform: { response in
+                try response.genres.map { try Genre(validating: $0)}
+            }
         )
     }
     
@@ -49,24 +53,46 @@ class MoviesService: MoviesServiceProtocol {
         try await requestAndTransform(
             target: MultiTarget(MoviesApi.fetchTVGenres(req: req)),
             decodeTo: GenreListResponse.self,
-            transform: { $0.genres.map(Genre.init(dto:)) }
+            //transform: { $0.genres.map(Genre.init(dto:)) }
+            transform: { response in
+                try response.genres.map { try Genre(validating: $0) }
+            }
         )
     }
     
-    func fetchMovies(req: FetchMoviesRequest) async throws -> [Movie] {
+    func fetchMovies(req: FetchMediaListRequest) async throws -> [MediaItem] {
         try await requestAndTransform(
             target: MultiTarget(MoviesApi.fetchMovies(req: req)),
             decodeTo: MoviePageResponse.self,
-            transform: { $0.results.map(Movie.init(dto:)) }
+            //transform: { $0.results.map(Movie.init(dto:)) }
+            transform: { response in
+                try response.results.map { try MediaItem(validating: $0) }
+            }
         )
     }
     
-    func searchMovies(req: SearchMovieRequest) async throws -> [Movie] {
+    func searchMovies(req: SearchMovieRequest) async throws -> [MediaItem] {
         try await requestAndTransform(
             target: MultiTarget(MoviesApi.searchMovies(req: req)),
             decodeTo: MoviePageResponse.self,
-            transform: { (moviePageResponse: MoviePageResponse) in
-                moviePageResponse.results.map(Movie.init(dto:))
+//            transform: { (moviePageResponse: MoviePageResponse) in
+//                moviePageResponse.results.map(Movie.init(dto:))
+//            }
+            transform: {
+                response in
+                
+                try response.results.map { try MediaItem(validating: $0) }
+            }
+        )
+    }
+    
+    func fetchFavoriteMovies(req: FetchFavoriteMoviesRequest) async throws -> [MediaItem] {
+        try await requestAndTransform(
+            target: MultiTarget(MoviesApi.fetchFavoriteMovies(req: req)),
+            decodeTo: MoviePageResponse.self,
+            //transform: { $0.results.map(Movie.init(dto:)) }
+            transform: { response in
+                try response.results.map { try MediaItem(validating: $0) }
             }
         )
     }
@@ -74,7 +100,7 @@ class MoviesService: MoviesServiceProtocol {
     private func requestAndTransform<ResponseType: Decodable, Output>(
         target: MultiTarget,
         decodeTo: ResponseType.Type,
-        transform: @escaping (ResponseType) -> Output
+        transform: @escaping (ResponseType) throws -> Output
     ) async throws -> Output {
         try await withCheckedThrowingContinuation { continuation in
             moya.request(target) { result in
@@ -85,7 +111,7 @@ class MoviesService: MoviesServiceProtocol {
                     case 200..<300:
                         do {
                             let decoded = try JSONDecoder().decode(decodeTo, from: response.data)
-                            let output = transform(decoded)
+                            let output = try transform(decoded)
                             continuation.resume(returning: output)
                         } catch {
                             continuation.resume(throwing: MovieError.unexpectedError)

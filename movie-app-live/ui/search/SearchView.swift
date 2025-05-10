@@ -26,11 +26,9 @@ struct SearchView: View {
                     .textFieldStyle(PlainTextFieldStyle())
                     .font(Fonts.searchText)
                     .foregroundColor(.invertedMain)
-//                    .onChange(of: viewModel.searchText){
-//                        Task {
-//                            await viewModel.searchMovies()
-//                        }
-//                    }
+                    .onChange(of: viewModel.searchText){
+                        viewModel.startSearch.send()
+                    }
                 }
                 .frame(height: 56)
                 .padding(.horizontal, LayoutConst.normalPadding)

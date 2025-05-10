@@ -12,38 +12,58 @@ struct GenreSectionView: View {
     @StateObject private var viewModel = GenreSectionViewModel()
     
     var body: some View {
-        NavigationView {
-            List(viewModel.genres) { genre in
-                ZStack {
-                    NavigationLink(destination: MovieListView(genre: genre)) {
-                        EmptyView()
+        ZStack(alignment: .topTrailing) {
+            Image(.redPiece)
+                .resizable()
+                .scaledToFit()
+                .padding(.leading, 150)
+                .zIndex(0)
+            
+            NavigationView {
+                List(viewModel.genres) { genre in
+                    ZStack {
+                        NavigationLink(destination: MovieListView(genre: genre)) {
+                            EmptyView()
+                        }
+                        .opacity(0)
+                        .onTapGesture {
+                            SelectedGenresManager.selectedGenres.toggleGenre(id: genre.id)
+                        }
+                        
+                        GenreSectionCell(genre: genre)
                     }
-                    .opacity(0)
-
-                    GenreSectionCell(genre: genre)
+                    .background(Color.clear)
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
                 }
+                .listStyle(.plain)
+                .navigationTitle(Environments.name == .tvlist ? "TV" : "genreSection.title")
+                .accessibilityLabel("testCollectionView")
+                .background(Color.clear)
                 .listRowBackground(Color.clear)
                 .listRowSeparator(.hidden)
             }
-            .listStyle(.plain)
-            .navigationTitle(Environments.name == .tvlist ? "TV" : "genreSection.title")
-            .accessibilityLabel("testCollectionView")
+            .background(Color.clear)
         }
+        .ignoresSafeArea()
         .onAppear {
-//            Task {
-//                await viewModel.fetchGenres()
-//            }
+            //            Task {
+            //                await viewModel.fetchGenres()
+            //            }
             //nem kell a future után már
         }
-        .alert(item: $viewModel.alertModel) { model in
-            return Alert(
-                title: Text(LocalizedStringKey(model.title)),
-                message: Text(LocalizedStringKey(model.message)),
-                dismissButton: .default(Text(LocalizedStringKey(model.dismissButtonTitle))) {
-                    viewModel.alertModel = nil
-                }
-            )
-        }
+        .showAlert(model: $viewModel.alertModel)
+        //.modifier(AlertModifier(model: $viewModel.alertModel))
+        
+//        .alert(item: $viewModel.alertModel) { model in
+//            return Alert(
+//                title: Text(LocalizedStringKey(model.title)),
+//                message: Text(LocalizedStringKey(model.message)),
+//                dismissButton: .default(Text(LocalizedStringKey(model.dismissButtonTitle))) {
+//                    viewModel.alertModel = nil
+//                }
+//            )
+//        }
     }
 }
 

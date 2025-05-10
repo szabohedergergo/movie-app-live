@@ -16,7 +16,7 @@ class ServiceAssembly: Assembly {
     
     func assemble(container: Container){
         container.register(MoyaProvider<MultiTarget>.self){ _ in
-            let configuration = URLSessionConfiguration.default
+            let configuration = URLSessionConfiguration.ephemeral
             configuration.headers = .default
             
             return MoyaProvider<MultiTarget>( //ne a konstruktorban legyen példányositvan a movieservice-ben, hanem di-vel
@@ -30,7 +30,7 @@ class ServiceAssembly: Assembly {
                                     print("Response \(item)")
                                 }
                             },
-                            logOptions: .verbose))
+                            logOptions: .requestBody))
                 ])
         }.inObjectScope(.container)
         
@@ -41,5 +41,9 @@ class ServiceAssembly: Assembly {
         }.inObjectScope(.container) //ha containerrel hivunk le, akkor az egész projekten belül csak 1 lehet
         //singleton: olyan osztály, melyből az egész projekten belül csak 1 lehet
         // nem lehet példányositani
+        
+        container.register(ReactiveMoviesServiceProtocol.self) { _ in
+            return ReactiveMoviesService()
+        }.inObjectScope(.container)
     }
 }

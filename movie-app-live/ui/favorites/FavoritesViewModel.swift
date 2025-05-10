@@ -1,16 +1,130 @@
+////
+////  FavoritesViewModel.swift
+////  movie-app-live
+////
+////  Created by Gergo Szabo on 2025. 04. 28..
+////
 //
-//  FavoritesViewModel.swift
-//  movie-app-live
-//
-//  Created by Gergo Szabo on 2025. 04. 28..
-//
-
 import Foundation
+import Combine
+import InjectPropertyWrapper
 
 protocol FavoritesViewModelProtocol: ObservableObject {
-    // TODO: Add favorite movie related properties and methods
+    var movies: [MediaItem] {get}
 }
 
-class FavoritesViewModel: FavoritesViewModelProtocol {
-    // TODO: Implement favorite movies functionality
+class FavoritesViewModel: FavoritesViewModelProtocol, ErrorPresentable {
+    
+    @Published var movies: [MediaItem] = []
+    @Published var alertModel: AlertModel? = nil
+    
+    private var cancellable = Set<AnyCancellable>()
+    
+    @Inject
+    private var service: ReactiveMoviesServiceProtocol
+    
+    init(){
+        let request = FetchFavoriteMoviesRequest()
+        
+        service.fetchFavoriteMovies(req: request)
+            .receive(on: RunLoop.main)
+            .sink{ completion in
+                switch completion {
+                case .failure(let error):
+                    self.alertModel = self.toAlertModel(error)
+                case .finished:
+                    break
+                }
+            }receiveValue: { [weak self] movies in
+                self?.movies = movies
+            }
+            .store(in: &cancellable)
+    }
+        
+//        let future = Future<[Movie], Error> { future in
+//            Task {
+//                do {
+//                    let genres = try await self.service.fetchFavoriteMovies(req: request)
+//                    future(.success(genres))
+//                } catch {
+//                    future(.failure(error))
+//                }
+//            }
+//        }
+//        
+//        future
+//            .receive(on: RunLoop.main)
+//            .sink{ completion in
+//                switch completion {
+//                case .failure(let error):
+//                    self.alertModel = self.toAlertModel(error)
+//                case .finished:
+//                    break
+//                }
+//            }receiveValue: { [weak self] movies in
+//                self?.movies = movies
+//            }
+//            .store(in: &cancellable)
+//    }
 }
+
+
+//
+//protocol FavoritesViewModelProtocol: ObservableObject {
+//    var filteredMovies: [Movie] { get }
+//    func loadFavorites() async
+//}
+//
+//class FavoritesViewModel: FavoritesViewModelProtocol {
+//    @Published var filteredMovies: [Movie] = []
+//
+//    private var allMovies: [Movie] = []
+//    private var cancellables = Set<AnyCancellable>()
+//
+//    @Inject
+//    private var service: MoviesServiceProtocol
+//
+//    init() {
+//        // reaktív újratöltés
+//        FavoritesManager.manager.$favoriteMovieIDs
+//            .sink { [weak self] _ in
+//                Task {
+//                    await self?.loadFavorites()
+//                }
+//            }
+//            .store(in: &cancellables)
+//
+//        Task {
+//            await loadFavorites()
+//        }
+//    }
+//
+//    func loadFavorites() async {
+//        do {
+//            let genreIDs = Array(SelectedGenresManager.selectedGenres.selectedGenreIDs)
+//
+//            var filteredMovies: [Movie] = []
+//
+//            // Minden kiválasztott műfajhoz lekérjük a filmeket
+//            for genreId in genreIDs {
+//                let req = FetchMoviesRequest(genreId: genreId)
+//                let movies = try await service.fetchMovies(req: req)
+//                filteredMovies.append(contentsOf: movies)
+//            }
+//
+//            let favoriteMovieIDs = FavoritesManager.manager.favoriteMovieIDs
+//            let favoriteMovies = filteredMovies.filter { favoriteMovieIDs.contains($0.id) }
+//
+//            print("items:")
+//            print(favoriteMovieIDs)
+//
+//            DispatchQueue.main.async {
+//                self.filteredMovies = favoriteMovies.removingDuplicates(by: \.id)
+//
+//            print("Done")
+//            }
+//        } catch {
+//            print("Hiba történt a kedvencek betöltésekor: \(error)")
+//        }
+//    }
+//}

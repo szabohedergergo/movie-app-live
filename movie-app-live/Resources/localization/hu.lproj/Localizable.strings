@@ -11,4 +11,5 @@
 "search.textfield.placeholder" = "Movies, Director, Actor, Actress, etc.";
 "button.close.text" = "Bezárás";
 "unexpected.error.title" = "Váratlan hiba";
-"unexpected.error.message" = "Váratlab hiba történt. Kérjük próbálja meg később.";
+"unexpected.error.message" = "Váratlan hiba történt. Kérjük próbálja meg később.";
+"favoriteMovies.title" = "Kedvencek";

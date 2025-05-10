@@ -12,10 +12,20 @@ struct FavoritesView: View {
     @StateObject private var viewModel = FavoritesViewModel()
     
     var body: some View {
-        NavigationView {
-            Text("Favorites Screen")
-                .navigationTitle("Favorites")
+        NavigationView{
+            ScrollView{
+                LazyVStack(spacing: LayoutConst.normalPadding){
+                    ForEach(viewModel.movies){ movie in
+                        MovieCell(movie: movie)
+                            .frame(height: 277)
+                    }
+                }
+                .padding(.horizontal, LayoutConst.normalPadding)
+                .padding(.top, LayoutConst.normalPadding)
+            }
+            .navigationTitle("favoriteMovies.title")
         }
+        .showAlert(model: $viewModel.alertModel)
     }
 }
 

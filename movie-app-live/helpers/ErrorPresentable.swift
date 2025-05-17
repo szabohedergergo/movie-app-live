@@ -33,6 +33,12 @@ extension ErrorPresentable {
                 message: error.localizedDescription,
                 dismissButtonTitle: "button.close.text"
             )
+        case .mappingError(let message):
+            return AlertModel(
+                title: "Mapping Error",
+                message: message,
+                dismissButtonTitle: "button.close.text"
+            )
         default:
             return AlertModel(
                 title: "unexpected.error.title",

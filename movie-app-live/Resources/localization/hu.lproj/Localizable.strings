@@ -11,5 +11,14 @@
 "search.textfield.placeholder" = "Movies, Director, Actor, Actress, etc.";
 "button.close.text" = "Bezárás";
 "unexpected.error.title" = "Váratlan hiba";
-"unexpected.error.message" = "Váratlan hiba történt. Kérjük próbálja meg később.";
+"unexpected.error.message" = "Váratlab hiba történt. Kérjük próbálja meg később.";
 "favoriteMovies.title" = "Kedvencek";
+"detail.rate.button" = "Rate this movie";
+"detail.imdb.button" = "Visit at IMDB";
+"detail.releaseDate" = "Release Date";
+"detail.runtime" = "Runtime";
+"detail.language" = "Language";
+"detail.overview" = "Synopsis";
+"available" = "Available";
+"unavailable" = "Unavailable";
+

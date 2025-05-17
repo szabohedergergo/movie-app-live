@@ -22,18 +22,12 @@ struct MoviePageResponse: Decodable {
 struct MovieResponse: Decodable {
     let id: Int
     let title: String
-    let releaseDate: String
+    let releaseDate: String?
     let posterPath: String?
     let voteAverage: Double?
     let voteCount: Int?
-    
-    let overview: String?
-    let runtime: Int?
-    let revenue: Int?
-    let genres: [Genre]?
-    let spokenLanguages: [Language]?
-    let homepage: String?
-    
+    let popularity: Double
+
     enum CodingKeys: String, CodingKey {
         case id
         case title
@@ -41,14 +35,6 @@ struct MovieResponse: Decodable {
         case posterPath = "poster_path"
         case voteAverage = "vote_average"
         case voteCount = "vote_count"
-        case overview
-        case runtime
-        case revenue
-        case genres
-        case spokenLanguages = "spoken_languages"
-        case homepage
+        case popularity
     }
-    
-    // You can implement the initializer if needed, but `Decodable` will automatically synthesize it for you.
 }
-

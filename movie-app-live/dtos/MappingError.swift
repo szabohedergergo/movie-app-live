@@ -39,7 +39,11 @@ extension MediaItem {
             throw MappingError.missingField("title")
         }
         
-        let year = String(dto.releaseDate.prefix(4))
+        guard let releaseDate = dto.releaseDate else {
+            throw MappingError.missingField("releaseDate")
+        }
+        
+        let year = String(releaseDate.prefix(4))
         guard !year.isEmpty, year != "-" else {
             throw MappingError.invalidValue("releaseDate")
         }

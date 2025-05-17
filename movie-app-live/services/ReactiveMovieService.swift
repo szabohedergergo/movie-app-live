@@ -17,7 +17,9 @@ protocol ReactiveMoviesServiceProtocol {
     func fetchTV(req: FetchMediaListRequest) -> AnyPublisher<[MediaItem], MovieError>
     func searchMovies(req: SearchMovieRequest) -> AnyPublisher<[MediaItem], MovieError>
     func fetchFavoriteMovies(req: FetchFavoriteMoviesRequest) -> AnyPublisher<[MediaItem], MovieError>
-    func addFavoriteMovie(req: AddFavoriteRequest) -> AnyPublisher<AddFavoriteResponse, MovieError>
+    func editFavoriteMovie(req: EditFavoriteRequest) -> AnyPublisher<EditFavoriteResult, MovieError>
+    func fetchMovieDetail(req: FetchDetailRequest) -> AnyPublisher<MediaItemDetail, MovieError> //domain model
+    func fetchMovieCredits(req: FetchMovieCreditsRequest) -> AnyPublisher<[CastMember], MovieError>
     
 }
 
@@ -74,15 +76,30 @@ class ReactiveMoviesService: ReactiveMoviesServiceProtocol {
         )
     }
     
-    func addFavoriteMovie(req: AddFavoriteRequest) -> AnyPublisher<AddFavoriteResponse, MovieError> {
+    func fetchMovieDetail(req: FetchDetailRequest) -> AnyPublisher<MediaItemDetail, MovieError> {
         requestAndTransform(
-            target: MultiTarget(MoviesApi.addFavoriteMovie(req: req)),
-            decodeTo: AddFavoriteResponse.self,
+            target: MultiTarget(MoviesApi.fetchMovieDetail(req: req)),
+            decodeTo: MovieDetailResponse.self,
+            transform: { MediaItemDetail(dto: $0) }
+        )
+    }
+    
+    func fetchMovieCredits(req: FetchMovieCreditsRequest) -> AnyPublisher<[CastMember], MovieError> {
+        requestAndTransform(
+            target: MultiTarget(MoviesApi.fetchMovieCredits(req: req)),
+            decodeTo: MovieCreditsResponse.self,
+            transform: { dto in
+                dto.cast.map(CastMember.init(dto:))
+            }
+        )
+    }
+    
+    func editFavoriteMovie(req: EditFavoriteRequest) -> AnyPublisher<EditFavoriteResult, MovieError> {
+        requestAndTransform(
+            target: MultiTarget(MoviesApi.editFavoriteMovie(req: req)),
+            decodeTo: EditFavoriteResponse.self,
             transform: { response in
-                response
-//                AddFavoriteResponse(success: true,
-//                                    statusCode: 0,
-//                                    statusMessage: "---Implement this")
+                EditFavoriteResult(dto: response)
             }
         )
     }

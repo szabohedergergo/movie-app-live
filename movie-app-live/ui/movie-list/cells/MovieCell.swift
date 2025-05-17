@@ -12,7 +12,7 @@ struct MovieCell: View {
     @EnvironmentObject var favManager: FavoritesManager
     
     var body: some View {
-        NavigationLink(destination: MovieDetailView(movie: movie)){
+        NavigationLink(destination: DetailView(mediaItem: movie)){
             VStack(alignment: .leading, spacing: LayoutConst.smallPadding){
                 ZStack(alignment: .topLeading){
                     HStack(alignment: .center){

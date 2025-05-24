@@ -5,15 +5,16 @@
 //  Created by Gergo Szabo on 2025. 05. 11..
 //
 
-import Foundation
-
 struct ProductionCompanyResponse: Decodable {
     let id: Int
-    let name: String
     let logoPath: String?
+    let name: String
+    let originCountry: String
 
     enum CodingKeys: String, CodingKey {
-        case id, name
         case logoPath = "logo_path"
+        case originCountry = "origin_country"
+        case name
+        case id
     }
 }

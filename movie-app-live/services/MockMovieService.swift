@@ -104,7 +104,7 @@ class MockMoviesService: MoviesServiceProtocol {
         ]
     }
     
-    func fetchFavoriteMovies(req: FetchFavoriteMoviesRequest) async throws -> [MediaItem] {
+    func fetchFavoriteMovies(req: FetchFavoriteMovieRequest) async throws -> [MediaItem] {
         [
             MediaItem(id: 1,
                   title: "Mock movie1",

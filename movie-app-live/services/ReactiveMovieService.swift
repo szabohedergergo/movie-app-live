@@ -9,24 +9,36 @@ import Foundation
 import Moya
 import InjectPropertyWrapper
 import Combine
+import Alamofire
 
 protocol ReactiveMoviesServiceProtocol {
     func fetchGenres(req: FetchGenreRequest) -> AnyPublisher<[Genre], MovieError>
     func fetchTVGenres(req: FetchGenreRequest) -> AnyPublisher<[Genre], MovieError>
+    func searchMovies(req: SearchMovieRequest) -> AnyPublisher<[MediaItem], MovieError>
     func fetchMovies(req: FetchMediaListRequest) -> AnyPublisher<[MediaItem], MovieError>
     func fetchTV(req: FetchMediaListRequest) -> AnyPublisher<[MediaItem], MovieError>
-    func searchMovies(req: SearchMovieRequest) -> AnyPublisher<[MediaItem], MovieError>
-    func fetchFavoriteMovies(req: FetchFavoriteMoviesRequest) -> AnyPublisher<[MediaItem], MovieError>
+    func fetchFavoriteMovies(req: FetchFavoriteMovieRequest, fromLocal: Bool) -> AnyPublisher<[MediaItem], MovieError>
     func editFavoriteMovie(req: EditFavoriteRequest) -> AnyPublisher<EditFavoriteResult, MovieError>
-    func fetchMovieDetail(req: FetchDetailRequest) -> AnyPublisher<MediaItemDetail, MovieError> //domain model
+    func fetchMovieDetail(req: FetchDetailRequest) -> AnyPublisher<MediaItemDetail, MovieError>
     func fetchMovieCredits(req: FetchMovieCreditsRequest) -> AnyPublisher<[CastMember], MovieError>
-    
 }
 
 class ReactiveMoviesService: ReactiveMoviesServiceProtocol {
     
     @Inject
     var moya: MoyaProvider<MultiTarget>!
+    
+    @Inject
+    private var store: MediaItemStoreProtocol
+    
+    @Inject
+    private var detailStore: MediaItemDetailStoreProtocol
+    
+    @Inject
+    private var castMemberStore: CastMemberStoreProtocol
+    
+    @Inject
+    private var networkMonitor: NetworkMonitorProtocol
     
     func fetchGenres(req: FetchGenreRequest) -> AnyPublisher<[Genre], MovieError> {
         requestAndTransform(
@@ -44,6 +56,14 @@ class ReactiveMoviesService: ReactiveMoviesServiceProtocol {
         )
     }
     
+    func searchMovies(req: SearchMovieRequest) -> AnyPublisher<[MediaItem], MovieError> {
+        requestAndTransform(
+            target: MultiTarget(MoviesApi.searchMovies(req: req)),
+            decodeTo: MoviePageResponse.self,
+            transform: { $0.results.map(MediaItem.init(dto:)) }
+        )
+    }
+    
     func fetchMovies(req: FetchMediaListRequest) -> AnyPublisher<[MediaItem], MovieError> {
         requestAndTransform(
             target: MultiTarget(MoviesApi.fetchMovies(req: req)),
@@ -55,43 +75,82 @@ class ReactiveMoviesService: ReactiveMoviesServiceProtocol {
     func fetchTV(req: FetchMediaListRequest) -> AnyPublisher<[MediaItem], MovieError> {
         requestAndTransform(
             target: MultiTarget(MoviesApi.fetchTV(req: req)),
-            decodeTo: MoviePageResponse.self,
-            transform: { $0.results.map(MediaItem.init(dto:)) }
-        )
-    }
-    
-    func searchMovies(req: SearchMovieRequest) -> AnyPublisher<[MediaItem], MovieError> {
-        requestAndTransform(
-            target: MultiTarget(MoviesApi.searchMovies(req: req)),
             decodeTo: TVPageResponse.self,
             transform: { $0.results.map(MediaItem.init(dto:)) }
         )
     }
     
-    func fetchFavoriteMovies(req: FetchFavoriteMoviesRequest) -> AnyPublisher<[MediaItem], MovieError> {
-        requestAndTransform(
+    func fetchFavoriteMovies(req: FetchFavoriteMovieRequest, fromLocal: Bool) -> AnyPublisher<[MediaItem], MovieError> {
+        
+        let serviceResponse: AnyPublisher<[MediaItem], MovieError> = self.requestAndTransform(
             target: MultiTarget(MoviesApi.fetchFavoriteMovies(req: req)),
             decodeTo: MoviePageResponse.self,
             transform: { $0.results.map(MediaItem.init(dto:)) }
         )
+            .handleEvents(receiveOutput: { [weak self]mediaItems in
+                self?.store.saveMediaItems(mediaItems)
+            })
+            .eraseToAnyPublisher()
+        
+        let localResponse: AnyPublisher<[MediaItem], MovieError> = store.mediaItems
+        
+        return networkMonitor.isConnected
+            .flatMap { isConnected -> AnyPublisher<[MediaItem], MovieError> in
+                if isConnected {
+                    return serviceResponse
+                } else {
+                    return localResponse
+                }
+            }
+            .eraseToAnyPublisher()
     }
     
     func fetchMovieDetail(req: FetchDetailRequest) -> AnyPublisher<MediaItemDetail, MovieError> {
-        requestAndTransform(
+        
+        let serviceResponse: AnyPublisher<MediaItemDetail, MovieError> = self.requestAndTransform(
             target: MultiTarget(MoviesApi.fetchMovieDetail(req: req)),
             decodeTo: MovieDetailResponse.self,
-            transform: { MediaItemDetail(dto: $0) }
+            transform: { MediaItemDetail.init(dto: $0) }
         )
+            .handleEvents(receiveOutput: { [weak self]mediaItemDetail in
+                self?.detailStore.saveMediaItemDetail(mediaItemDetail)
+            })
+            .eraseToAnyPublisher()
+        
+        let localResponse: AnyPublisher<MediaItemDetail, MovieError> = detailStore.getMediaItemDetail(withId: req.mediaId)
+        
+        return networkMonitor.isConnected
+            .flatMap { isConnected -> AnyPublisher<MediaItemDetail, MovieError> in
+                if isConnected {
+                    return serviceResponse
+                } else {
+                    return localResponse
+                }
+            }
+            .eraseToAnyPublisher()
     }
     
     func fetchMovieCredits(req: FetchMovieCreditsRequest) -> AnyPublisher<[CastMember], MovieError> {
-        requestAndTransform(
-            target: MultiTarget(MoviesApi.fetchMovieCredits(req: req)),
-            decodeTo: MovieCreditsResponse.self,
-            transform: { dto in
-                dto.cast.map(CastMember.init(dto:))
+        
+        return networkMonitor.isConnected
+            .flatMap { isConnected -> AnyPublisher<[CastMember], MovieError> in
+                if isConnected {
+                    return self.requestAndTransform(
+                        target: MultiTarget(MoviesApi.fetchMovieCredits(req: req)),
+                        decodeTo: MovieCreditsResponse.self,
+                        transform: { dto in
+                            dto.cast.map(CastMember.init(dto:))
+                        }
+                    )
+                    .handleEvents(receiveOutput: { [weak self]castMembers in
+                        self?.castMemberStore.saveCastMembers(castMembers, forMovieId: req.mediaId)
+                    })
+                    .eraseToAnyPublisher()
+                } else {
+                    return self.castMemberStore.getCastMembers(fromMovieId: req.mediaId)
+                }
             }
-        )
+            .eraseToAnyPublisher()
     }
     
     func editFavoriteMovie(req: EditFavoriteRequest) -> AnyPublisher<EditFavoriteResult, MovieError> {
@@ -120,27 +179,75 @@ class ReactiveMoviesService: ReactiveMoviesServiceProtocol {
                             let output = transform(decoded)
                             future(.success(output))
                         } catch {
-                            future(.failure(.unexpectedError))
+                            future(.failure(MovieError.mappingError(message: error.localizedDescription)))
                         }
                     case 400..<500:
-                        future(.failure(.clientError))
+                        future(.failure(MovieError.clientError))
                     default:
                         if let apiError = try? JSONDecoder().decode(MovieAPIErrorResponse.self, from: response.data) {
                             if apiError.statusCode == 7 {
-                                future(.failure(.invalidApiKeyError(message: apiError.statusMessage)))
+                                future(.failure(MovieError.invalidApiKeyError(message: apiError.statusMessage)))
                             } else {
-                                future(.failure(.unexpectedError))
+                                future(.failure(MovieError.unexpectedError))
                             }
                         } else {
-                            future(.failure(.unexpectedError))
+                            future(.failure(MovieError.unexpectedError))
                         }
                     }
-                case .failure:
-                    future(.failure(.unexpectedError))
+                case .failure(let error):
+                    if error.isNoInternetError {
+                        future(.failure(MovieError.noInternetError))
+                    } else {
+                        future(.failure(MovieError.unexpectedError))
+                    }
+                    
                 }
             }
         }
         return future
             .eraseToAnyPublisher()
+            
+    }
+    
+    func fetchFavoriteMovies2(req: FetchFavoriteMovieRequest, fromLocal: Bool = false) -> AnyPublisher<[MediaItem], MovieError> {
+            networkMonitor.isConnected
+                .flatMap { [weak self]isConnected in
+                    guard let self = self else {
+                        preconditionFailure("There is no self")
+                    }
+                    if !isConnected || fromLocal {
+                        return self.store.mediaItems
+                    }
+                    return self.requestAndTransform(
+                        target: MultiTarget(MoviesApi.fetchFavoriteMovies(req: req)),
+                        decodeTo: MoviePageResponse.self,
+                        transform: { $0.results.map(MediaItem.init(dto:)) }
+                    )
+                    
+                }
+                .handleEvents(receiveOutput: { [weak self]mediaItems in
+                    guard let self = self else {
+                        preconditionFailure("There is no self")
+                    }
+                    self.store.saveMediaItems(mediaItems)
+                })
+                .eraseToAnyPublisher()
+        }
+}
+
+extension MoyaError {
+    var isNoInternetError: Bool {
+        if case let .underlying(error, _) = self {
+            // Ha AFError
+            if let afError = error as? AFError {
+                if let urlError = afError.underlyingError as? URLError {
+                    return urlError.code == .notConnectedToInternet
+                } else if let nsError = afError.underlyingError as NSError? {
+                    return nsError.domain == NSURLErrorDomain && nsError.code == NSURLErrorNotConnectedToInternet
+                }
+            }
+        }
+        return false
     }
 }
+

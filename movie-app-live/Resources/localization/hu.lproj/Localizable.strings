@@ -19,6 +19,10 @@
 "detail.runtime" = "Runtime";
 "detail.language" = "Language";
 "detail.overview" = "Synopsis";
+"detail.publishers" = "Publisher and companies";
+"detail.cast" = "Cast";
 "available" = "Available";
 "unavailable" = "Unavailable";
-
+"noInternet" = "No internet connection";
+"addReview.subTitle" = "Give it  a honest review";
+"addReview.buttonTitle" = "Send my review";

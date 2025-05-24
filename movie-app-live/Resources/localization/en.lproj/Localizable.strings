@@ -5,6 +5,7 @@
   Created by Gergo Szabo on 2025. 04. 08..
   
 */
+
 "genreSection.title" = "Movie app";
 "search.empty.title" = "Kezdj el gépelni\na kereséshez";
 "search.textfield.placeholder" = "Movies, Director, Actor, Actress, etc.";
@@ -18,6 +19,11 @@
 "detail.runtime" = "Runtime";
 "detail.language" = "Language";
 "detail.overview" = "Synopsis";
+"detail.publishers" = "Publisher and companies";
+"detail.cast" = "Cast";
 "available" = "Available";
 "unavailable" = "Unavailable";
+"noInternet" = "No internet connection";
+"addReview.subTitle" = "Give it  a honest review";
+"addReview.buttonTitle" = "Send my review";
 

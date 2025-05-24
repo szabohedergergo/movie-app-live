@@ -20,7 +20,8 @@ struct MediaItemDetail: Identifiable {
     let adult: Bool
     let genres: [String]
     let spokenLanguages: String
-    let productionCompany: [ProductionCompany]
+    let imdbURL: URL?
+    let productionCompanies: [ProductionCompany]
     
     init() {
         self.id = 0
@@ -35,7 +36,8 @@ struct MediaItemDetail: Identifiable {
         self.adult = false
         self.genres = []
         self.spokenLanguages = ""
-        self.productionCompany = []
+        self.imdbURL = URL(string: "")
+        self.productionCompanies = []
     }
     
     init(id: Int, title: String,
@@ -49,7 +51,8 @@ struct MediaItemDetail: Identifiable {
          adult: Bool = false,
          genres: [String] = [],
          spokenLanguages: String = "",
-         productionCompany: [ProductionCompany] = []
+         imdbURL: URL? = URL(string: ""),
+         productionCompanies: [ProductionCompany] = []
     ) {
         self.id = id
         self.title = title
@@ -63,7 +66,8 @@ struct MediaItemDetail: Identifiable {
         self.adult = adult
         self.genres = genres
         self.spokenLanguages = spokenLanguages
-        self.productionCompany = productionCompany
+        self.imdbURL = imdbURL
+        self.productionCompanies = productionCompanies
     }
     
     init(dto: MovieDetailResponse) {
@@ -87,11 +91,13 @@ struct MediaItemDetail: Identifiable {
         self.overview = dto.overview
         self.popularity = dto.popularity
         self.adult = dto.adult
+        self.imdbURL = URL(string: "https://www.imdb.com/title/\(dto.imdbId)/")
         self.genres = dto.genres.map({ $0.name })
         self.spokenLanguages = dto.spokenLanguages
             .map({ $0.englishName })
             .joined(separator: ", ")
-        self.productionCompany = dto.productionCompany.map(ProductionCompany.init(dto:))
+        self.productionCompanies = dto.productionCompany
+            .map({ ProductionCompany(dto: $0)})
     }
     
     var genreList: String {

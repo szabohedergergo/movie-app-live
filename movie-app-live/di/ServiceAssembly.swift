@@ -46,6 +46,22 @@ class ServiceAssembly: Assembly {
             return ReactiveMoviesService()
         }.inObjectScope(.container)
         
+        container.register(MediaItemStoreProtocol.self) { _ in
+            return MediaItemStore()
+        }.inObjectScope(.container)
+        
+        container.register(MediaItemDetailStoreProtocol.self) { _ in
+            return MediaItemDetailStore()
+        }.inObjectScope(.container)
+        
+        container.register(CastMemberStoreProtocol.self) { _ in
+            return CastMemberStore()
+        }.inObjectScope(.container)
+        
+        container.register(NetworkMonitorProtocol.self) { _ in
+            return NetworkMonitor()
+        }.inObjectScope(.container)
+        
         container.register(FavoriteMediaStoreProtocol.self) { _ in
             return FavoriteMediaStore()
         }.inObjectScope(.container)

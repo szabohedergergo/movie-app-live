@@ -7,23 +7,27 @@
 
 import Foundation
 
-enum MovieError: Error{
+enum MovieError: Error {
     case invalidApiKeyError(message: String)
     case clientError
     case unexpectedError
+    case noInternetError
     case mappingError(message: String)
     
     var domain: String {
-        switch self{
-        case .invalidApiKeyError, .unexpectedError, .clientError, .mappingError:
+        switch self {
+        case .invalidApiKeyError, .unexpectedError, .clientError, .mappingError, .noInternetError:
             return "MovieError"
         }
+        
+    
     }
 }
 
 extension MovieError: LocalizedError {
-    var errorDescription: String?{
-        switch self{
+    
+    var errorDescription: String? {
+        switch self {
         case .invalidApiKeyError(let message):
             return message
         case .mappingError(let message):
@@ -31,7 +35,10 @@ extension MovieError: LocalizedError {
         case .clientError:
             return "Client Error Description"
         case .unexpectedError:
-            return "Unexpected Error"
+            return "Unexpected error"
+        case .noInternetError:
+            return "No internet"
         }
     }
+    
 }

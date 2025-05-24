@@ -29,19 +29,25 @@ class FavoritesViewModel: FavoritesViewModelProtocol, ErrorPresentable {
     
     init() {
         
-        favoriteMediaStore.mediaItems
-            .receive(on: RunLoop.main)
-            .sink { completion in
-                switch completion {
-                case .failure(let error):
-                    self.alertModel = self.toAlertModel(error)
-                case .finished:
-                    break
-                }
-            } receiveValue: { [weak self]mediaItems in
-                self?.mediaItems = mediaItems
-            }
-            .store(in: &cancellables)
+        viewLoaded
+                    .flatMap { [weak self]_ -> AnyPublisher<[MediaItem], MovieError> in
+                        guard let self = self else {
+                            preconditionFailure("There is no self")
+                        }
+                        return self.service.fetchFavoriteMovies(req: FetchFavoriteMovieRequest(), fromLocal: false)
+                    }
+                    .receive(on: RunLoop.main)
+                    .sink { completion in
+                        switch completion {
+                        case .failure(let error):
+                            self.alertModel = self.toAlertModel(error)
+                        case .finished:
+                            break
+                        }
+                    } receiveValue: { [weak self]mediaItems in
+                        self?.mediaItems = mediaItems
+                    }
+                    .store(in: &cancellables)
     }
 }
 

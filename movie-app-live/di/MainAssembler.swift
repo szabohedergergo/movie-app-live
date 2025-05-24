@@ -2,13 +2,6 @@
 //  MainAssembler.swift
 //  movie-app-live
 //
-//  Created by Gergo Szabo on 2025. 04. 15..
-//
-
-//
-//  MainAssembler.swift
-//  movie-app-live
-//
 //  Created by Zsolt Pete on 2025. 04. 15..
 //
 

@@ -8,22 +8,24 @@
 import Foundation
 import Moya
 
-enum MoviesApi{
+enum MoviesApi {
     case fetchGenres(req: FetchGenreRequest)
     case fetchTVGenres(req: FetchGenreRequest)
     case fetchMovies(req: FetchMediaListRequest)
     case fetchTV(req: FetchMediaListRequest)
     case searchMovies(req: SearchMovieRequest)
-    case fetchFavoriteMovies(req: FetchFavoriteMoviesRequest)
-    case addFavoriteMovie(req: AddFavoriteRequest)
-    //case fetchMovieDetail(req: FetchDetailRequest)
+    case fetchFavoriteMovies(req: FetchFavoriteMovieRequest)
+    case editFavoriteMovie(req: EditFavoriteRequest)
+    case fetchMovieDetail(req: FetchDetailRequest)
+    case fetchMovieCredits(req: FetchMovieCreditsRequest)
 }
 
 extension MoviesApi: TargetType {
     var baseURL: URL {
+        // TODO: Másik baseurl
         let baseUrl = "https://api.themoviedb.org/3/"
-        guard let baseUrl = URL(string: baseUrl) else{
-            preconditionFailure("base url not valid")
+        guard let baseUrl = URL(string: baseUrl) else {
+            preconditionFailure("Base url not valid url")
         }
         return baseUrl
     }
@@ -40,44 +42,55 @@ extension MoviesApi: TargetType {
             return "search/movie"
         case let .fetchFavoriteMovies(req):
             return "account/\(req.accountId)/favorite/movies"
-        case let .addFavoriteMovie(req):
-            return "account/\(req.accountId)/favorite/"
+        case .editFavoriteMovie(req: let req):
+            return "account/\(req.accountId)/favorite"
         case .fetchTV:
             return "discover/tv"
+        case .fetchMovieDetail(req: let req):
+            return "movie/\(req.mediaId)"
+        case .fetchMovieCredits(req: let req):
+            return "movie/\(req.mediaId)/credits"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .fetchGenres, .fetchTVGenres, .fetchMovies, .fetchTV, .searchMovies, .fetchFavoriteMovies:
+        case .fetchGenres, .fetchTVGenres, .fetchMovies, .fetchTV, .searchMovies, .fetchFavoriteMovies, .fetchMovieDetail, .fetchMovieCredits:
             return .get
-        case .addFavoriteMovie:
+        case .editFavoriteMovie:
             return .post
         }
     }
     
-    var task: Moya.Task {
+    // TODO: Másik encoding
+    var task: Task {
+        switch self {
+        case .fetchGenres(let req):
+            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
+        case .fetchTVGenres(let req):
+            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
+        case let .fetchMovies(req):
+            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
+        case let .fetchTV(req):
+            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
+        case let .searchMovies(req):
+            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
+        case let .fetchFavoriteMovies(req):
+            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
+        case .editFavoriteMovie(req: let req):
+            //return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.httpBody)
+            let request = EditFavoriteBodyRequest(movieId: req.movieId, isFavorite: req.isFavorite)
+                return .requestJSONEncodable(request)
+        case .fetchMovieDetail(req: let req):
+            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
+        case .fetchMovieCredits(req: let req):
+            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
+        }
+    }
+    
+    var headers: [String: String]? {
         switch self {
         case let .fetchGenres(req):
-            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
-        case let .fetchTVGenres(req):
-            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
-        case let .fetchMovies(req):
-            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
-        case let .fetchTV(req):
-            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
-        case let .searchMovies(req):
-            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
-        case let .fetchFavoriteMovies(req):
-            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
-        case let .addFavoriteMovie(req: req):
-            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
-        }
-    }
-    
-    var headers: [String : String]? {
-        switch self {
-        case let .fetchGenres(req): //
             return ["Authorization": req.accessToken]
         case let .fetchTVGenres(req):
             return ["Authorization": req.accessToken]
@@ -86,14 +99,22 @@ extension MoviesApi: TargetType {
         case let .fetchTV(req):
             return ["Authorization": req.accessToken]
         case let .searchMovies(req):
-            return ["Authorization": req.accessToken]
+            return [
+                "Authorization": req.accessToken,
+                "accept": "application/json"
+            ]
         case let .fetchFavoriteMovies(req):
             return ["Authorization": req.accessToken]
-        case let .addFavoriteMovie(req):
+        case .editFavoriteMovie(req: let req):
+            return [
+                "Authorization": req.accessToken,
+                "accept": "application/json"
+            ]
+        case .fetchMovieDetail(req: let req):
+            return ["Authorization": req.accessToken]
+        case .fetchMovieCredits(req: let req):
             return ["Authorization": req.accessToken]
         }
-        
     }
-    
     
 }

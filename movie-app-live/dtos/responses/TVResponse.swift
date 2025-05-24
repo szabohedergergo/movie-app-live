@@ -26,13 +26,6 @@ struct TVResponse: Decodable {
     let posterPath: String?
     let voteAverage: Double?
     let voteCount: Int?
-    
-    let overview: String?
-    let runtime: Int?
-    let revenue: Int?
-    let genres: [Genre]
-    let spokenLanguages: [Language]
-    let homepage: String?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -41,11 +34,5 @@ struct TVResponse: Decodable {
         case posterPath = "poster_path"
         case voteAverage = "vote_average"
         case voteCount = "vote_count"
-        case overview
-        case runtime
-        case revenue
-        case genres
-        case spokenLanguages = "spoken_languages"
-        case homepage
     }
 }

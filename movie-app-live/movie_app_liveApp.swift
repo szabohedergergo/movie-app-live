@@ -14,8 +14,8 @@ struct movie_app_liveApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainTabView(selectedTab: $selectedTab)
-                .environmentObject(FavoritesManager.manager)
+            RootView()
+                //.environmentObject(FavoritesManager.manager)
         }
     }
 }

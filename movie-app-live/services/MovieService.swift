@@ -13,24 +13,12 @@ import Foundation
 import Moya
 import InjectPropertyWrapper
 
-struct MovieAPIErrorResponse: Decodable {
-    let statusCode: Int
-    let statusMessage: String
-    let success: Bool
-    
-    enum CodingKeys: String, CodingKey {
-        case statusCode = "status_code"
-        case statusMessage = "status_message"
-        case success = "success"
-    }
-}
-
 protocol MoviesServiceProtocol {
     func fetchGenres(req: FetchGenreRequest) async throws -> [Genre]
     func fetchTVGenres(req: FetchGenreRequest) async throws -> [Genre]
     func fetchMovies(req: FetchMediaListRequest) async throws -> [MediaItem]
     func searchMovies(req: SearchMovieRequest) async throws -> [MediaItem]
-    func fetchFavoriteMovies(req: FetchFavoriteMoviesRequest) async throws -> [MediaItem]
+    func fetchFavoriteMovies(req: FetchFavoriteMovieRequest) async throws -> [MediaItem]
 }
 
 class MoviesService: MoviesServiceProtocol {
@@ -86,7 +74,7 @@ class MoviesService: MoviesServiceProtocol {
         )
     }
     
-    func fetchFavoriteMovies(req: FetchFavoriteMoviesRequest) async throws -> [MediaItem] {
+    func fetchFavoriteMovies(req: FetchFavoriteMovieRequest) async throws -> [MediaItem] {
         try await requestAndTransform(
             target: MultiTarget(MoviesApi.fetchFavoriteMovies(req: req)),
             decodeTo: MoviePageResponse.self,

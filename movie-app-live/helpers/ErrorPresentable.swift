@@ -6,20 +6,19 @@
 //
 
 protocol ErrorPresentable {
-    func toAlertModel(_ error: Error) -> AlertModel
+    func toAlertModel(_ error: Error) -> AlertModel?
     
 }
 
 extension ErrorPresentable {
-    func toAlertModel(_ error: Error) -> AlertModel{
+    func toAlertModel(_ error: Error) -> AlertModel? {
         guard let error = error as? MovieError else {
             return AlertModel(
                 title: "unexpected.error.title",
                 message: "unexpected.error.message",
-                dismissButtonTitle: "button.coles.text"
+                dismissButtonTitle: "button.close.text"
             )
         }
-        
         switch error {
         case .invalidApiKeyError(let message):
             return AlertModel(
@@ -29,10 +28,18 @@ extension ErrorPresentable {
             )
         case .clientError:
             return AlertModel(
-                title: "Client error",
+                title: "Client Error",
                 message: error.localizedDescription,
                 dismissButtonTitle: "button.close.text"
             )
+        case .mappingError(let message):
+            return AlertModel(
+                title: "Mapping Error",
+                message: message,
+                dismissButtonTitle: "button.close.text"
+            )
+        case .noInternetError:
+            return nil
         default:
             return AlertModel(
                 title: "unexpected.error.title",

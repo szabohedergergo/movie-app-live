@@ -12,12 +12,15 @@ struct FavoritesView: View {
     @StateObject private var viewModel = FavoritesViewModel()
     
     var body: some View {
-        NavigationView{
-            ScrollView{
-                LazyVStack(spacing: LayoutConst.normalPadding){
-                    ForEach(viewModel.movies){ movie in
-                        MovieCell(movie: movie)
-                            .frame(height: 277)
+        NavigationView {
+            ScrollView {
+                LazyVStack(spacing: LayoutConst.normalPadding) {
+                    ForEach(viewModel.mediaItems) { movie in
+                        NavigationLink(destination: DetailView(mediaItem: movie)) {
+                            MovieCell(movie: movie)
+                                .frame(height: 277)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
                 .padding(.horizontal, LayoutConst.normalPadding)
@@ -26,6 +29,9 @@ struct FavoritesView: View {
             .navigationTitle("favoriteMovies.title")
         }
         .showAlert(model: $viewModel.alertModel)
+        .onAppear {
+            viewModel.viewLoaded.send(())
+        }
     }
 }
 

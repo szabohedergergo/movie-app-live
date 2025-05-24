@@ -15,14 +15,39 @@ class AddReviewViewModel: ObservableObject, ErrorPresentable {
     @Published var selectedRating: Int = -1
     
     let mediaDetailSubject = PassthroughSubject<MediaItemDetail, Never>()
+    let ratingBtnSubject = PassthroughSubject<Void, Never>()
+    
+    @Inject
+    private var service: ReactiveMoviesServiceProtocol
     
     private var cancellables = Set<AnyCancellable>()
     
     init() {
+        
         mediaDetailSubject
             .sink { [weak self]detail in
                 self?.mediaItemDetail = detail
             }
+            .store(in: &cancellables)
+        
+        ratingBtnSubject
+            .flatMap { [weak self] _ ->
+                AnyPublisher<ModifyMediaResult, MovieError> in
+                
+                guard let self = self else {
+                    preconditionFailure("There is no self")
+                }
+                
+                let rating: Double = Double(self.selectedRating)
+                let request = AddReviewRequest(mediaId: mediaItemDetail.id, rating: rating)
+                
+                return self.service.addReview(req: request)
+            }
+            .sink(receiveCompletion: { _ in
+                
+            }, receiveValue: { result in
+                
+            })
             .store(in: &cancellables)
     }
 }

@@ -31,9 +31,11 @@ class CastMemberStore: CastMemberStoreProtocol {
                 $0.movieId == movieId
             }
         let castMembers = results.map { $0.toDomain }
-        return Just(Array(castMembers))
-            .setFailureType(to: MovieError.self)
-            .eraseToAnyPublisher()
+        return Future<[CastMember], MovieError> { future in
+            future(.success(Array(castMembers)))
+        }.eraseToAnyPublisher()
+            
+            //.setFailureType(to: MovieError.self)
     }
 
     func saveCastMembers(_ items: [CastMember], forMovieId movieId: Int) {

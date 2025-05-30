@@ -1,45 +1,42 @@
-//
-//  SearchSettingsViewModel.swift
-//  movie-app-live
-//
-//  Created by Gergo Szabo on 2025. 04. 29..
-//
-
 import Foundation
-import SwiftUI
+import Combine
 
 protocol SettingsViewModelProtocol: ObservableObject {
-    // TODO: Add settings related properties and methods
+    var selectedLanguage: String { get }
+    var selectedTheme: AppTheme { get }
+    func changeSelectedLanguge(_ language: String)
+    func changeTheme(_ theme: AppTheme)
 }
 
 class SettingsViewModel: SettingsViewModelProtocol {
-    @Published var selectedLanguage: String = Bundle.getLangCode()
-    @Published var selectedTheme: ColorScheme = .light
-    
-    @AppStorage("color-scheme") var colorSchemeRawValue: String = "light"
-    
-    init() {
-        self.selectedTheme = ColorScheme(colorSchemeRawValue)
+    @Published var selectedLanguage: String
+    @Published var selectedTheme: AppTheme
+
+    private let userDefaults: UserDefaults
+    private let themeKey = "color-scheme"
+
+    init(userDefaults: UserDefaults = .standard) {
+        self.userDefaults = userDefaults
+
+        // nyelv betoltese
+        self.selectedLanguage = Bundle.getLangCode()
+
+        // UserDefaultsbol tema betoltese
+        let storedThemeRawValue = userDefaults.string(forKey: themeKey) ?? AppTheme.light.rawValue
+        self.selectedTheme = AppTheme(rawValue: storedThemeRawValue) ?? .light
+
+        if AppTheme(rawValue: storedThemeRawValue) == nil {
+            userDefaults.set(AppTheme.light.rawValue, forKey: themeKey)
+        }
     }
-    
+
     func changeSelectedLanguge(_ language: String) {
         self.selectedLanguage = language
         Bundle.setLanguage(lang: language)
     }
-    
-    func changeTheme(_ theme: ColorScheme) {
-        self.selectedTheme = theme
-        colorSchemeRawValue = theme == .light ? "light" : "dark"
-    }
-    
-}
 
-extension ColorScheme {
-    var rawValue: String {
-        self == .light ? "light" : "dark"
-    }
-    
-    init(_ rawValue: String) {
-        self = rawValue == "light" ? .light : .dark
+    func changeTheme(_ theme: AppTheme) {
+        self.selectedTheme = theme
+        userDefaults.set(theme.rawValue, forKey: themeKey) // Téma mentése UserDefaults-ba
     }
 }

@@ -23,7 +23,7 @@ class MovieListViewModel: MovieListViewModelProtocol {
     let genreIdSubject = PassthroughSubject<Int, Never>()
     
     @Inject
-    private var service: ReactiveMoviesServiceProtocol
+    private var repository: MovieRepository
     
     init(){
         
@@ -34,8 +34,8 @@ class MovieListViewModel: MovieListViewModelProtocol {
                     preconditionFailure("There is no self")
                 }
                 let request = FetchMediaListRequest(genreId: genreId, includeAdult: true)
-                return Environments.name == .tvlist ? self.service.fetchTV(req: request) :
-                self.service.fetchMovies(req: request)
+                return Environments.name == .tvlist ? self.repository.fetchTV(req: request) :
+                self.repository.fetchMovies(req: request)
             }
             .sink{ completion in
                 if case let .failure(error) = completion {

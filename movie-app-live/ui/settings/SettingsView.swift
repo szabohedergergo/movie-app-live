@@ -4,58 +4,80 @@
 //
 //  Created by Gergo Szabo on 2025. 04. 29..
 //
-
 import SwiftUI
+import InjectPropertyWrapper
 
 struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()
     
     var body: some View {
-        VStack{
-            Text("Settings")
-                .font(Fonts.title)
-            
-            Text("Choose Language")
-                .font(Fonts.caption)
-            
-            HStack{
-                StyledButton(style: viewModel.selectedLanguage.value == "en" ? .filled : .outlined, action: .simple, title: "English")
-                    .onTapGesture {
-                        viewModel.selectedLanguage.send("en")
-                    }
+        NavigationStack {
+            VStack(alignment: .leading) {
+                Text("settings.chooseLanguage".localized())
+                    .font(Fonts.subheading)
+                    .padding(.bottom, LayoutConst.maxPadding)
+                HStack(spacing: 12) {
+                    StyledButton(style: viewModel.selectedLanguage == "en" ? .filled : .outlined, action: .simple, title: "settings.lang.english".localized())
+                        .font(Fonts.detailsTitle)
+                        .lineLimit(1)
+                        .fixedSize()
+                        .onTapGesture {
+                            viewModel.changeSelectedLanguge("en")
+                        }
+                    StyledButton(style: viewModel.selectedLanguage == "de" ? .filled : .outlined, action: .simple, title: "settings.lang.russian".localized())
+                        .font(Fonts.detailsButton)
+                        .lineLimit(1)
+                        .fixedSize()
+                        .onTapGesture {
+                            viewModel.changeSelectedLanguge("ru")
+                        }
+                    StyledButton(style: viewModel.selectedLanguage == "hu" ? .filled : .outlined, action: .simple, title: "settings.lang.hungarian".localized())
+                        .font(Fonts.detailsButton)
+                        .lineLimit(1)
+                        .fixedSize()
+                        .onTapGesture {
+                            viewModel.changeSelectedLanguge("hu")
+                        }
+                }
+                .padding(.bottom, 43)
                 
-                StyledButton(style: viewModel.selectedLanguage.value == "de" ? .filled : .outlined, action: .simple, title: "Deutsche")
-                    .onTapGesture {
-                        viewModel.selectedLanguage.send("de")
-                    }
+                Text("settings.chooseTheme".localized())
+                    .font(Fonts.subheading)
+                    .padding(.bottom, LayoutConst.maxPadding)
+                HStack(spacing: 12) {
+                    StyledButton(style: viewModel.selectedTheme == .light ? .filled : .outlined, action: .simple, title: "settings.theme.light")
+                        .font(Fonts.detailsButton)
+                        .lineLimit(1)
+                        .frame(maxWidth: .infinity)
+                        .onTapGesture {
+                            viewModel.changeTheme(.light)
+                        }
+                    StyledButton(style: viewModel.selectedTheme == .dark ? .filled : .outlined, action: .simple, title: "settings.theme.dark")
+                        .font(Fonts.detailsButton)
+                        .lineLimit(1)
+                        .frame(maxWidth: .infinity)
+                        .onTapGesture {
+                            viewModel.changeTheme(.dark)
+                        }
+                }
+                .padding(.bottom, 43)
                 
-                StyledButton(style: viewModel.selectedLanguage.value == "hu" ? .filled : .outlined, action: .simple, title: "Hungarian")
-                    .onTapGesture {
-                        viewModel.selectedLanguage.send("hu")
-                    }
+                Spacer()
+                VStack(spacing: LayoutConst.smallPadding) {
+                    Text("Version 0.9.1")
+                    Text("Created by Hell yeah")
+                }
+                .font(Fonts.subheading)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.bottom, 66)
             }
-            
-            Text("Choose the dark or light side")
-                .font(Fonts.caption)
-            
-            HStack{
-                StyledButton(style: viewModel.selectedTheme.value == "light" ? .filled : .outlined, action: .simple, title: "Light side")
-                    .onTapGesture {
-                        viewModel.selectedTheme.send("light")
-                    }
-                
-                StyledButton(style: viewModel.selectedTheme.value == "dark" ? .filled : .outlined, action: .simple, title: "Dark side")
-                    .onTapGesture {
-                        viewModel.selectedTheme.send("dark")
-                    }
-                
-
-            }
-            
-            Text("version: 0.9.1")
-                .font(Fonts.caption)
-            Text("created by G")
-                .font(Fonts.caption)
+            .padding(LayoutConst.maxPadding)
+            .navigationTitle("settings.title".localized())
+            .frame(maxHeight: .infinity, alignment: .top)
         }
     }
+}
+
+#Preview {
+    SettingsView()
 }

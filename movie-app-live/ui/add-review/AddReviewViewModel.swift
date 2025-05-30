@@ -18,7 +18,7 @@ class AddReviewViewModel: ObservableObject, ErrorPresentable {
     let ratingBtnSubject = PassthroughSubject<Void, Never>()
     
     @Inject
-    private var service: ReactiveMoviesServiceProtocol
+    private var service: MovieRepository
     
     private var cancellables = Set<AnyCancellable>()
     

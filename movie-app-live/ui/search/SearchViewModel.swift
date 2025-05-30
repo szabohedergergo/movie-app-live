@@ -21,7 +21,7 @@ class SearchViewModel: SearchViewModelProtocol, ErrorPresentable {
     @Published var alertModel: AlertModel? = nil
     
     @Inject
-    private var service: ReactiveMoviesServiceProtocol
+    private var service: MovieRepository
     
     private var cancellables = Set<AnyCancellable>()
     

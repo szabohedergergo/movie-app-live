@@ -12,11 +12,12 @@ import Swinject
 class AppDelegate: NSObject, UIApplicationDelegate {
     let assembler: MainAssembler
     
-    func application( //protocol
+    func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
         print("AppDelegate - App launched")
+        
         return true
     }
     

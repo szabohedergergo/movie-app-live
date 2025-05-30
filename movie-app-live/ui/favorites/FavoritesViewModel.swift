@@ -22,7 +22,7 @@ class FavoritesViewModel: FavoritesViewModelProtocol, ErrorPresentable {
     let viewLoaded = PassthroughSubject<Void, Never>()
     
     @Inject
-    private var service: ReactiveMoviesServiceProtocol
+    private var service: MovieRepository
     
     @Inject
     private var favoriteMediaStore: FavoriteMediaStoreProtocol

@@ -6,24 +6,40 @@
 //
 
 import Foundation
-import Combine
+import SwiftUI
 
-protocol SettingsViewModelProtocol: ObservableObject{
+protocol SettingsViewModelProtocol: ObservableObject {
+    // TODO: Add settings related properties and methods
 }
 
 class SettingsViewModel: SettingsViewModelProtocol {
-    var selectedLanguage = CurrentValueSubject<String, Never>("en")
-    var selectedTheme = CurrentValueSubject<String, Never>("system")
+    @Published var selectedLanguage: String = Bundle.getLangCode()
+    @Published var selectedTheme: ColorScheme = .light
     
-    var cancellables = Set<AnyCancellable>()
+    @AppStorage("color-scheme") var colorSchemeRawValue: String = "light"
+    
+    init() {
+        self.selectedTheme = ColorScheme(colorSchemeRawValue)
+    }
+    
+    func changeSelectedLanguge(_ language: String) {
+        self.selectedLanguage = language
+        Bundle.setLanguage(lang: language)
+    }
+    
+    func changeTheme(_ theme: ColorScheme) {
+        self.selectedTheme = theme
+        colorSchemeRawValue = theme == .light ? "light" : "dark"
+    }
+    
+}
 
+extension ColorScheme {
+    var rawValue: String {
+        self == .light ? "light" : "dark"
+    }
     
-    init(){
-        selectedLanguage
-            .sink { lang in
-                print("lang changed to \(lang)")
-                
-            }
-            .store(in: &cancellables)
+    init(_ rawValue: String) {
+        self = rawValue == "light" ? .light : .dark
     }
 }

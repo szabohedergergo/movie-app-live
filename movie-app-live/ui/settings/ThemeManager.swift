@@ -10,24 +10,18 @@ protocol ThemeManaging {
 class AppThemeManager: ObservableObject, ThemeManaging {
     @AppStorage("color-scheme") private var colorSchemeRawValue: String = AppTheme.light.rawValue {
         didSet {
-            // Ez a didSet akkor fut le, ha az @AppStorage megváltoztatja a colorSchemeRawValue értékét.
-            // A currentTheme-nek ekkor már van egy alapértelmezett (.light) vagy egy korábbi didSet által beállított értéke.
+            //ha @AppStorage megváltoztatja a colorSchemeRawValue értékét
             let newThemeToSet = AppTheme(rawValue: colorSchemeRawValue) ?? .light
-            if currentTheme != newThemeToSet { // Elkerüljük a felesleges értékadást és a potenciális ciklusokat.
+            if currentTheme != newThemeToSet {
                 currentTheme = newThemeToSet
             }
         }
     }
 
-    // Adjunk alapértelmezett értéket a currentTheme-nek.
-    // Így mindig inicializált állapotban van, mire a colorSchemeRawValue.didSet hozzáfér.
     @Published var currentTheme: AppTheme = .light {
         didSet {
-            // Ez a didSet akkor fut le, ha a currentTheme értéke megváltozik
-            // (pl. a setTheme hívásakor vagy a colorSchemeRawValue.didSet által).
-            if colorSchemeRawValue != currentTheme.rawValue { // Elkerüljük a felesleges értékadást és a potenciális ciklusokat.
-                colorSchemeRawValue = currentTheme.rawValue // Ez kiváltja a colorSchemeRawValue.didSet-et,
-                                                            // de az ottani if feltételnek meg kell akadályoznia a ciklust.
+            if colorSchemeRawValue != currentTheme.rawValue {
+                colorSchemeRawValue = currentTheme.rawValue
             }
         }
     }

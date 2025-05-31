@@ -30,6 +30,8 @@ struct MainTabView: View {
         return tabs
     }()
     
+    @EnvironmentObject var themeManager: AppThemeManager
+    
     var body: some View {
         ZStack(alignment: .bottom){
             TabView(selection: $selectedTab){

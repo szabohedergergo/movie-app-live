@@ -3,34 +3,68 @@ import InjectPropertyWrapper
 
 struct GenreSectionView: View {
     @StateObject private var viewModel = GenreSectionViewModelImpl()
-    
-    var body: some View {
-        let title = Environments.name == .tvlist ? "TV" : "genreSection.title".localized()
-        NavigationView {
-            List(viewModel.genres) { genre in
-                ZStack {
-                    NavigationLink(destination: MovieListView(genre: genre)) {
-                        EmptyView()
-                    }
-                    .opacity(0)
+    @State private var expandedGenreID: Int?
 
-                    GenreSectionCell(genre: genre)
+    var body: some View {
+        let title = Environments.name == .tvlist ? "TV" : "genreSection.title".localized() //
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    // 1. Kiemelt film
+                    if let movie = viewModel.highlightedMovie {
+                        HighlightedMovieView(movie: movie)
+                    } else {
+                        // placeholder
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.1))
+                            .frame(height: 280)
+                            .cornerRadius(15)
+                            .padding(.horizontal)
+                            .padding(.bottom)
+                    }
+
+                    // 2. Műfajok listája
+                    ForEach(viewModel.genres) { genre in //
+                        VStack(alignment: .leading, spacing: 0) {
+                            GenreSectionCell(
+                                genre: genre, //
+                                isExpanded: self.expandedGenreID == genre.id,
+                                onToggle: {
+                                    withAnimation(.easeInOut(duration: 0.3)) {
+                                        if self.expandedGenreID == genre.id {
+                                            self.expandedGenreID = nil
+                                        } else {
+                                            self.expandedGenreID = genre.id
+                                        }
+                                    }
+                                }
+                            )
+                            .padding(.horizontal)
+
+                            // Filmek megjelenítése
+                            if self.expandedGenreID == genre.id {
+                                // kinyitott állapot
+                                ExpandedMoviesGridView(genreID: genre.id)
+                                    .padding(.horizontal)
+                                    .padding(.top, 8)
+                            } else {
+                                // Alap állapot: 3 film horizontálisan
+                                HorizontalMoviesPreviewView(genreID: genre.id, maxMoviesToShow: 3)
+                                    .padding(.top, 4)
+                            }
+                        }
+                        .padding(.bottom, 16)
+                    }
                 }
-                .listRowBackground(Color.clear)
-                .listRowSeparator(.hidden)
             }
-            .listStyle(.plain)
             .navigationTitle(title)
             .accessibilityLabel("testCollectionView")
         }
         .showAlert(model: $viewModel.alertModel)
-        .onAppear{
+        .onAppear {
+            viewModel.loadHighlightedMovie()
             viewModel.loadGenres()
             viewModel.genresAppeared()
         }
     }
-}
-
-#Preview {
-    GenreSectionView()
 }

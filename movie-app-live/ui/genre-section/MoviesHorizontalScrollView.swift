@@ -1,4 +1,5 @@
 import SwiftUI
+import Shimmer
 
 struct HorizontalMoviesPreviewView: View {
     let genreID: Int
@@ -13,7 +14,7 @@ struct HorizontalMoviesPreviewView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: cellSpacing) {
                 ForEach(movieListViewModel.movies.prefix(maxMoviesToShow)) { movie in
-                    MovieCell(movie: movie) 
+                    MovieCell(movie: movie)
                         .frame(width: movieCellWidth)
                 }
             }

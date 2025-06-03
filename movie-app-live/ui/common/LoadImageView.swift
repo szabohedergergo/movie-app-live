@@ -12,7 +12,8 @@ struct LoadImageView: View {
     let url: URL?
     
     var body: some View {
-        WebImage(url: url) { image in
+        //WebImage(url: url) { image in
+            WebImage(url: url) { image in
             image
                 .resizable()
                 .scaledToFill()

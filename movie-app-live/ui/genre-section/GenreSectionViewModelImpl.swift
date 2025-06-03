@@ -47,12 +47,14 @@ class GenreSectionViewModelImpl: GenreSectionViewModel, ErrorPresentable {
     
     func loadGenres() {
         useCase.loadGenres()
+            .delay(for: .seconds(3), scheduler: RunLoop.main)
             .sink { completion in
                 if case let .failure(error) = completion {
                     self.alertModel = self.toAlertModel(error)
                 }
             } receiveValue: { genres in
                 self.genres = genres
+                //shimmering
             }
             .store(in: &cancellables)
     }

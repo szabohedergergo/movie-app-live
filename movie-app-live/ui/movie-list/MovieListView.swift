@@ -18,26 +18,36 @@ struct MovieListView: View {
     
     var body: some View {
         ScrollView {
-            //lazy: csak akkor példányositja, ha ténylegesen szükséges
-                //csak azokat, melyeket ténylegesen látunk
-                //scrolloláskor jelen esetben - mindig ujrahasznositja a cellát
-            LazyVGrid(columns: columns, spacing: LayoutConst.largePadding){
-                ForEach(viewModel.movies){ movie in
-                    MovieCell(movie: movie)
+            LazyVGrid(columns: columns, spacing: LayoutConst.largePadding) {
+                ForEach(viewModel.movies.indices, id: \.self) { index in
+                    let movie = viewModel.movies[index]
+                    NavigationLink(destination: DetailView(mediaItem: movie)) {
+                        MovieCell(movie: movie)
+                            .onAppear {
+                                if index == viewModel.movies.count - 1 {
+                                    viewModel.reachedBottomSubject.send()
+                                }
+                            }
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
-                      .padding(.horizontal, LayoutConst.normalPadding)
-                      .padding(.top, LayoutConst.normalPadding)
+            .padding(.horizontal, LayoutConst.normalPadding)
+            .padding(.top, LayoutConst.normalPadding)
+            
+            if viewModel.isLoading {
+                ProgressView()
+                    .padding()
+            }
         }
         .navigationTitle(genre.name)
-        .onAppear{
-//            viewModel.loadMovies(by: genre.id)
+        .showAlert(model: $viewModel.alertModel)
+        .onAppear {
             viewModel.genreIdSubject.send(genre.id)
         }
     }
 }
 
 #Preview {
-    MovieListView(genre: Genre(id: 28, name: "Action"))
-        .environmentObject(FavoritesManager.manager)
+    MovieListView(genre: Genre(id: 28, name: "Action") )
 }

@@ -76,7 +76,7 @@ class GenreSectionViewModelImpl: GenreSectionViewModel, ErrorPresentable {
                movieRepository.fetchMovies(req: request)
 
            publisher
-               .map { $0.first } // első film
+            .map { $0.mediaItems.first } // első film
                .receive(on: DispatchQueue.main)
                .sink { [weak self] completion in
                    if case let .failure(error) = completion {

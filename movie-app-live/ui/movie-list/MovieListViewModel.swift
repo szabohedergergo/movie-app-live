@@ -43,7 +43,12 @@ class MovieListViewModel: MovieListViewModelProtocol, ErrorPresentable {
                     preconditionFailure("There is no self")
                 }
                 self.isLoading = true
+                
+                if self.movies.isEmpty || self.movies.allSatisfy({$0.id < 0}) {
+                    self.movies = Array(repeating: MediaItem.placeholder, count: 3)
+                }
             })
+            //.delay(for: .seconds(3), scheduler: RunLoop.main)
             .flatMap { [weak self] _, genreId -> AnyPublisher<MediaItemPage, MovieError> in
                 guard let self = self else {
                     preconditionFailure("There is no self")
@@ -58,10 +63,20 @@ class MovieListViewModel: MovieListViewModelProtocol, ErrorPresentable {
                 if case let .failure(error) = completion {
                     self?.alertModel = self?.toAlertModel(error)
                     self?.isLoading = false
+                    if self?.movies.allSatisfy({$0.id < 0}) ?? false {
+                        self?.movies = []
+                    }
                 }
             } receiveValue: { [weak self] page in
                 guard let self else { return }
-                self.movies.append(contentsOf: page.mediaItems)
+                
+                if self.currentPage == 1 || self.movies.allSatisfy({$0.id < 0}) {
+                    self.movies = page.mediaItems
+                }
+                else{
+                    self.movies.append(contentsOf: page.mediaItems)
+                }
+                
                 self.currentPage += 1
                 self.totalPages = page.totalPages
                 self.isLoading = false

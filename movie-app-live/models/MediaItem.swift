@@ -34,6 +34,8 @@ struct MediaItem: Identifiable {
     let rating: Double
     let voteCount: Int
     
+    static let placeholder = MediaItem(id: -1, title: "", year: "", duration: "", imageUrl: nil, rating: 0.0, voteCount: 0)
+    
     init(id: Int) {
         self.id = id
         self.title = "-1"

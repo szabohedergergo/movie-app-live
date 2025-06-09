@@ -5,6 +5,7 @@
 //  Created by Gergo Szabo on 2025. 05. 24..
 //
 
+
 import SwiftUI
 
 struct AddReviewView: View {
@@ -23,16 +24,13 @@ struct AddReviewView: View {
                 LoadImageView(url: mediaItemDetail.imageUrl)
                     .frame(height: 185)
                     .cornerRadius(30)
-                Text(LocalizedStringKey("addReview.subTitle"))
+                Text("addReview.subTitle".localized())
                     .font(Fonts.detailsTitle)
                 HStack {
                     Spacer()
                     VStack (spacing: 72.0){
                         StarRatingView(rating: $viewModel.selectedRating)
                         StyledButton(style: .filled, action: .simple, title: "addReview.buttonTitle")
-                            .onTapGesture {
-                                viewModel.ratingBtnSubject.send()
-                            }
                     }
                     Spacer()
                 }

@@ -13,7 +13,7 @@ struct MovieCell: View {
     
     var body: some View {
         NavigationLink(destination: DetailView(mediaItem: movie)){
-            if(movie.id == 0){
+            if(movie.id >= 0){
                 VStack(alignment: .leading, spacing: LayoutConst.smallPadding){
                     ZStack(alignment: .topLeading){
                         HStack(alignment: .center){
@@ -69,7 +69,9 @@ struct MovieCell: View {
             }
             else{
                 Rectangle()
+                    .fill(Color.gray.opacity(0.3))
                     .frame(width: 200, height: 100)
+                    .cornerRadius(12)
                     .shimmering()
             }
         }.buttonStyle(.plain)

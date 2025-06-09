@@ -7,6 +7,24 @@
 
 import Foundation
 
+struct MediaItemPage {
+    let page: Int
+    let totalPages: Int
+    let mediaItems: [MediaItem]
+    
+    init(dto: MoviePageResponse) {
+        self.page = dto.page
+        self.totalPages = dto.totalPages
+        self.mediaItems = dto.results.map(MediaItem.init(dto:))
+    }
+    
+    init(dto: TVPageResponse) {
+        self.page = dto.page
+        self.totalPages = dto.totalPages
+        self.mediaItems = dto.results.map(MediaItem.init(dto:))
+    }
+}
+
 struct MediaItem: Identifiable {
     let id: Int
     let title: String
@@ -15,6 +33,18 @@ struct MediaItem: Identifiable {
     let imageUrl: URL?
     let rating: Double
     let voteCount: Int
+    
+    static let placeholder = MediaItem(id: -1, title: "", year: "", duration: "", imageUrl: nil, rating: 0.0, voteCount: 0)
+    
+    init(id: Int) {
+        self.id = id
+        self.title = "-1"
+        self.year = "-1"
+        self.duration = "-1"
+        self.imageUrl = nil
+        self.rating = -1
+        self.voteCount = -1
+    }
     
     init(id: Int, title: String, year: String, duration: String, imageUrl: URL?, rating: Double, voteCount: Int) {
         self.id = id

@@ -3,6 +3,7 @@ import InjectPropertyWrapper
 
 struct GenreSectionView: View {
     @StateObject private var viewModel = GenreSectionViewModelImpl()
+    @StateObject private var movieListViewModel = MovieListViewModel()
     @State private var expandedGenreID: Int?
 
     var body: some View {
@@ -65,6 +66,13 @@ struct GenreSectionView: View {
             viewModel.loadHighlightedMovie()
             viewModel.loadGenres()
             viewModel.genresAppeared()
+        }
+        .refreshable{
+            await MainActor.run {
+                print("REFresh")
+                expandedGenreID = 0
+                movieListViewModel.refreshSubject.send(())
+            }
         }
     }
 }

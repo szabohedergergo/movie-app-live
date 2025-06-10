@@ -23,6 +23,7 @@ struct HorizontalMoviesPreviewView: View {
         }
         .frame(height: expectedCellHeight)
         .onAppear {
+            print("send2222")
             movieListViewModel.genreIdSubject.send(genreID)
         }
     }

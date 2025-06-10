@@ -20,26 +20,60 @@ struct ExpandedMoviesGridView: View {
     let rowSpacing: CGFloat = 16
 
     var body: some View {
-        LazyVGrid(columns: columns, alignment: .center, spacing: rowSpacing) {
-//            ForEach(movieListViewModel.movies) { movie in
-//                MovieCell(movie: movie)
-//                    //width
-//            }
-            
-            ForEach(movieListViewModel.movies.indices, id: \.self) {index in
-                let movie = movieListViewModel.movies[index]
+        ScrollView {
+            LazyVGrid(columns: columns, alignment: .center, spacing: rowSpacing) {
+                ForEach(movieListViewModel.movies.indices, id: \.self) {index in
+                    let movie = movieListViewModel.movies[index]
+                    
+                    MovieCell(movie: movie)
+//                        .onAppear{
+//                            if index == movieListViewModel.movies.count - 1
+//                                && !movieListViewModel.isLoading{
+//                                print("REACHEDBOTTOM: movies[\(index)] out of \(movieListViewModel.movies.count)")
+//                                movieListViewModel.reachedBottomSubject.send(())
+//                            }
+//                        }
+                }
                 
-                MovieCell(movie: movie)
-                    .onAppear{
-                        if index == movieListViewModel.movies.count - 1 {
-                            movieListViewModel.reachedBottomSubject.send()
-                        }
-                    }
+                if movieListViewModel.showPaginationLoading {
+                    ProgressView()
+                        .padding()
+                }
+                
+                Text("Yo").onAppear{
+                    print("ggiga appear")
+                }
+
+                
+            }
+            .onAppear {
+                if movieListViewModel.movies.isEmpty {
+                    print("SEND=========")
+                    movieListViewModel.genreIdSubject.send(genreID) //
+                    //movieListViewModel.refreshMovies(genreId: genreID)
+                }
+                else{
+                    print("yo")
+                }
+            }
+            .padding(.horizontal)
+        }
+        .refreshable {
+            await MainActor.run{
+                movieListViewModel.refreshMovies(genreId: genreID)
             }
         }
+        
         // GenreSectionView: görgetés
         .onAppear {
-            movieListViewModel.genreIdSubject.send(genreID) //
+            if movieListViewModel.movies.isEmpty {
+                print("SEND=========")
+                //movieListViewModel.genreIdSubject.send(genreID) //
+                movieListViewModel.refreshMovies(genreId: genreID)
+            }
+            else{
+                print("yo")
+            }
         }
     }
 }

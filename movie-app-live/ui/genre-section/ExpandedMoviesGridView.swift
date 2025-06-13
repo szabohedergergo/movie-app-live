@@ -34,11 +34,7 @@ struct ExpandedMoviesGridView: View {
 //                            }
 //                        }
                 }
-                
-                if movieListViewModel.showPaginationLoading {
-                    ProgressView()
-                        .padding()
-                }
+            
                 
                 Text("Yo").onAppear{
                     print("ggiga appear")
@@ -58,18 +54,13 @@ struct ExpandedMoviesGridView: View {
             }
             .padding(.horizontal)
         }
-        .refreshable {
-            await MainActor.run{
-                movieListViewModel.refreshMovies(genreId: genreID)
-            }
-        }
         
         // GenreSectionView: görgetés
         .onAppear {
             if movieListViewModel.movies.isEmpty {
                 print("SEND=========")
                 //movieListViewModel.genreIdSubject.send(genreID) //
-                movieListViewModel.refreshMovies(genreId: genreID)
+                //movieListViewModel.refreshMovies(genreId: genreID)
             }
             else{
                 print("yo")

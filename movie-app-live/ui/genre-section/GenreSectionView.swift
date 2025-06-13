@@ -26,35 +26,42 @@ struct GenreSectionView: View {
 
                     // 2. Műfajok listája
                     ForEach(viewModel.genres) { genre in //
-                        VStack(alignment: .leading, spacing: 0) {
-                            GenreSectionCell(
-                                genre: genre, //
-                                isExpanded: self.expandedGenreID == genre.id,
-                                onToggle: {
-                                    withAnimation(.easeInOut(duration: 0.3)) {
-                                        if self.expandedGenreID == genre.id {
-                                            self.expandedGenreID = nil
-                                        } else {
-                                            self.expandedGenreID = genre.id
+                        ZStack{
+                            NavigationLink(destination: MovieListView(genre: genre)) {
+                                EmptyView()
+                            }
+                            .opacity(0)
+                            
+                            VStack(alignment: .leading, spacing: 0) {
+                                GenreSectionCell(
+                                    genre: genre, //
+                                    isExpanded: self.expandedGenreID == genre.id,
+                                    onToggle: {
+                                        withAnimation(.easeInOut(duration: 0.3)) {
+                                            if self.expandedGenreID == genre.id {
+                                                self.expandedGenreID = nil
+                                            } else {
+                                                self.expandedGenreID = genre.id
+                                            }
                                         }
                                     }
+                                )
+                                .padding(.horizontal)
+                                
+                                // Filmek megjelenítése
+                                if self.expandedGenreID == genre.id {
+                                    // kinyitott állapot
+                                    ExpandedMoviesGridView(genreID: genre.id)
+                                        .padding(.horizontal)
+                                        .padding(.top, 8)
+                                } else {
+                                    // Alap állapot: 3 film horizontálisan
+                                    HorizontalMoviesPreviewView(genreID: genre.id, maxMoviesToShow: 3)
+                                        .padding(.top, 4)
                                 }
-                            )
-                            .padding(.horizontal)
-
-                            // Filmek megjelenítése
-                            if self.expandedGenreID == genre.id {
-                                // kinyitott állapot
-                                ExpandedMoviesGridView(genreID: genre.id)
-                                    .padding(.horizontal)
-                                    .padding(.top, 8)
-                            } else {
-                                // Alap állapot: 3 film horizontálisan
-                                HorizontalMoviesPreviewView(genreID: genre.id, maxMoviesToShow: 3)
-                                    .padding(.top, 4)
                             }
+                            .padding(.bottom, 16)
                         }
-                        .padding(.bottom, 16)
                     }
                 }
             }

@@ -1,8 +1,8 @@
 //
-//  MovieListViewq.swift
+//  MovieListView.swift
 //  movie-app-live
 //
-//  Created by Gergo Szabo on 2025. 04. 28..
+//  Created by Zsolt Pete on 2025. 04. 15..
 //
 
 import SwiftUI

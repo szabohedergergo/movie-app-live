@@ -21,10 +21,13 @@ struct GenreSectionCell: View {
     
     var body: some View {
         HStack{
-            Text(genre.name)
-                .font(Fonts.title)
-                .foregroundStyle(.primary)
-                .accessibilityLabel(genre.name)
+            NavigationLink(destination: MovieListView(genre: genre)){
+                Text(genre.name)
+                    .font(Fonts.title)
+                    .foregroundStyle(.primary)
+                    .accessibilityLabel(genre.name)
+            }
+            .buttonStyle(PlainButtonStyle())
             Spacer()
             Image(.rightArrow)
                 .rotationEffect(.degrees(isExpanded ? 90 : 0)) //genresectionview anim

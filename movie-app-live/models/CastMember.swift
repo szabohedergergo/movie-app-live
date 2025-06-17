@@ -35,5 +35,7 @@ extension CastMember: ParticipantItemProtocol {
     var imageUrl: URL? {
         castImageURL
     }
+    
+    // EZ HIÁNYZOTT: A type property hozzáadása
+    var type: ParticipantType { .person }
 }
-

@@ -1,5 +1,4 @@
-//
-//  DetailViewModel.swift
+// DetailViewModel.swift
 //  movie-app-live
 //
 //  Created by Gergo Szabo on 2025. 05. 10..
@@ -14,7 +13,7 @@ protocol DetailViewModelProtocol: ObservableObject {
 
 class DetailViewModel: DetailViewModelProtocol, ErrorPresentable {
     @Published var mediaItemDetail: MediaItemDetail = MediaItemDetail()
-    @Published var credits: [CastMember] = []
+    @Published var credits: [CastMember] = [] // Ezek már CastMember típusúak
     @Published var isFavorite: Bool = false
     @Published var alertModel: AlertModel? = nil
     
@@ -76,9 +75,9 @@ class DetailViewModel: DetailViewModelProtocol, ErrorPresentable {
                 let request = EditFavoriteRequest(movieId: self.mediaItemDetail.id, isFavorite: isFavorite)
                 return service.editFavoriteMovie(req: request)
                     .map { result in
-                    (result, isFavorite)
-                }
-                .eraseToAnyPublisher()
+                        (result, isFavorite)
+                    }
+                    .eraseToAnyPublisher()
             }
             .sink { [weak self] completion in
                 if case let .failure(error) = completion {

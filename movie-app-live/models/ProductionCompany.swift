@@ -38,4 +38,7 @@ struct ProductionCompany: Decodable, Identifiable {
     }
 }
 
-extension ProductionCompany: ParticipantItemProtocol {}
+extension ProductionCompany: ParticipantItemProtocol {
+    // EZ HIÁNYZOTT: A type property hozzáadása
+    var type: ParticipantType { .company }
+}

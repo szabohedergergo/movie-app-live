@@ -1,5 +1,4 @@
-//
-//  DetailView.swift
+// DetailView.swift
 //  movie-app-live
 //
 //  Created by Gergo Szabo on 2025. 05. 11..
@@ -60,20 +59,21 @@ struct DetailView: View {
                         .font(Fonts.paragraph)
                         .lineLimit(nil)
                 }
-                ParticipantScrollView(title: "detail.publishers", participants: mediaItemDetail.productionCompanies)
                 
-                ParticipantScrollView(title: "detail.cast", participants: credits)
+                // Itt van a módosítás a productionCompanies és credits ParticipantScrollView-jában
+                ParticipantScrollView(title: "detail.publishers", participants: mediaItemDetail.productionCompanies, navigationType: .company)
+                
+                ParticipantScrollView(title: "detail.cast", participants: credits, navigationType: .castMember)
             }
             .padding(.horizontal, LayoutConst.maxPadding)
             .padding(.bottom, LayoutConst.largePadding)
-
+            
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
                     viewModel.favoriteButtonTapped.send(())
                 }) {
-                    //Image(viewModel.isFavorite ? .favorite : .nonfavorite)
                     Image(viewModel.isFavorite ? .star : .star)
                         .resizable()
                         .frame(height: 30.0)

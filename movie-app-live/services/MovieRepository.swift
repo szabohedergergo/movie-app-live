@@ -18,12 +18,14 @@ protocol MovieRepository {
     func fetchMovies(req: FetchMediaListRequest) -> AnyPublisher<MediaItemPage, MovieError>
     func fetchTV(req: FetchMediaListRequest) -> AnyPublisher<MediaItemPage, MovieError>
     func fetchFavoriteMovies(req: FetchFavoriteMovieRequest, fromLocal: Bool) -> AnyPublisher<[MediaItem], MovieError>
-    func editFavoriteMovie(req: EditFavoriteRequest) -> AnyPublisher<ModifyMediaResult, MovieError>
+    func editFavoriteMovie(req: EditFavoriteRequest) -> AnyPublisher<EditFavoriteResult, MovieError>
     func fetchMovieDetail(req: FetchDetailRequest) -> AnyPublisher<MediaItemDetail, MovieError>
     func fetchMovieCredits(req: FetchMovieCreditsRequest) -> AnyPublisher<[CastMember], MovieError>
+    func fetchMovieReviews(req: FetchMovieReviewsRequest) -> AnyPublisher<[MovieReview], MovieError>
     func addReview(req: AddReviewRequest) -> AnyPublisher<ModifyMediaResult, MovieError>
     func fetchCastMemberDetail(req: FetchCastMemberDetailRequest) -> AnyPublisher<CastDetail, MovieError>
     func fetchCompanyDetail(req: FetchCompanyDetailRequest) -> AnyPublisher<CastDetail, MovieError>
+    func fetchSimilarMovies(req: FetchSimilarMoviesRequest) -> AnyPublisher<MediaItemPage, MovieError>
 }
 
 class MovieRepositoryImpl: MovieRepository {
@@ -162,12 +164,35 @@ class MovieRepositoryImpl: MovieRepository {
             .eraseToAnyPublisher()
     }
     
-    func editFavoriteMovie(req: EditFavoriteRequest) -> AnyPublisher<ModifyMediaResult, MovieError> {
+    func fetchMovieReviews(req: FetchMovieReviewsRequest) -> AnyPublisher<[MovieReview], MovieError> {
+        return networkMonitor.isConnected
+            .flatMap { isConnected -> AnyPublisher<[MovieReview], MovieError> in
+                if isConnected {
+                    return self.requestAndTransform(
+                        target: MultiTarget(MoviesApi.fetchMovieReviews(req: req)),
+                        decodeTo: MovieReviewsResponse.self,
+                        transform: { dto in
+                            dto.results.map(MovieReview.init(dto:))
+                        }
+                    )
+                    .handleEvents(receiveOutput: { [weak self]reviews in
+                        // TODO: Save reviews to store
+                    })
+                    .eraseToAnyPublisher()
+                } else {
+                    // TODO: Fetch reviews from store
+                    return Fail(error: MovieError.unexpectedError).eraseToAnyPublisher()
+                }
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func editFavoriteMovie(req: EditFavoriteRequest) -> AnyPublisher<EditFavoriteResult, MovieError> {
         requestAndTransform(
             target: MultiTarget(MoviesApi.editFavoriteMovie(req: req)),
-            decodeTo: ModifyMediaResponse.self,
+            decodeTo: EditFavoriteResponse.self,
             transform: { response in
-                ModifyMediaResult(dto: response)
+                EditFavoriteResult(dto: response)
             }
         )
     }
@@ -195,6 +220,14 @@ class MovieRepositoryImpl: MovieRepository {
             target: MultiTarget(MoviesApi.fetchCompanyDetail(req: req)),
             decodeTo: CompanyDetailResponse.self,
             transform: {  CastDetail(dto: $0) }
+        )
+    }
+    
+    func fetchSimilarMovies(req: FetchSimilarMoviesRequest) -> AnyPublisher<MediaItemPage, MovieError> {
+        requestAndTransform(
+            target: MultiTarget(MoviesApi.fetchSimilarMovies(req: req)),
+            decodeTo: MoviePageResponse.self,
+            transform: {  MediaItemPage(dto: $0) }
         )
     }
     

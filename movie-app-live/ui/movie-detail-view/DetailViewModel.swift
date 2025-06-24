@@ -16,17 +16,23 @@ class DetailViewModel: DetailViewModelProtocol, ErrorPresentable {
     @Published var credits: [CastMember] = [] // Ezek már CastMember típusúak
     @Published var isFavorite: Bool = false
     @Published var alertModel: AlertModel? = nil
+    @Published var similarMovies: [MediaItem] = []
+    @Published var isLoadingSimilarMovies: Bool = false
+    @Published var reviews: [MovieReview] = []
     
     let mediaItemIdSubject = PassthroughSubject<Int, Never>()
     let favoriteButtonTapped = PassthroughSubject<Void, Never>()
+    let fetchMoreSimilarMovies = PassthroughSubject<Void, Never>()
     
     @Inject
-    private var service: MovieRepository
+    private var repository: MovieRepository
     
     @Inject
     private var mediaItemStore: MediaItemStoreProtocol
     
     private var cancellables = Set<AnyCancellable>()
+    private var currentPage: Int = 1
+    private var totalPages: Int = 1
     
     init() {
         
@@ -38,7 +44,7 @@ class DetailViewModel: DetailViewModelProtocol, ErrorPresentable {
                     preconditionFailure("There is no self")
                 }
                 let request = FetchDetailRequest(mediaId: mediaItemId)
-                return self.service.fetchMovieDetail(req: request)
+                return self.repository.fetchMovieDetail(req: request)
             }
         
         let credits = mediaItemIdSubject
@@ -47,37 +53,47 @@ class DetailViewModel: DetailViewModelProtocol, ErrorPresentable {
                     preconditionFailure("There is no self")
                 }
                 let request = FetchMovieCreditsRequest(mediaId: mediaItemId)
-                return self.service.fetchMovieCredits(req: request)
+                return self.repository.fetchMovieCredits(req: request)
             }
         
-        Publishers.CombineLatest(details, credits)
+        let reviews = mediaItemIdSubject
+            .flatMap { [weak self]mediaItemId in
+                guard let self = self else {
+                    preconditionFailure("There is no self")
+                }
+                let request = FetchMovieReviewsRequest(mediaId: mediaItemId)
+                return self.repository.fetchMovieReviews(req: request)
+            }
+        
+        Publishers.CombineLatest3(details, credits, reviews)
             .receive(on: RunLoop.main)
             .sink { [weak self] completion in
                 if case let .failure(error) = completion {
                     self?.alertModel = self?.toAlertModel(error)
                 }
-            } receiveValue: { [weak self] details, credits in
+            } receiveValue: { [weak self] details, credits, reviews in
                 guard let self = self else {
                     preconditionFailure("There is no self")
                 }
                 self.mediaItemDetail = details
                 self.credits = credits
+                self.reviews = reviews.prefix(4).map { $0 }
                 self.isFavorite = self.mediaItemStore.isMediaItemStored(withId: details.id)
             }
             .store(in: &cancellables)
         
         favoriteButtonTapped
-            .flatMap { [weak self] _ -> AnyPublisher<(ModifyMediaResult, Bool), MovieError> in
+            .flatMap { [weak self] _ -> AnyPublisher<(EditFavoriteResult, Bool), MovieError> in
                 guard let self = self else {
                     preconditionFailure("There is no self")
                 }
                 let isFavorite = !self.isFavorite
                 let request = EditFavoriteRequest(movieId: self.mediaItemDetail.id, isFavorite: isFavorite)
-                return service.editFavoriteMovie(req: request)
+                return repository.editFavoriteMovie(req: request)
                     .map { result in
-                        (result, isFavorite)
-                    }
-                    .eraseToAnyPublisher()
+                    (result, isFavorite)
+                }
+                .eraseToAnyPublisher()
             }
             .sink { [weak self] completion in
                 if case let .failure(error) = completion {
@@ -95,6 +111,38 @@ class DetailViewModel: DetailViewModelProtocol, ErrorPresentable {
                         self.mediaItemStore.deleteMediaItem(withId: self.mediaItemDetail.id)
                     }
                 }
+            }
+            .store(in: &cancellables)
+        
+        fetchMoreSimilarMovies
+            .filter{ [weak self] _ in
+                guard let self = self else { return false }
+                return self.currentPage < self.totalPages && !self.isLoadingSimilarMovies
+            }
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.currentPage += 1
+                self.fetchSimilarMovies(mediaId: self.mediaItemDetail.id, page: self.currentPage)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func fetchSimilarMovies(mediaId: Int, page: Int = 1){
+        isLoadingSimilarMovies = true
+        let request = FetchSimilarMoviesRequest(mediaId: mediaId, page: page)
+        repository.fetchSimilarMovies(req: request)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] completion in
+                guard let self = self else { return }
+                self.isLoadingSimilarMovies = false
+                if case let .failure(error) = completion {
+                    self.alertModel = self.toAlertModel(error)
+                }
+            }
+            receiveValue: { [weak self] mediaItemPage in
+                guard let self = self else { return }
+                self.similarMovies.append(contentsOf: mediaItemPage.mediaItems)
+                self.totalPages = mediaItemPage.totalPages
             }
             .store(in: &cancellables)
     }

@@ -5,20 +5,22 @@
 //
 
 import SwiftUI
+import Lottie
 
 struct DetailView: View {
     @StateObject private var viewModel = DetailViewModel()
     let mediaItem: MediaItem
     @Environment(\.dismiss) private var dismiss: DismissAction
     
+    var mediaItemDetail: MediaItemDetail {
+        viewModel.mediaItemDetail
+    }
+    
+    var credits: [CastMember] {
+        viewModel.credits
+    }
+    
     var body: some View {
-        var mediaItemDetail: MediaItemDetail {
-            viewModel.mediaItemDetail
-        }
-        
-        var credits: [CastMember] {
-            viewModel.credits
-        }
         
         return ScrollView {
             VStack(alignment: .leading, spacing: LayoutConst.largePadding) {
@@ -60,10 +62,37 @@ struct DetailView: View {
                         .lineLimit(nil)
                 }
                 
-                // Itt van a módosítás a productionCompanies és credits ParticipantScrollView-jában
                 ParticipantScrollView(title: "detail.publishers", participants: mediaItemDetail.productionCompanies, navigationType: .company)
                 
                 ParticipantScrollView(title: "detail.cast", participants: credits, navigationType: .castMember)
+                
+                if !viewModel.similarMovies.isEmpty && viewModel.isLoadingSimilarMovies {
+                    VStack(alignment: .leading, spacing: LayoutConst.largePadding){
+                        Text(LocalizedStringKey("detail.similar_movies"))
+                            .font(Fonts.overviewText)
+                        
+                        ScrollView(.horizontal, showsIndicators: false){
+                            HStack(spacing: LayoutConst.maxPadding){
+                                ForEach(viewModel.similarMovies) { movie in
+                                    MovieCell(movie: movie)
+                                        .onAppear{
+                                            if let lastMovie = viewModel.similarMovies.last, movie.id == lastMovie.id {
+                                                viewModel.fetchMoreSimilarMovies.send(())
+                                            }
+                                        }
+                                }
+                                
+                                if viewModel.isLoadingSimilarMovies {
+                                    LottieView(animation: .named("movies"))
+                                        .playing(loopMode: .loop)
+                                        .frame(width: 100, height: 100)
+                                        .background(Color.clear)
+                                        .transition(.opacity)
+                                }
+                            }
+                        }
+                    }
+                }
             }
             .padding(.horizontal, LayoutConst.maxPadding)
             .padding(.bottom, LayoutConst.largePadding)

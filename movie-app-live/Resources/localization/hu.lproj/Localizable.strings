@@ -21,6 +21,7 @@
 "detail.overview" = "Tartalom";
 "detail.publishers" = "Kiadók és cégek";
 "detail.cast" = "Szereplők";
+"detail.similar_movies" = "Hasonló filmek";
 "available" = "Elérhető";
 "unavailable" = "Nem elérhető";
 "noInternet" = "Nincs internetkapcsolat";

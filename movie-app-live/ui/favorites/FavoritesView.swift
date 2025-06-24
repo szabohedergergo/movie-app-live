@@ -27,6 +27,7 @@ struct FavoritesView: View {
                 .padding(.top, LayoutConst.normalPadding)
             }
             .navigationTitle("favoriteMovies.title")
+            .accessibilityLabel(AccessibilityLabels.favoritesScrollView)
         }
         .showAlert(model: $viewModel.alertModel)
         .onAppear {

@@ -39,3 +39,8 @@ extension CastMember: ParticipantItemProtocol {
     // EZ HIÁNYZOTT: A type property hozzáadása
     var type: ParticipantType { .person }
 }
+
+enum ParticipantType {
+    case person
+    case company
+}

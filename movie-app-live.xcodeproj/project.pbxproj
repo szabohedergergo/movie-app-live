@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		2C26EC1B2DEAF72C007F677A /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2C26EC1A2DEAF72C007F677A /* Lottie */; };
 		2C26ED282DEB1923007F677A /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 2C26ED272DEB1923007F677A /* Shimmer */; };
+		2C6C50DF2E01793F00E1FCF9 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6C50DE2E01793F00E1FCF9 /* FirebaseAnalytics */; };
+		2C6C50E12E01793F00E1FCF9 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6C50E02E01793F00E1FCF9 /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		2C6C50E32E01793F00E1FCF9 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6C50E22E01793F00E1FCF9 /* FirebaseCrashlytics */; };
 		2C93F8DA2DD8817300C532B5 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2C93F8D92DD8817300C532B5 /* RealmSwift */; };
 		2C93F8E32DD8984000C532B5 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2C93F8E22DD8984000C532B5 /* SDWebImageSwiftUI */; };
 		2C93F8E82DD89C4E00C532B5 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 2C93F8E72DD89C4E00C532B5 /* Reachability */; };
@@ -40,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		2C6121382DA52CE900F554F0 /* movie-app-live.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "movie-app-live.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C6C51F92E01952800E1FCF9 /* movie-app-live PROD.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "movie-app-live PROD.xctestplan"; sourceTree = "<group>"; };
 		2CC0A06D2DC043F200E93B9D /* movie-app-liveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "movie-app-liveTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CC0A07E2DC0440500E93B9D /* movie-app-liveUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "movie-app-liveUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -52,6 +56,13 @@
 			);
 			target = 2C6121372DA52CE900F554F0 /* movie-app-live */;
 		};
+		2C6C53412E01A18D00E1FCF9 /* Exceptions for "movie-app-live" folder in "movie-app-liveUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				helpers/AccessibilityLabels.swift,
+			);
+			target = 2CC0A07D2DC0440500E93B9D /* movie-app-liveUITests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -59,6 +70,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				2C5F95DA2DA53F2C00C5A89E /* Exceptions for "movie-app-live" folder in "movie-app-live" target */,
+				2C6C53412E01A18D00E1FCF9 /* Exceptions for "movie-app-live" folder in "movie-app-liveUITests" target */,
 			);
 			path = "movie-app-live";
 			sourceTree = "<group>";
@@ -84,10 +96,13 @@
 				2C93F8E82DD89C4E00C532B5 /* Reachability in Frameworks */,
 				2CCFC2D42DBFBB5A00F8CABE /* InjectPropertyWrapper in Frameworks */,
 				2C26ED282DEB1923007F677A /* Shimmer in Frameworks */,
+				2C6C50E12E01793F00E1FCF9 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				2CF91EF52DAA653800B29193 /* Moya in Frameworks */,
 				2CF91EF32DAA653800B29193 /* CombineMoya in Frameworks */,
 				2C93F8DA2DD8817300C532B5 /* RealmSwift in Frameworks */,
 				2CCFC2D12DBFBB5000F8CABE /* Swinject in Frameworks */,
+				2C6C50E32E01793F00E1FCF9 /* FirebaseCrashlytics in Frameworks */,
+				2C6C50DF2E01793F00E1FCF9 /* FirebaseAnalytics in Frameworks */,
 				2C26EC1B2DEAF72C007F677A /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -115,6 +130,7 @@
 		2C61212F2DA52CE900F554F0 = {
 			isa = PBXGroup;
 			children = (
+				2C6C51F92E01952800E1FCF9 /* movie-app-live PROD.xctestplan */,
 				2C61213A2DA52CE900F554F0 /* movie-app-live */,
 				2CC0A06E2DC043F200E93B9D /* movie-app-liveTests */,
 				2CC0A07F2DC0440500E93B9D /* movie-app-liveUITests */,
@@ -161,6 +177,9 @@
 				2C93F8E72DD89C4E00C532B5 /* Reachability */,
 				2C26EC1A2DEAF72C007F677A /* Lottie */,
 				2C26ED272DEB1923007F677A /* Shimmer */,
+				2C6C50DE2E01793F00E1FCF9 /* FirebaseAnalytics */,
+				2C6C50E02E01793F00E1FCF9 /* FirebaseAnalyticsWithoutAdIdSupport */,
+				2C6C50E22E01793F00E1FCF9 /* FirebaseCrashlytics */,
 			);
 			productName = "movie-app-live";
 			productReference = 2C6121382DA52CE900F554F0 /* movie-app-live.app */;
@@ -262,6 +281,7 @@
 				2C93F8E62DD89C4E00C532B5 /* XCRemoteSwiftPackageReference "Reachability" */,
 				2C26EC192DEAF72C007F677A /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				2C26ED262DEB1923007F677A /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */,
+				2C6C50DD2E01793F00E1FCF9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2C6121392DA52CE900F554F0 /* Products */;
@@ -423,7 +443,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "eu.test.movie-app-live";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = ENV_PROD;
@@ -513,7 +533,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "eu.test.movie-app-live";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = ENV_PROD;
@@ -665,7 +685,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "eu.test.movie-app-live.dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = ENV_DEV;
@@ -698,7 +718,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "eu.test.movie-app-live.dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = ENV_DEV;
@@ -1634,7 +1654,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "eu.test.movie-app-live.tvlist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = ENV_TVLIST;
@@ -1723,7 +1743,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "eu.test.movie-app-live.tvlist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = ENV_TVLIST;
@@ -1805,6 +1825,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.5.1;
+			};
+		};
+		2C6C50DD2E01793F00E1FCF9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.14.0;
 			};
 		};
 		2C93F8D82DD8817300C532B5 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
@@ -1891,6 +1919,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2C26ED262DEB1923007F677A /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */;
 			productName = Shimmer;
+		};
+		2C6C50DE2E01793F00E1FCF9 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C6C50DD2E01793F00E1FCF9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		2C6C50E02E01793F00E1FCF9 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C6C50DD2E01793F00E1FCF9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		2C6C50E22E01793F00E1FCF9 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C6C50DD2E01793F00E1FCF9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 		2C93F8D92DD8817300C532B5 /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;

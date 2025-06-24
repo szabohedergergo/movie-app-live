@@ -1,5 +1,6 @@
 import SwiftUI
 import InjectPropertyWrapper
+import FirebaseCrashlytics // Fontos: Importáld a Crashlytics-et!
 
 struct GenreSectionView: View {
     @StateObject private var viewModel = GenreSectionViewModelImpl()
@@ -11,6 +12,13 @@ struct GenreSectionView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
+                    Button("Teszteld a Crash-t! 💥") {
+                        // Ez a sor fogja szándékosan összeomlasztani az alkalmazást!
+                        // CSAK TESZTELÉSRE HASZNÁLD, ÉS NE HAGYD BENNE ÉLES VERZIÓBAN!
+                        Crashlytics.crashlytics().record(error: MovieError.noInternetError) // Opcionális: Hozzáadhatsz egyedi kulcsot a crash-hez
+                        fatalError("Ez egy teszt crash, amit a gomb váltott ki! 😱")
+                    }
+                    
                     // 1. Kiemelt film
                     if let movie = viewModel.highlightedMovie {
                         HighlightedMovieView(movie: movie)
@@ -66,7 +74,7 @@ struct GenreSectionView: View {
                 }
             }
             .navigationTitle(title)
-            .accessibilityLabel("testCollectionView")
+            .accessibilityLabel(AccessibilityLabels.genreSectionCollectionView)
         }
         .showAlert(model: $viewModel.alertModel)
         .onAppear {

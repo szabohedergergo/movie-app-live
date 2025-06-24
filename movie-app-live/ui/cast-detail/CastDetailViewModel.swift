@@ -41,11 +41,12 @@ class CastDetailViewModel: ObservableObject, ErrorPresentable {
                 guard let self = self else {
                     return Fail(error: MovieError.unexpectedError).eraseToAnyPublisher()
                 }
-                let request = FetchCastMemberDetailRequest(castMemberId: castType.id)
                 switch castType {
                 case .castMember:
+                    let request = FetchCastMemberDetailRequest(castMemberId: castType.id)
                     return self.repository.fetchCastMemberDetail(req: request)
                 case .company:
+                    let request = FetchCompanyDetailRequest(companyId: castType.id)
                     return self.repository.fetchCompanyDetail(req: request)
                 }
                 
@@ -76,3 +77,4 @@ class CastDetailViewModel: ObservableObject, ErrorPresentable {
         return Int(rating + 1.0)
     }
 }
+

@@ -25,7 +25,7 @@ struct ExpandedMoviesGridView: View {
                 ForEach(movieListViewModel.movies.indices, id: \.self) {index in
                     let movie = movieListViewModel.movies[index]
                     
-                    MovieCell(movie: movie)
+                    MediaItemCell(movie: movie)
 //                        .onAppear{
 //                            if index == movieListViewModel.movies.count - 1
 //                                && !movieListViewModel.isLoading{

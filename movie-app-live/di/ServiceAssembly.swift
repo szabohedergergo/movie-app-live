@@ -34,9 +34,9 @@ class ServiceAssembly: Assembly {
                 ])
         }.inObjectScope(.container)
         
-        container.register(MoviesServiceProtocol.self) { _ in //tedd bele a protocolba ha erre hivatkozok a jövőben
+        container.register(MovieRepository.self) { _ in //tedd bele a protocolba ha erre hivatkozok a jövőben
             //return MockMoviesService() //MovieService() //mindig ugyanazt adja vissza a singleton miatt
-            return MoviesService()
+            return MovieRepositoryImpl()
             //ha azt akarjuk h mindig egy uj object jöjjön létre: .inObjectScope(.transient)
         }.inObjectScope(.container) //ha containerrel hivunk le, akkor az egész projekten belül csak 1 lehet
         //singleton: olyan osztály, melyből az egész projekten belül csak 1 lehet

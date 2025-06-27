@@ -15,7 +15,7 @@ struct HorizontalMoviesPreviewView: View {
             LazyHStack(spacing: cellSpacing) {
                 ForEach(movieListViewModel.movies.prefix(maxMoviesToShow)) { movie in
                     print("added: \(movie.id)")
-                    return MovieCell(movie: movie)
+                    return MediaItemCell(movie: movie)
                         .frame(width: movieCellWidth)
                 }
             }

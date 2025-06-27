@@ -30,11 +30,11 @@ struct DetailView: View {
                     .cornerRadius(30)
                 
                 HStack(spacing: 12.0) {
-                    MovieLabel(type: .rating(mediaItemDetail.rating))
-                    MovieLabel(type: .voteCount(mediaItemDetail.voteCount))
-                    MovieLabel(type: .popularity(mediaItemDetail.popularity))
+                    MediaItemLabel(type: .rating(mediaItemDetail.rating))
+                    MediaItemLabel(type: .voteCount(mediaItemDetail.voteCount))
+                    MediaItemLabel(type: .popularity(mediaItemDetail.popularity))
                     Spacer()
-                    MovieLabel(type: .adult(mediaItemDetail.adult))
+                    MediaItemLabel(type: .adult(mediaItemDetail.adult))
                 }
                 
                 Text(viewModel.mediaItemDetail.genreList)
@@ -66,18 +66,20 @@ struct DetailView: View {
                 
                 ParticipantScrollView(title: "detail.cast", participants: credits, navigationType: .castMember)
                 
-                if !viewModel.similarMovies.isEmpty && viewModel.isLoadingSimilarMovies {
+                if !viewModel.similarMovies.isEmpty || viewModel.isLoadingSimilarMovies {
                     VStack(alignment: .leading, spacing: LayoutConst.largePadding){
                         Text(LocalizedStringKey("detail.similar_movies"))
                             .font(Fonts.overviewText)
                         
                         ScrollView(.horizontal, showsIndicators: false){
-                            HStack(spacing: LayoutConst.maxPadding){
+                            LazyHStack(spacing: LayoutConst.maxPadding){
                                 ForEach(viewModel.similarMovies) { movie in
-                                    MovieCell(movie: movie)
+                                    MediaItemCell(movie: movie)
+                                        .frame(width: 180)
                                         .onAppear{
                                             if let lastMovie = viewModel.similarMovies.last, movie.id == lastMovie.id {
                                                 viewModel.fetchMoreSimilarMovies.send(())
+                                                print("<<<debug: FETCHMORESIM SENT")
                                             }
                                         }
                                 }

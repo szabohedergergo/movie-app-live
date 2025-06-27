@@ -17,12 +17,14 @@ enum MoviesApi {
     case fetchFavoriteMovies(req: FetchFavoriteMovieRequest)
     case editFavoriteMovie(req: EditFavoriteRequest)
     case fetchMovieDetail(req: FetchDetailRequest)
+    case fetchTVDetail(req: FetchDetailRequest)
     case fetchMovieCredits(req: FetchMovieCreditsRequest)
     case fetchMovieReviews(req: FetchMovieReviewsRequest)
     case addReview(req: AddReviewRequest)
     case fetchCastMemberDetail(req: FetchCastMemberDetailRequest)
     case fetchCompanyDetail(req: FetchCompanyDetailRequest)
     case fetchSimilarMovies(req: FetchSimilarMoviesRequest)
+    case fetchCombinedCredits(req: FetchCombinedCreditsRequest)
    }
 
 extension MoviesApi: TargetType {
@@ -53,6 +55,8 @@ extension MoviesApi: TargetType {
             return "discover/tv"
         case .fetchMovieDetail(req: let req):
             return "movie/\(req.mediaId)"
+        case .fetchTVDetail(req: let req):
+            return "tv/\(req.mediaId)"
         case .fetchMovieCredits(req: let req):
             return "movie/\(req.mediaId)/credits"
         case .fetchMovieReviews(req: let req):
@@ -65,12 +69,14 @@ extension MoviesApi: TargetType {
             return "company/\(req.companyId)"
         case .fetchSimilarMovies(req: let req):
             return "movie/\(req.mediaId)/similar"
+        case .fetchCombinedCredits(req: let req):
+            return "person/\(req.personId)/combined_credits"
         }
     }
     
     var method: Moya.Method {
          switch self {
-         case .fetchGenres, .fetchTVGenres, .fetchMovies, .fetchTV, .searchMovies, .fetchFavoriteMovies, .fetchMovieDetail, .fetchMovieCredits, .fetchMovieReviews, .fetchCastMemberDetail, .fetchCompanyDetail, .fetchSimilarMovies:
+         case .fetchGenres, .fetchTVGenres, .fetchMovies, .fetchTV, .searchMovies, .fetchFavoriteMovies, .fetchMovieDetail, .fetchTVDetail, .fetchMovieCredits, .fetchMovieReviews, .fetchCastMemberDetail, .fetchCompanyDetail, .fetchSimilarMovies, .fetchCombinedCredits:
              return .get
          case .editFavoriteMovie, .addReview:
              return .post
@@ -98,6 +104,8 @@ extension MoviesApi: TargetType {
                 return .requestJSONEncodable(request)
         case .fetchMovieDetail(req: let req):
             return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
+        case .fetchTVDetail(req: let req):
+            return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
         case .fetchMovieCredits(req: let req):
             return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
         case .fetchMovieReviews(req: let req):
@@ -111,6 +119,8 @@ extension MoviesApi: TargetType {
             return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
         case .fetchSimilarMovies(req: let req):
             return .requestParameters(parameters: req.asRequestParams(), encoding: URLEncoding.queryString)
+        case .fetchCombinedCredits(req: let req):
+            return .requestParameters(parameters: req.asReqestParams(), encoding: URLEncoding.queryString)
         }
     }
     
@@ -138,6 +148,8 @@ extension MoviesApi: TargetType {
             ]
         case .fetchMovieDetail(req: let req):
             return ["Authorization": req.accessToken]
+        case .fetchTVDetail(req: let req):
+            return ["Authorization": req.accessToken]
         case .fetchMovieCredits(req: let req):
             return ["Authorization": req.accessToken]
         case .fetchMovieReviews(req: let req):
@@ -152,7 +164,10 @@ extension MoviesApi: TargetType {
         case let .fetchCompanyDetail(req):
             return ["Authorization": req.accessToken]
         case let .fetchSimilarMovies(req):
-            return ["Authorization": req.accessToken]        }
+            return ["Authorization": req.accessToken]
+        case let .fetchCombinedCredits(req):
+            return ["Authorization": req.accessToken]
+        }
     }
     
 }

@@ -47,6 +47,19 @@ class DetailViewModel: DetailViewModelProtocol, ErrorPresentable {
                 return self.repository.fetchMovieDetail(req: request)
             }
         
+        details
+            .sink { [weak self] completion in
+                if case let .failure(error) = completion {
+                    self?.alertModel = self?.toAlertModel(error)
+                }
+            } receiveValue: { mediaItemDetail in
+                self.currentPage = 1
+                self.similarMovies = []
+                self.fetchSimilarMovies(mediaId: mediaItemDetail.id)
+            }
+            .store(in: &cancellables)
+        
+        
         let credits = mediaItemIdSubject
             .flatMap { [weak self]mediaItemId in
                 guard let self = self else {

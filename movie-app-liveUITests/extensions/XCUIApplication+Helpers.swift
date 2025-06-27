@@ -5,6 +5,7 @@
 //  Created by Gergo Szabo on 2025. 06. 17..
 //
 
+
 import XCTest
 
 extension XCUIElement {
@@ -15,11 +16,23 @@ extension XCUIElement {
     var firstChildImage: XCUIElement {
         return self.images.element(boundBy: 0)
     }
+    
+    func indexOfImage(_ index: Int) -> XCUIElement {
+        return self.images.element(boundBy: index)
+    }
 }
 
 extension XCUIApplication {
     func firstCellInCollectionView(withIdentifier id: String) -> XCUIElement {
         return collectionViews[id].cells.element(boundBy: 0)
+    }
+    
+    func firstCellInScrollViewView(withIdentifier id: String) -> XCUIElement {
+        return scrollViews[id].cells.element(boundBy: 0)
+    }
+    
+    func firstScrollViewView(withIdentifier id: String) -> XCUIElement {
+        return scrollViews[id]
     }
 }
 

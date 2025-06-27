@@ -8,7 +8,7 @@
 import SwiftUI
 import InjectPropertyWrapper
 
-struct MovieListView: View {
+struct MediaItemView: View {
     @StateObject private var viewModel = MovieListViewModel()
     let genre: Genre
     
@@ -22,7 +22,7 @@ struct MovieListView: View {
                 ForEach(viewModel.movies.indices, id: \.self) { index in
                     let movie = viewModel.movies[index]
                     NavigationLink(destination: DetailView(mediaItem: movie)) {
-                        MovieCell(movie: movie)
+                        MediaItemCell(movie: movie)
                             .onAppear {
                                 if index == viewModel.movies.count - 1 {
                                     viewModel.reachedBottomSubject.send()
@@ -49,5 +49,5 @@ struct MovieListView: View {
 }
 
 #Preview {
-    MovieListView(genre: Genre(id: 28, name: "Action") )
+    MediaItemView(genre: Genre(id: 28, name: "Action") )
 }

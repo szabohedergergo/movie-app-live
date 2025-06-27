@@ -1,14 +1,13 @@
 //
-//  GenreSectionViewUITests.swift
+//  SearchView+UI.swift
 //  movie-app-live
 //
-//  Created by Gergo Szabo on 2025. 06. 17..
+//  Created by Zsolt Pete on 2025. 06. 17..
 //
-
 
 import XCTest
 
-final class FavoritesViewUITests: XCTestCase {
+final class SearchViewUITests: XCTestCase {
     
     let app = XCUIApplication()
 
@@ -21,22 +20,19 @@ final class FavoritesViewUITests: XCTestCase {
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
         
         app.launch()
+        sleep(3)
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
-    func testGenreSelection() throws {
-        // UI tests must launch the application that they test.
-        
-        app.images["favorites"].tap()
-        
-        let collectionView = app.firstCellInCollectionView(withIdentifier: AccessibilityLabels.favoritesScrollView)
-        collectionView.swipeUp()
-        
-        let adventureGenreCell = app.findElement(withId: "Adventure")
-        adventureGenreCell?.tap()
+    func testSearchTextField() throws {
+        app.images["search"].tap()
+        let searchTextField = app.findElement(withId: AccessibilityLabels.searchTextField)
+        searchTextField?.tap()
+        searchTextField?.typeText("Fight club")
+        sleep(4)
                 
         
     }

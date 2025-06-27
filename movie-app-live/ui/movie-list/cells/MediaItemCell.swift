@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MovieCell: View {
+struct MediaItemCell: View {
     let movie: MediaItem
     @EnvironmentObject var favManager: FavoritesManager
     
@@ -25,8 +25,8 @@ struct MovieCell: View {
                         }
                         
                         HStack (spacing: 12.0){
-                            MovieLabel(type: .rating(movie.rating))
-                            MovieLabel(type: .voteCount(movie.voteCount))
+                            MediaItemLabel(type: .rating(movie.rating))
+                            MediaItemLabel(type: .voteCount(movie.voteCount))
                         }
                         .padding(LayoutConst.smallPadding)
                         
@@ -56,7 +56,7 @@ struct MovieCell: View {
                     
                     Text(movie.title)
                         .font(Fonts.subheading)
-                        .lineLimit(2)
+                        .lineLimit(1)
                     
                     Text("\(movie.year)")
                         .font(Fonts.paragraph)

@@ -6,6 +6,7 @@
 //
 import SwiftUI
 import InjectPropertyWrapper
+import FirebaseCrashlytics
 
 struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()

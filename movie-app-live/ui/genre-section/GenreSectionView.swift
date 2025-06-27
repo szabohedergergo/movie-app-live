@@ -35,7 +35,7 @@ struct GenreSectionView: View {
                     // 2. Műfajok listája
                     ForEach(viewModel.genres) { genre in //
                         ZStack{
-                            NavigationLink(destination: MovieListView(genre: genre)) {
+                            NavigationLink(destination: MediaItemView(genre: genre)) {
                                 EmptyView()
                             }
                             .opacity(0)

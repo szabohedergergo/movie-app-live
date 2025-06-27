@@ -29,6 +29,7 @@ struct SearchView: View {
                     .onChange(of: viewModel.searchText){
                         viewModel.startSearch.send()
                     }
+                    .accessibilityLabel(AccessibilityLabels.searchTextField)
                 }
                 .frame(height: 56)
                 .padding(.horizontal, LayoutConst.normalPadding)
@@ -54,7 +55,7 @@ struct SearchView: View {
                     ScrollView{
                         LazyVStack(spacing: LayoutConst.normalPadding){
                             ForEach(viewModel.movies) {movie in
-                                MovieCell(movie: movie)
+                                MediaItemCell(movie: movie)
                                     .frame(height: 277)
                             }
                         }

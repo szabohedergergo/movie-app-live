@@ -15,12 +15,14 @@ struct FavoritesView: View {
         NavigationView {
             ScrollView {
                 LazyVStack(spacing: LayoutConst.normalPadding) {
-                    ForEach(viewModel.mediaItems) { movie in
+                    ForEach(viewModel.mediaItems.indices, id: \.self) { index in
+                        let movie = viewModel.mediaItems[index]
                         NavigationLink(destination: DetailView(mediaItem: movie)) {
-                            MovieCell(movie: movie)
+                            MediaItemCell(movie: movie)
                                 .frame(height: 277)
                         }
                         .buttonStyle(PlainButtonStyle())
+                        .accessibilityLabel("MediaItem\(index)")
                     }
                 }
                 .padding(.horizontal, LayoutConst.normalPadding)

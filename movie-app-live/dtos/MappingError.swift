@@ -48,6 +48,10 @@ extension MediaItem {
             throw MappingError.invalidValue("releaseDate")
         }
         
+        guard let character = dto.character else {
+            throw MappingError.missingField("character")
+        }
+        
         let duration = "1h 25min"
         
         let imageUrl = dto.posterPath.flatMap {
@@ -61,7 +65,8 @@ extension MediaItem {
             duration: duration,
             imageUrl: imageUrl,
             rating: dto.voteAverage ?? 0.0,
-            voteCount: dto.voteCount ?? 0
+            voteCount: dto.voteCount ?? 0,
+            character: dto.character ?? ""
         )
     }
 }

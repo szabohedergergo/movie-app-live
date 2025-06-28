@@ -36,3 +36,6 @@
 "settings.lang.hungarian" = "Magyar";
 "settings.theme.light" = "Világos mód";
 "settings.theme.dark" = "Sötét mód";
+
+"cast_member_credits.no_roles_found" = "Nincs elérhető szereplés.";
+"participant.combined_credits" = "Szereplések";

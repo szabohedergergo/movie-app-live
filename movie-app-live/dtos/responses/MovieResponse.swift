@@ -27,6 +27,7 @@ struct MovieResponse: Decodable {
     let voteAverage: Double?
     let voteCount: Int?
     let popularity: Double
+    let character: String?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -36,5 +37,6 @@ struct MovieResponse: Decodable {
         case voteAverage = "vote_average"
         case voteCount = "vote_count"
         case popularity
+        case character
     }
 }

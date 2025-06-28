@@ -33,8 +33,10 @@ struct MediaItem: Identifiable {
     let imageUrl: URL?
     let rating: Double
     let voteCount: Int
+    let character: String?
+    var type: MediaItemType
     
-    static let placeholder = MediaItem(id: -1, title: "", year: "", duration: "", imageUrl: nil, rating: 0.0, voteCount: 0)
+    static let placeholder = MediaItem(id: -1, title: "", year: "", duration: "", imageUrl: nil, rating: 0.0, voteCount: 0, character: nil)
     
     init(id: Int) {
         self.id = id
@@ -44,9 +46,11 @@ struct MediaItem: Identifiable {
         self.imageUrl = nil
         self.rating = -1
         self.voteCount = -1
+        self.character = nil
+        self.type = .unknown
     }
     
-    init(id: Int, title: String, year: String, duration: String, imageUrl: URL?, rating: Double, voteCount: Int) {
+    init(id: Int, title: String, year: String, duration: String, imageUrl: URL?, rating: Double, voteCount: Int, character: String?, type: MediaItemType) {
         self.id = id
         self.title = title
         self.year = year
@@ -54,6 +58,20 @@ struct MediaItem: Identifiable {
         self.imageUrl = imageUrl
         self.rating = rating
         self.voteCount = voteCount
+        self.character = character
+        self.type = type
+    }
+    
+    init(id: Int, title: String, year: String, duration: String, imageUrl: URL?, rating: Double, voteCount: Int, character: String?) {
+        self.id = id
+        self.title = title
+        self.year = year
+        self.duration = duration
+        self.imageUrl = imageUrl
+        self.rating = rating
+        self.voteCount = voteCount
+        self.character = character
+        self.type = .unknown
     }
     
     init(dto: MovieResponse) {
@@ -75,7 +93,8 @@ struct MediaItem: Identifiable {
         self.imageUrl = imageUrl
         self.rating = dto.voteAverage ?? 0.0
         self.voteCount = dto.voteCount ?? 0
-        
+        self.character = nil
+        self.type = .unknown
     }
     
     init(dto: TVResponse) {
@@ -97,7 +116,8 @@ struct MediaItem: Identifiable {
         self.imageUrl = imageUrl
         self.rating = dto.voteAverage ?? 0.0
         self.voteCount = dto.voteCount ?? 0
-        
+        self.character = nil
+        self.type = .unknown
     }
     
     init(detail: MediaItemDetail) {
@@ -108,7 +128,40 @@ struct MediaItem: Identifiable {
         self.imageUrl = detail.imageUrl
         self.rating = detail.rating
         self.voteCount = detail.voteCount
+        self.character = nil
+        self.type = detail.type
+    }
+    
+    init?(combinedCreditDto dto: CombinedCreditsItemResponse) {
+        let displayTitle: String
+        let year: String
         
+        if dto.mediaType == "movie" {
+            guard let originalTitle = dto.originalTitle else { return nil }
+            displayTitle = originalTitle
+            year = String(dto.releaseDate?.prefix(4) ?? "-")
+        } else if dto.mediaType == "tv" {
+            guard let name = dto.name else { return nil }
+            displayTitle = name
+            year = String(dto.firstAirDate?.prefix(4) ?? "-")
+        } else {
+            return nil
+        }
+
+        self.id = dto.id
+        self.title = displayTitle
+        self.year = year
+        self.duration = "N/A"
+        self.imageUrl = dto.posterPath.flatMap { URL(string: "https://image.tmdb.org/t/p/w500\($0)") }
+        self.rating = dto.voteAverage ?? 0.0
+        self.voteCount = dto.voteCount ?? 0
+        self.character = dto.character ?? ""
+        
+        switch dto.mediaType {
+            case "movie": self.type = .movie
+            case "tv": self.type = .tvShow
+            default: self.type = .unknown
+        }
     }
     
 }

@@ -12,11 +12,11 @@ struct GenreSectionView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
-                    Button("Teszteld a Crash-t! 💥") {
+                    Button("Teszteld a Crash-t!") {
                         // Ez a sor fogja szándékosan összeomlasztani az alkalmazást!
                         // CSAK TESZTELÉSRE HASZNÁLD, ÉS NE HAGYD BENNE ÉLES VERZIÓBAN!
                         Crashlytics.crashlytics().record(error: MovieError.noInternetError) // Opcionális: Hozzáadhatsz egyedi kulcsot a crash-hez
-                        fatalError("Ez egy teszt crash, amit a gomb váltott ki! 😱")
+                        fatalError("Ez egy teszt crash, amit a gomb váltott ki!")
                     }
                     
                     // 1. Kiemelt film

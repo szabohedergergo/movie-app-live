@@ -37,4 +37,6 @@
 "settings.theme.light" = "Light Mode";
 "settings.theme.dark" = "Dark Mode";
 
+"cast_member_credits.no_roles_found" = "No available casting.";
+"participant.combined_credits" = "Casting";
 

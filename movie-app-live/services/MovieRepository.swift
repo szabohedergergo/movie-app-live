@@ -14,7 +14,8 @@ import Alamofire
 protocol MovieRepository {
     func fetchGenres(req: FetchGenreRequest) -> AnyPublisher<[Genre], MovieError>
     func fetchTVGenres(req: FetchGenreRequest) -> AnyPublisher<[Genre], MovieError>
-    func searchMovies(req: SearchMovieRequest) -> AnyPublisher<[MediaItem], MovieError>
+    func searchMovies(req: SearchMediaItemRequest) -> AnyPublisher<[MediaItem], MovieError>
+    func searchTVs(req: SearchMediaItemRequest) -> AnyPublisher<[MediaItem], MovieError>
     func fetchMovies(req: FetchMediaListRequest) -> AnyPublisher<MediaItemPage, MovieError>
     func fetchTV(req: FetchMediaListRequest) -> AnyPublisher<MediaItemPage, MovieError>
     func fetchFavoriteMovies(req: FetchFavoriteMovieRequest, fromLocal: Bool) -> AnyPublisher<[MediaItem], MovieError>
@@ -27,6 +28,7 @@ protocol MovieRepository {
     func fetchCastMemberDetail(req: FetchCastMemberDetailRequest) -> AnyPublisher<CastDetail, MovieError>
     func fetchCompanyDetail(req: FetchCompanyDetailRequest) -> AnyPublisher<CastDetail, MovieError>
     func fetchSimilarMovies(req: FetchSimilarMoviesRequest) -> AnyPublisher<MediaItemPage, MovieError>
+    func fetchCombinedCredits(req: FetchCombinedCreditsRequest) -> AnyPublisher<[MediaItem], MovieError>
 }
 
 class MovieRepositoryImpl: MovieRepository {
@@ -62,10 +64,18 @@ class MovieRepositoryImpl: MovieRepository {
         )
     }
     
-    func searchMovies(req: SearchMovieRequest) -> AnyPublisher<[MediaItem], MovieError> {
+    func searchMovies(req: SearchMediaItemRequest) -> AnyPublisher<[MediaItem], MovieError> {
         requestAndTransform(
             target: MultiTarget(MoviesApi.searchMovies(req: req)),
             decodeTo: MoviePageResponse.self,
+            transform: { $0.results.map(MediaItem.init(dto:)) }
+        )
+    }
+    
+    func searchTVs(req: SearchMediaItemRequest) -> AnyPublisher<[MediaItem], MovieError> {
+        requestAndTransform(
+            target: MultiTarget(MoviesApi.searchTVs(req: req)),
+            decodeTo: TVPageResponse.self,
             transform: { $0.results.map(MediaItem.init(dto:)) }
         )
     }
@@ -237,6 +247,17 @@ class MovieRepositoryImpl: MovieRepository {
             target: MultiTarget(MoviesApi.fetchSimilarMovies(req: req)),
             decodeTo: MoviePageResponse.self,
             transform: {  MediaItemPage(dto: $0) }
+        )
+    }
+    
+    func fetchCombinedCredits(req: FetchCombinedCreditsRequest) -> AnyPublisher<[MediaItem], MovieError> {
+        requestAndTransform(
+            target: MultiTarget(MoviesApi.fetchCombinedCredits(req: req)),
+            decodeTo: CombinedCreditsResponse.self,
+            transform: { response in
+                let combinedMediaItems = response.cast.compactMap{ MediaItem(combinedCreditDto: $0) }
+                return combinedMediaItems.sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
+            }
         )
     }
     

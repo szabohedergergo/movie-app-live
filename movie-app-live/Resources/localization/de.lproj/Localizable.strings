@@ -28,3 +28,5 @@
 "addReview.subTitle" = "Give it  a honest review";
 "addReview.buttonTitle" = "Send my review";
 
+"cast_member_credits.no_roles_found" = "No available casting.";
+"participant.combined_credits" = "Casting";

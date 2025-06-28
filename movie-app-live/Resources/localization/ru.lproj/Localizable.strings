@@ -36,3 +36,6 @@
 "settings.lang.hungarian" = "Венгерский";
 "settings.theme.light" = "Светлая тема";
 "settings.theme.dark" = "Темная тема";
+
+"cast_member_credits.no_roles_found" = "No available casting.";
+"participant.combined_credits" = "Casting";

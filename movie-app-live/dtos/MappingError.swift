@@ -61,7 +61,8 @@ extension MediaItem {
             duration: duration,
             imageUrl: imageUrl,
             rating: dto.voteAverage ?? 0.0,
-            voteCount: dto.voteCount ?? 0
+            voteCount: dto.voteCount ?? 0,
+            character: dto.character ?? ""
         )
     }
 }

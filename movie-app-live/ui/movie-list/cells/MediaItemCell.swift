@@ -22,6 +22,13 @@ struct MediaItemCell: View {
                                 .frame(maxHeight: 180)
                                 .frame(maxWidth: .infinity)
                                 .cornerRadius(12)
+                                .allowsHitTesting(false)
+                        }
+                        
+                        HStack(alignment: .center){
+                            Rectangle()
+                                .opacity(0.000000001)
+                                .allowsHitTesting(true)
                         }
                         
                         HStack (spacing: 12.0){

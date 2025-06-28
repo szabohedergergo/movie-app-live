@@ -89,4 +89,3 @@ class GenreSectionViewModelImpl: GenreSectionViewModel, ErrorPresentable {
            
        }
 }
-

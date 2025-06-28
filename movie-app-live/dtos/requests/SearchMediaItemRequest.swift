@@ -5,7 +5,7 @@
 //  Created by Gergo Szabo on 2025. 04. 28..
 //
 
-struct SearchMovieRequest {
+struct SearchMediaItemRequest {
     let accessToken: String = Config.bearerToken
     let query: String
     

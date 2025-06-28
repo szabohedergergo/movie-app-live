@@ -20,6 +20,7 @@ class MediaItemEntity: Object {
     @Persisted var imageUrlString: String?
     @Persisted var rating: Double
     @Persisted var voteCount: Int
+    @Persisted var character: String?
 }
 
 extension MediaItemEntity {
@@ -31,7 +32,8 @@ extension MediaItemEntity {
             duration: duration,
             imageUrl: imageUrlString.flatMap(URL.init(string:)),
             rating: rating,
-            voteCount: voteCount
+            voteCount: voteCount,
+            character: character
         )
     }
 

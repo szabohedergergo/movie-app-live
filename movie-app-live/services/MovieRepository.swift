@@ -14,7 +14,8 @@ import Alamofire
 protocol MovieRepository {
     func fetchGenres(req: FetchGenreRequest) -> AnyPublisher<[Genre], MovieError>
     func fetchTVGenres(req: FetchGenreRequest) -> AnyPublisher<[Genre], MovieError>
-    func searchMovies(req: SearchMovieRequest) -> AnyPublisher<[MediaItem], MovieError>
+    func searchMovies(req: SearchMediaItemRequest) -> AnyPublisher<[MediaItem], MovieError>
+    func searchTVs(req: SearchMediaItemRequest) -> AnyPublisher<[MediaItem], MovieError>
     func fetchMovies(req: FetchMediaListRequest) -> AnyPublisher<MediaItemPage, MovieError>
     func fetchTV(req: FetchMediaListRequest) -> AnyPublisher<MediaItemPage, MovieError>
     func fetchFavoriteMovies(req: FetchFavoriteMovieRequest, fromLocal: Bool) -> AnyPublisher<[MediaItem], MovieError>
@@ -63,10 +64,18 @@ class MovieRepositoryImpl: MovieRepository {
         )
     }
     
-    func searchMovies(req: SearchMovieRequest) -> AnyPublisher<[MediaItem], MovieError> {
+    func searchMovies(req: SearchMediaItemRequest) -> AnyPublisher<[MediaItem], MovieError> {
         requestAndTransform(
             target: MultiTarget(MoviesApi.searchMovies(req: req)),
             decodeTo: MoviePageResponse.self,
+            transform: { $0.results.map(MediaItem.init(dto:)) }
+        )
+    }
+    
+    func searchTVs(req: SearchMediaItemRequest) -> AnyPublisher<[MediaItem], MovieError> {
+        requestAndTransform(
+            target: MultiTarget(MoviesApi.searchTVs(req: req)),
+            decodeTo: TVPageResponse.self,
             transform: { $0.results.map(MediaItem.init(dto:)) }
         )
     }

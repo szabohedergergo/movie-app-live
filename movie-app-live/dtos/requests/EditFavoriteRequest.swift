@@ -19,7 +19,7 @@ struct EditFavoriteBodyRequest: Encodable {
 
 struct EditFavoriteRequest: Encodable {
     let accessToken: String = Config.bearerToken
-    let accountId: Int = 21889570
+    let accountId: Int = Config.accountId
     let movieId: Int
     let isFavorite: Bool
     

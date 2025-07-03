@@ -7,7 +7,7 @@
 
 struct FetchFavoriteMovieRequest {
     let accessToken: String = Config.bearerToken
-    let accountId: Int = 21889570
+    let accountId: Int = Config.accountId
     
     func asRequestParams() -> [String: Any] {
         return [:]

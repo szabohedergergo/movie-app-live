@@ -10,6 +10,6 @@ struct FetchDetailRequest {
     let mediaId: Int
     
     func asRequestParams() -> [String: Any] {
-        return [:]
+        return languageParam
     }
 }

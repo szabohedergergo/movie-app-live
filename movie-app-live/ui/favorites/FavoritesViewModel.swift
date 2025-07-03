@@ -34,7 +34,7 @@ class FavoritesViewModel: FavoritesViewModelProtocol, ErrorPresentable {
                         guard let self = self else {
                             preconditionFailure("There is no self")
                         }
-                        return self.service.fetchFavoriteMovies(req: FetchFavoriteMovieRequest(), fromLocal: false)
+                        return self.service.fetchFavoriteMovies(req: FetchFavoriteMediaRequest(), fromLocal: false)
                     }
                     .receive(on: RunLoop.main)
                     .sink { completion in

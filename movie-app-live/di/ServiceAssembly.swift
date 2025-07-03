@@ -70,7 +70,7 @@ class ServiceAssembly: Assembly {
             return GenreSectionUseCaseImpl()
         }.inObjectScope(.container)
         
-        container.register(AppVersionProviding.self) { _ in
+        container.register(AppVersionProviderProtocol.self) { _ in
             return AppVersionProviderProtocol()
                 }.inObjectScope(.container)
     }

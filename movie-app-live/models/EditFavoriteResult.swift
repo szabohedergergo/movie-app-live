@@ -6,14 +6,14 @@
 //
 
 
-struct EditFavoriteResult {
-    let success: Bool
-    let statusCode: Int
-    let statusMessage: String
-    
-    init(dto: EditFavoriteResponse) {
-        self.success = dto.success
-        self.statusCode = dto.statusCode
-        self.statusMessage = dto.statusMessage
+struct ModifyMediaResultResponse : Decodable {
+    let success : Bool
+    let statusCode : Int
+    let statusMessage : String
+
+    enum CodingKeys: String, CodingKey {
+        case success
+        case statusCode = "status_code"
+        case statusMessage = "status_message"
     }
 }

@@ -98,7 +98,7 @@ class DetailViewModel: DetailViewModelProtocol, ErrorPresentable {
             .store(in: &cancellables)
         
         favoriteButtonTapped
-            .flatMap { [weak self] _ -> AnyPublisher<(EditFavoriteResult, Bool), MovieError> in
+            .flatMap { [weak self] _ -> AnyPublisher<(ModifyMediaResult, Bool), MovieError> in
                 guard let self = self else {
                     preconditionFailure("There is no self")
                 }

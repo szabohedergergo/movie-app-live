@@ -75,6 +75,7 @@ struct CastMemberDetailView: View {
                                 HStack {
                                     Spacer()
                                     StarRatingView(rating: $viewModel.rating, starSize: 24)
+                                        .allowsHitTesting(false)
                                     Spacer()
                                 }
                             }

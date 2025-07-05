@@ -50,7 +50,9 @@ struct DetailView: View {
                     }
                     
                     Spacer()
-                    StyledButton(style: .filled, action: .link(mediaItemDetail.imdbURL), title: "detail.imdb.button")
+                    if let imdbURL = mediaItemDetail.imdbURL {
+                        StyledButton(style: .filled, action: .link(imdbURL), title: "detail.imdb.button".localized())
+                    }
                 }
                 
                 VStack(alignment: .leading, spacing: 12.0) {
@@ -65,6 +67,8 @@ struct DetailView: View {
                 ParticipantScrollView(title: "detail.publishers", participants: mediaItemDetail.productionCompanies, navigationType: .company)
                 
                 ParticipantScrollView(title: "detail.cast", participants: credits, navigationType: .castMember)
+                
+                ReviewScrollView(reviews: viewModel.reviews)
                 
                 if !viewModel.similarMovies.isEmpty || viewModel.isLoadingSimilarMovies {
                     VStack(alignment: .leading, spacing: LayoutConst.largePadding){
@@ -105,7 +109,7 @@ struct DetailView: View {
                 Button(action: {
                     viewModel.favoriteButtonTapped.send(())
                 }) {
-                    Image(viewModel.isFavorite ? .star : .star)
+                    Image(viewModel.isFavorite ? .favorite : .nonfavorite)
                         .resizable()
                         .frame(height: 30.0)
                         .frame(width: 30.0)

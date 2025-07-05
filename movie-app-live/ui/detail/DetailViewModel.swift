@@ -13,12 +13,13 @@ protocol DetailViewModelProtocol: ObservableObject {
 
 class DetailViewModel: DetailViewModelProtocol, ErrorPresentable {
     @Published var mediaItemDetail: MediaItemDetail = MediaItemDetail()
-    @Published var credits: [CastMember] = [] // Ezek már CastMember típusúak
+    @Published var credits: [CastMember] = []
     @Published var isFavorite: Bool = false
+    @Published var reviews: [MediaItemReview] = []
     @Published var alertModel: AlertModel? = nil
+    
     @Published var similarMovies: [MediaItem] = []
     @Published var isLoadingSimilarMovies: Bool = false
-    @Published var reviews: [MovieReview] = []
     
     let mediaItemSubject = PassthroughSubject<MediaItem, Never>()
     let favoriteButtonTapped = PassthroughSubject<Void, Never>()
@@ -44,7 +45,8 @@ class DetailViewModel: DetailViewModelProtocol, ErrorPresentable {
                     preconditionFailure("There is no self")
                 }
                 let request = FetchDetailRequest(mediaId: mediaItem.id)
-                return self.repository.fetchMovieDetail(req: request)
+                return mediaItem.type == .tv ? self.repository.fetchTVDetail(req: request) :
+                                                  self.repository.fetchMovieDetail(req: request)
             }
         
         details
@@ -66,7 +68,7 @@ class DetailViewModel: DetailViewModelProtocol, ErrorPresentable {
                     preconditionFailure("There is no self")
                 }
                 let request = FetchMovieCreditsRequest(mediaId: mediaItem.id)
-                return self.repository.fetchMovieCredits(req: request)
+                return mediaItem.type == .tv ? self.repository.fetchTVCredits(req: request) : self.repository.fetchMovieCredits(req: request)
             }
         
         let reviews = mediaItemSubject
@@ -74,8 +76,8 @@ class DetailViewModel: DetailViewModelProtocol, ErrorPresentable {
                 guard let self = self else {
                     preconditionFailure("There is no self")
                 }
-                let request = FetchMovieReviewsRequest(mediaId: mediaItem.id)
-                return self.repository.fetchMovieReviews(req: request)
+                let request = FetchMediaItemReviewsRequest(mediaId: mediaItem.id)
+                return mediaItem.type == .tv ? self.repository.fetchTVReviews(req: request) : self.repository.fetchMovieReviews(req: request)
             }
         
         Publishers.CombineLatest3(details, credits, reviews)

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ExpandedMoviesGridView: View {
     let genreID: Int
-    @StateObject private var movieListViewModel = MovieListViewModel()
+    @StateObject private var movieListViewModel = MediaItemListViewModel()
 
     let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 12),

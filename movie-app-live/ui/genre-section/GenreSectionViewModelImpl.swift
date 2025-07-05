@@ -71,13 +71,17 @@ class GenreSectionViewModelImpl: GenreSectionViewModel, ErrorPresentable {
            }
            
            let publisher = Environments.name == .tvlist ?
-               movieRepository.fetchTV(req: request) :
+               movieRepository.fetchTVs(req: request) :
                movieRepository.fetchMovies(req: request)
 
            publisher
-            .map { $0.mediaItems.first } // első film
+            .map { mediaItemPage -> MediaItem? in
+                guard !mediaItemPage.mediaItems.isEmpty else { return nil }
+                let randomIndex = Int.random(in: 0...mediaItemPage.mediaItems.count-1)
+                return mediaItemPage.mediaItems[randomIndex]
+            }
                .receive(on: DispatchQueue.main)
-               .sink { [weak self] completion in
+               .sink { completion in
                    if case let .failure(error) = completion {
                        print("Hiba a kiemelt film betöltésekor: \(error)")
                        //alertmodel

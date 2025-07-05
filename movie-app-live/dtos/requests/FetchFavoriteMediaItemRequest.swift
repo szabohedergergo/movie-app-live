@@ -5,7 +5,7 @@
 //  Created by Gergo Szabo on 2025. 05. 06..
 //
 
-struct FetchFavoriteMediaRequest {
+struct FetchFavoriteMediaItemRequest: LocalizedRequestable {
     let accessToken: String = Config.bearerToken
     let accountId: Int = Config.accountId
     

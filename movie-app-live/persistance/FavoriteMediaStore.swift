@@ -2,7 +2,7 @@
 //  FavoriteMediaStore.swift
 //  movie-app-live
 //
-//  Created by Gergo Szabo on 2025. 05. 17..
+//  Created by Gergo Szabo on 2025. 07. 05..
 //
 
 import Combine

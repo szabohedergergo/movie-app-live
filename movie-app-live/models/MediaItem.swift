@@ -25,6 +25,12 @@ struct MediaItemPage {
     }
 }
 
+enum MediaItemType: Decodable {
+    case tv
+    case movie
+    case unknown
+}
+
 struct MediaItem: Identifiable {
     let id: Int
     let title: String
@@ -33,10 +39,8 @@ struct MediaItem: Identifiable {
     let imageUrl: URL?
     let rating: Double
     let voteCount: Int
+    let type: MediaItemType
     let character: String?
-    var type: MediaItemType
-    
-    static let placeholder = MediaItem(id: -1, title: "", year: "", duration: "", imageUrl: nil, rating: 0.0, voteCount: 0, character: nil)
     
     init(id: Int) {
         self.id = id
@@ -46,20 +50,8 @@ struct MediaItem: Identifiable {
         self.imageUrl = nil
         self.rating = -1
         self.voteCount = -1
-        self.character = nil
         self.type = .unknown
-    }
-    
-    init(id: Int, title: String, year: String, duration: String, imageUrl: URL?, rating: Double, voteCount: Int, character: String?, type: MediaItemType) {
-        self.id = id
-        self.title = title
-        self.year = year
-        self.duration = duration
-        self.imageUrl = imageUrl
-        self.rating = rating
-        self.voteCount = voteCount
-        self.character = character
-        self.type = type
+        self.character = nil
     }
     
     init(id: Int, title: String, year: String, duration: String, imageUrl: URL?, rating: Double, voteCount: Int, character: String?) {
@@ -70,66 +62,8 @@ struct MediaItem: Identifiable {
         self.imageUrl = imageUrl
         self.rating = rating
         self.voteCount = voteCount
-        self.character = character
         self.type = .unknown
-    }
-    
-    init(dto: MovieResponse) {
-        let releaseDate: String? = dto.releaseDate
-        let prefixedYear: Substring = releaseDate?.prefix(4) ?? "-"
-        let year = String(prefixedYear)
-        let duration = "1h 25min" // TODO: placeholder – ha lesz ilyen adat, cserélhető
-        
-        var imageUrl: URL? {
-            dto.posterPath.flatMap {
-                URL(string: "https://image.tmdb.org/t/p/w500\($0)")
-            }
-        }
-        
-        self.id = dto.id
-        self.title = dto.title
-        self.year = year
-        self.duration = duration
-        self.imageUrl = imageUrl
-        self.rating = dto.voteAverage ?? 0.0
-        self.voteCount = dto.voteCount ?? 0
         self.character = nil
-        self.type = .unknown
-    }
-    
-    init(dto: TVResponse) {
-        let releaseDate: String? = dto.firstAirDate
-        let prefixedYear: Substring = releaseDate?.prefix(4) ?? "-"
-        let year = String(prefixedYear)
-        let duration = "1h 25min" // TODO: placeholder – ha lesz ilyen adat, cserélhető
-        
-        var imageUrl: URL? {
-            dto.posterPath.flatMap {
-                URL(string: "https://image.tmdb.org/t/p/w500\($0)")
-            }
-        }
-        
-        self.id = dto.id
-        self.title = dto.name
-        self.year = year
-        self.duration = duration
-        self.imageUrl = imageUrl
-        self.rating = dto.voteAverage ?? 0.0
-        self.voteCount = dto.voteCount ?? 0
-        self.character = nil
-        self.type = .unknown
-    }
-    
-    init(detail: MediaItemDetail) {
-        self.id = detail.id
-        self.title = detail.title
-        self.year = detail.year
-        self.duration = "1h 25min"
-        self.imageUrl = detail.imageUrl
-        self.rating = detail.rating
-        self.voteCount = detail.voteCount
-        self.character = nil
-        self.type = detail.type
     }
     
     init?(combinedCreditDto dto: CombinedCreditsItemResponse) {
@@ -159,9 +93,67 @@ struct MediaItem: Identifiable {
         
         switch dto.mediaType {
             case "movie": self.type = .movie
-            case "tv": self.type = .tvShow
+        case "tv": self.type = .tv
             default: self.type = .unknown
         }
+    }
+    
+    init(dto: MovieResponse) {
+        let releaseDate: String? = dto.releaseDate
+        let prefixedYear: Substring = releaseDate?.prefix(4) ?? "-"
+        let year = String(prefixedYear)
+        let duration = "1h 25min" // TODO: placeholder – ha lesz ilyen adat, cserélhető
+        
+        var imageUrl: URL? {
+            dto.posterPath.flatMap {
+                URL(string: "https://image.tmdb.org/t/p/w500\($0)")
+            }
+        }
+        
+        self.id = dto.id
+        self.title = dto.title
+        self.year = year
+        self.duration = duration
+        self.imageUrl = imageUrl
+        self.rating = dto.voteAverage ?? 0.0
+        self.voteCount = dto.voteCount ?? 0
+        self.type = .movie
+        self.character = nil
+    }
+    
+    init(dto: TVResponse) {
+        let releaseDate: String? = dto.firstAirDate
+        let prefixedYear: Substring = releaseDate?.prefix(4) ?? "-"
+        let year = String(prefixedYear)
+        let duration = ""
+        
+        var imageUrl: URL? {
+            dto.posterPath.flatMap {
+                URL(string: "https://image.tmdb.org/t/p/w500\($0)")
+            }
+        }
+        
+        self.id = dto.id
+        self.title = dto.name
+        self.year = year
+        self.duration = duration
+        self.imageUrl = imageUrl
+        self.rating = dto.voteAverage ?? 0.0
+        self.voteCount = dto.voteCount ?? 0
+        self.type = .tv
+        self.character = nil
+    }
+    
+    init(detail: MediaItemDetail) {
+        self.id = detail.id
+        self.title = detail.title
+        self.year = detail.year
+        self.duration = "mediaItem.default.duration".localized()
+        self.imageUrl = detail.imageUrl
+        self.rating = detail.rating
+        self.voteCount = detail.voteCount
+        self.type = detail.type
+        self.character = nil
     }
     
 }

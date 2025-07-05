@@ -5,7 +5,7 @@
 //  Created by Gergo Szabo on 2025. 04. 15..
 //
 
-struct FetchMediaListRequest {
+struct FetchMediaListRequest: LocalizedRequestable {
     let accessToken: String = Config.bearerToken
     let genreId: Int
     let includeAdult: Bool
@@ -16,7 +16,7 @@ struct FetchMediaListRequest {
             "with_genres": genreId,
             //"include_adult": includeAdult,
             "page": page
-        ]
+        ] + languageParam
     }
 }
 

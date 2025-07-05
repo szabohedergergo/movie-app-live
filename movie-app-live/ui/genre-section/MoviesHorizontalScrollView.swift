@@ -4,7 +4,7 @@ import Shimmer
 struct HorizontalMoviesPreviewView: View {
     let genreID: Int
     let maxMoviesToShow: Int
-    @StateObject private var movieListViewModel = MovieListViewModel()
+    @StateObject private var mediaListViewModel = MediaItemListViewModel()
 
     let movieCellWidth: CGFloat = 190 //width
     let cellSpacing: CGFloat = 10
@@ -13,8 +13,7 @@ struct HorizontalMoviesPreviewView: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: cellSpacing) {
-                ForEach(movieListViewModel.movies.prefix(maxMoviesToShow)) { movie in
-                    print("added: \(movie.id)")
+                ForEach(mediaListViewModel.movies.prefix(maxMoviesToShow)) { movie in
                     return MediaItemCell(movie: movie)
                         .frame(width: movieCellWidth)
                 }
@@ -23,8 +22,7 @@ struct HorizontalMoviesPreviewView: View {
         }
         .frame(height: expectedCellHeight)
         .onAppear {
-            print("send2222")
-            movieListViewModel.genreIdSubject.send(genreID)
+            mediaListViewModel.genreIdSubject.send(genreID)
         }
     }
 }

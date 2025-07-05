@@ -2,11 +2,11 @@ import Foundation
 import InjectPropertyWrapper
 import Combine
 
-protocol MovieListViewModelProtocol: ObservableObject {
+protocol MediaItemListViewModelProtocol: ObservableObject {
     var movies: [MediaItem] { get }
 }
 
-class MovieListViewModel: MovieListViewModelProtocol, ErrorPresentable {
+class MediaItemListViewModel: MediaItemListViewModelProtocol, ErrorPresentable {
     @Published var movies: [MediaItem] = []
     @Published var alertModel: AlertModel? = nil
     @Published var isLoading: Bool = false
@@ -55,7 +55,7 @@ class MovieListViewModel: MovieListViewModelProtocol, ErrorPresentable {
                 }
                 let request = FetchMediaListRequest(genreId: genreId, includeAdult: true, page: self.currentPage)
                 return Environments.name == .tvlist ?
-                        self.repository.fetchTV(req: request) :
+                        self.repository.fetchTVs(req: request) :
                         self.repository.fetchMovies(req: request)
                 
             }
@@ -75,7 +75,7 @@ class MovieListViewModel: MovieListViewModelProtocol, ErrorPresentable {
     }
 }
 
-extension MovieListViewModel {
+extension MediaItemListViewModel {
     func refreshMovies(genreId: Int) {
         self.currentPage = 1
         self.totalPages = Int.max

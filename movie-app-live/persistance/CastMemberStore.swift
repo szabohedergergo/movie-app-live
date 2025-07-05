@@ -2,7 +2,7 @@
 //  CastMemberStore.swift
 //  movie-app-live
 //
-//  Created by Gergo Szabo on 2025. 05. 24..
+//  Created by Zsolt Pete on 2025. 05. 20..
 //
 
 import RealmSwift
@@ -31,11 +31,9 @@ class CastMemberStore: CastMemberStoreProtocol {
                 $0.movieId == movieId
             }
         let castMembers = results.map { $0.toDomain }
-        return Future<[CastMember], MovieError> { future in
-            future(.success(Array(castMembers)))
-        }.eraseToAnyPublisher()
-            
-            //.setFailureType(to: MovieError.self)
+        return Just(Array(castMembers))
+            .setFailureType(to: MovieError.self)
+            .eraseToAnyPublisher()
     }
 
     func saveCastMembers(_ items: [CastMember], forMovieId movieId: Int) {

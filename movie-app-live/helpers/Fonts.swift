@@ -8,6 +8,7 @@ import SwiftUI
 
 enum Fonts {
     static let detailsTitle = Font.custom("Raleway-ExtraBold", size: 36)
+    static let detailsButton = Font.custom("Raleway-ExtraBold", size: 14)
     static let heading = Font.custom("Raleway-ExtraBold", size: 32)
     static let title = Font.custom("Raleway-ExtraBold", size: 24)
     static let subheading = Font.custom("Raleway-ExtraBold", size: 16)
@@ -16,5 +17,6 @@ enum Fonts {
     static let labelBold = Font.custom("Raleway-ExtraBold", size: 12)
     static let overviewText = Font.custom("Lato-Bold", size: 16)
     static let emptyStateText = Font.custom("Raleway-Medium", size: 24)
-    static let detailsButton = Font.custom("Raleway-ExtraBold", size: 14)
+    static let paragraphList = Font.custom("Lato-Regular", size: 8)
 }
+

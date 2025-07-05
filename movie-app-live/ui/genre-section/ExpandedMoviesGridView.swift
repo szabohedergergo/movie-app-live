@@ -13,9 +13,10 @@ struct ExpandedMoviesGridView: View {
     @StateObject private var movieListViewModel = MediaItemListViewModel()
 
     let columns: [GridItem] = [
-        GridItem(.flexible(), spacing: 12),
-        GridItem(.flexible(), spacing: 12),
-        GridItem(.flexible(), spacing: 12)
+        // Ez biztosítja, hogy minden oszlopnak legyen egy minimum szélessége
+        GridItem(.flexible(minimum: 100), spacing: 12), // Minimum 100 pont szélesség
+        GridItem(.flexible(minimum: 100), spacing: 12),
+        GridItem(.flexible(minimum: 100), spacing: 12)
     ]
     let rowSpacing: CGFloat = 16
 

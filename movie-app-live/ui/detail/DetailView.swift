@@ -75,7 +75,7 @@ struct DetailView: View {
                     
                     if !viewModel.similarMovies.isEmpty || viewModel.isLoadingSimilarMovies {
                         VStack(alignment: .leading, spacing: LayoutConst.largePadding){
-                            Text(LocalizedStringKey("detail.similar_movies"))
+                            Text(Environments.name == .tvlist ? LocalizedStringKey("detail.similar_movies") : LocalizedStringKey("detail.similar_series"))
                                 .font(Fonts.overviewText)
                             
                             ScrollView(.horizontal, showsIndicators: false){
@@ -86,13 +86,12 @@ struct DetailView: View {
                                             .onAppear{
                                                 if let lastMovie = viewModel.similarMovies.last, movie.id == lastMovie.id {
                                                     viewModel.fetchMoreSimilarMovies.send(())
-                                                    print("<<<debug: FETCHMORESIM SENT")
                                                 }
                                             }
                                     }
                                     
                                     if viewModel.isLoadingSimilarMovies {
-                                        LottieView(animation: .named("movies"))
+                                        LottieView(animation: .named("loading"))
                                             .playing(loopMode: .loop)
                                             .frame(width: 100, height: 100)
                                             .background(Color.clear)

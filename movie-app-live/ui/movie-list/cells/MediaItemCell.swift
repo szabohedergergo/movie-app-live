@@ -25,11 +25,11 @@ struct MediaItemCell: View {
                                 .allowsHitTesting(false)
                         }
                         
-                        HStack(alignment: .center){
-                            Rectangle()
-                                .opacity(0.000000001)
-                                .allowsHitTesting(true)
-                        }
+//                        HStack(alignment: .center){
+//                            Rectangle()
+//                                .opacity(0.000000001)
+//                                .allowsHitTesting(true)
+//                        }
                         
                         HStack (spacing: 12.0){
                             MediaItemLabel(type: .rating(movie.rating))
@@ -37,28 +37,28 @@ struct MediaItemCell: View {
                         }
                         .padding(LayoutConst.smallPadding)
                         
-                        VStack{
-                            HStack{
-                                Spacer()
-                                Button(action: {
-                                    withAnimation(.spring()){
-                                        favManager.toggleFavorite(id: movie.id)
-                                    }
-                                }) {
-                                    Image(.heart)
-                                        .resizable()
-                                        .frame(width: 20, height: 20)
-                                        .foregroundColor(
-                                            .red//favManager.isFavorite(id: movie.id) ? .red : .white.opacity(0.6)
-                                        )
-                                        .padding(6.0)
-                                        .background(Color.black.opacity(0.4))
-                                        .cornerRadius(16.0)
-                                }
-                            }
-                            Spacer()
-                        }
-                        .padding(8)
+//                        VStack{
+//                            HStack{
+//                                Spacer()
+//                                Button(action: {
+//                                    withAnimation(.spring()){
+//                                        favManager.toggleFavorite(id: movie.id)
+//                                    }
+//                                }) {
+//                                    Image(.heart)
+//                                        .resizable()
+//                                        .frame(width: 20, height: 20)
+//                                        .foregroundColor(
+//                                            .red//favManager.isFavorite(id: movie.id) ? .red : .white.opacity(0.6)
+//                                        )
+//                                        .padding(6.0)
+//                                        .background(Color.black.opacity(0.4))
+//                                        .cornerRadius(16.0)
+//                                }
+//                            }
+//                            Spacer()
+//                        }
+//                        .padding(8)
                     }
                     
                     Text(movie.title)
@@ -75,11 +75,19 @@ struct MediaItemCell: View {
                 }
             }
             else{
-                Rectangle()
-                    .fill(Color.gray.opacity(0.3))
-                    .frame(width: 200, height: 100)
-                    .cornerRadius(12)
-                    .shimmering()
+                VStack {
+                    Color.gray
+                }
+                .frame(height: 100)
+                .frame(maxHeight: 180)
+                .cornerRadius(12)
+                .shimmering()
+                .allowsHitTesting(false)
+//                Rectangle()
+//                    .fill(Color.gray.opacity(0.3))
+//                    .frame(width: 200, height: 100)
+//                    .cornerRadius(12)
+//                    .shimmering()
             }
         }.buttonStyle(.plain)
     }

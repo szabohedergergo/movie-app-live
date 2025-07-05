@@ -26,7 +26,7 @@ struct CastMemberCreditsView: View {
             VStack(alignment: .leading, spacing: LayoutConst.largePadding) {
                 if viewModel.isLoading {
                     // Lottie animáció, amíg tölt
-                    LottieView(animation: .named("movies")) // Cseréld a "movies"-t a json fájlod nevére!
+                    LottieView(animation: .named("movies"))
                         .playing(loopMode: .loop)
                         .frame(width: 100, height: 100)
                         .background(Color.clear)
@@ -39,16 +39,16 @@ struct CastMemberCreditsView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding()
                 } else {
-                    // Itt jelenítjük meg a listát
-                    // Egy egyszerű VStack-et használok, ami listaként viselkedik,
-                    // de ha komolyabb listaelem swipe vagy edit funkció kell,
-                    // akkor List-et érdemes használni (de az automatikusan ad separatorokat).
-                    VStack(alignment: .leading, spacing: LayoutConst.smallPadding) {
-                        ForEach(viewModel.combinedCredits) { mediaItem in
-                            NavigationLink(destination: DetailView(mediaItem: mediaItem)) {
-                                CastMemberCreditRow(mediaItem: mediaItem) // Saját komponens a sorhoz
+                    ScrollView(.horizontal){
+                        LazyHStack(spacing: LayoutConst.smallPadding) {
+                            ForEach(viewModel.combinedCredits) { mediaItem in
+                                NavigationLink(destination: DetailView(mediaItem: mediaItem)) {
+                                    MediaItemCell(movie: mediaItem)
+                                        .frame(width: 180)
+                                    //CastMemberCreditRow(mediaItem: mediaItem) // Saját komponens a sorhoz
+                                }
+                                .buttonStyle(PlainButtonStyle()) // Hogy ne legyen kék a link
                             }
-                            .buttonStyle(PlainButtonStyle()) // Hogy ne legyen kék a link
                         }
                     }
                 }

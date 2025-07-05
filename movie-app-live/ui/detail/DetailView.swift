@@ -22,103 +22,107 @@ struct DetailView: View {
     
     var body: some View {
         
-        return ScrollView {
-            VStack(alignment: .leading, spacing: LayoutConst.largePadding) {
-                LoadImageView(url: mediaItemDetail.imageUrl)
-                    .frame(height: 180)
-                    .frame(maxWidth: .infinity)
-                    .cornerRadius(30)
-                
-                HStack(spacing: 12.0) {
-                    MediaItemLabel(type: .rating(mediaItemDetail.rating))
-                    MediaItemLabel(type: .voteCount(mediaItemDetail.voteCount))
-                    MediaItemLabel(type: .popularity(mediaItemDetail.popularity))
-                    Spacer()
-                    MediaItemLabel(type: .adult(mediaItemDetail.adult))
-                }
-                
-                Text(viewModel.mediaItemDetail.genreList)
-                    .font(Fonts.paragraph)
-                MediaItemHeaderView(title: viewModel.mediaItemDetail.title,
-                                    year: mediaItemDetail.year,
-                                    runtime: "\(mediaItemDetail.runtime)",
-                                    spokenLanguages: mediaItemDetail.spokenLanguages)
-                
-                HStack {
-                    NavigationLink(destination: AddReviewView(mediaItemDetail: mediaItemDetail)) {
-                        StyledButton(style: .outlined, action: .simple, title: "detail.rate.button")
+        return ZStack(alignment: .topTrailing){
+            RedPieceBackgroundView()
+            
+            ScrollView {
+                VStack(alignment: .leading, spacing: LayoutConst.largePadding) {
+                    LoadImageView(url: mediaItemDetail.imageUrl)
+                        .frame(height: 180)
+                        .frame(maxWidth: .infinity)
+                        .cornerRadius(30)
+                    
+                    HStack(spacing: 12.0) {
+                        MediaItemLabel(type: .rating(mediaItemDetail.rating))
+                        MediaItemLabel(type: .voteCount(mediaItemDetail.voteCount))
+                        MediaItemLabel(type: .popularity(mediaItemDetail.popularity))
+                        Spacer()
+                        MediaItemLabel(type: .adult(mediaItemDetail.adult))
                     }
                     
-                    Spacer()
-                    if let imdbURL = mediaItemDetail.imdbURL {
-                        StyledButton(style: .filled, action: .link(imdbURL), title: "detail.imdb.button".localized())
-                    }
-                }
-                
-                VStack(alignment: .leading, spacing: 12.0) {
-                    Text(LocalizedStringKey("detail.overview"))
-                        .font(Fonts.overviewText)
-                    
-                    Text(mediaItemDetail.overview)
+                    Text(viewModel.mediaItemDetail.genreList)
                         .font(Fonts.paragraph)
-                        .lineLimit(nil)
-                }
-                
-                ParticipantScrollView(title: "detail.publishers", participants: mediaItemDetail.productionCompanies, navigationType: .company)
-                
-                ParticipantScrollView(title: "detail.cast", participants: credits, navigationType: .castMember)
-                
-                ReviewScrollView(reviews: viewModel.reviews)
-                
-                if !viewModel.similarMovies.isEmpty || viewModel.isLoadingSimilarMovies {
-                    VStack(alignment: .leading, spacing: LayoutConst.largePadding){
-                        Text(LocalizedStringKey("detail.similar_movies"))
+                    MediaItemHeaderView(title: viewModel.mediaItemDetail.title,
+                                        year: mediaItemDetail.year,
+                                        runtime: "\(mediaItemDetail.runtime)",
+                                        spokenLanguages: mediaItemDetail.spokenLanguages)
+                    
+                    HStack {
+                        NavigationLink(destination: AddReviewView(mediaItemDetail: mediaItemDetail)) {
+                            StyledButton(style: .outlined, action: .simple, title: "detail.rate.button")
+                        }
+                        
+                        Spacer()
+                        if let imdbURL = mediaItemDetail.imdbURL {
+                            StyledButton(style: .filled, action: .link(imdbURL), title: "detail.imdb.button".localized())
+                        }
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 12.0) {
+                        Text(LocalizedStringKey("detail.overview"))
                             .font(Fonts.overviewText)
                         
-                        ScrollView(.horizontal, showsIndicators: false){
-                            LazyHStack(spacing: LayoutConst.maxPadding){
-                                ForEach(viewModel.similarMovies) { movie in
-                                    MediaItemCell(movie: movie)
-                                        .frame(width: 180)
-                                        .onAppear{
-                                            if let lastMovie = viewModel.similarMovies.last, movie.id == lastMovie.id {
-                                                viewModel.fetchMoreSimilarMovies.send(())
-                                                print("<<<debug: FETCHMORESIM SENT")
+                        Text(mediaItemDetail.overview)
+                            .font(Fonts.paragraph)
+                            .lineLimit(nil)
+                    }
+                    
+                    ParticipantScrollView(title: "detail.publishers", participants: mediaItemDetail.productionCompanies, navigationType: .company)
+                    
+                    ParticipantScrollView(title: "detail.cast", participants: credits, navigationType: .castMember)
+                    
+                    ReviewScrollView(reviews: viewModel.reviews)
+                    
+                    if !viewModel.similarMovies.isEmpty || viewModel.isLoadingSimilarMovies {
+                        VStack(alignment: .leading, spacing: LayoutConst.largePadding){
+                            Text(LocalizedStringKey("detail.similar_movies"))
+                                .font(Fonts.overviewText)
+                            
+                            ScrollView(.horizontal, showsIndicators: false){
+                                LazyHStack(spacing: LayoutConst.maxPadding){
+                                    ForEach(viewModel.similarMovies) { movie in
+                                        MediaItemCell(movie: movie)
+                                            .frame(width: 180)
+                                            .onAppear{
+                                                if let lastMovie = viewModel.similarMovies.last, movie.id == lastMovie.id {
+                                                    viewModel.fetchMoreSimilarMovies.send(())
+                                                    print("<<<debug: FETCHMORESIM SENT")
+                                                }
                                             }
-                                        }
-                                }
-                                
-                                if viewModel.isLoadingSimilarMovies {
-                                    LottieView(animation: .named("movies"))
-                                        .playing(loopMode: .loop)
-                                        .frame(width: 100, height: 100)
-                                        .background(Color.clear)
-                                        .transition(.opacity)
+                                    }
+                                    
+                                    if viewModel.isLoadingSimilarMovies {
+                                        LottieView(animation: .named("movies"))
+                                            .playing(loopMode: .loop)
+                                            .frame(width: 100, height: 100)
+                                            .background(Color.clear)
+                                            .transition(.opacity)
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                .padding(.horizontal, LayoutConst.maxPadding)
+                .padding(.bottom, LayoutConst.largePadding)
+                
             }
-            .padding(.horizontal, LayoutConst.maxPadding)
-            .padding(.bottom, LayoutConst.largePadding)
-            
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
-                    viewModel.favoriteButtonTapped.send(())
-                }) {
-                    Image(viewModel.isFavorite ? .favorite : .nonfavorite)
-                        .resizable()
-                        .frame(height: 30.0)
-                        .frame(width: 30.0)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        viewModel.favoriteButtonTapped.send(())
+                    }) {
+                        Image(viewModel.isFavorite ? .favorite : .nonfavorite)
+                            .resizable()
+                            .frame(height: 30.0)
+                            .frame(width: 30.0)
+                    }
                 }
             }
-        }
-        .showAlert(model: $viewModel.alertModel)
-        .onAppear {
-            viewModel.mediaItemSubject.send(mediaItem)
+            .showAlert(model: $viewModel.alertModel)
+            .onAppear {
+                viewModel.mediaItemSubject.send(mediaItem)
+            }
         }
     }
 }

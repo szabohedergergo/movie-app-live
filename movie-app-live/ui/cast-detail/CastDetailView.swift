@@ -80,6 +80,8 @@ struct CastMemberDetailView: View {
                             }
                             .padding(.horizontal)
                             
+                            CastMemberCreditsView(personId: castMember.id, personName: castMember.name)
+                            
                         }
                         .padding(.bottom, 48)
                     } else {

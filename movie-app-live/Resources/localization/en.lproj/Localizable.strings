@@ -40,7 +40,9 @@
 "version" = "Version";
 "createdby" = "Created by: Anonymous";
 "detail.topReviews" = "Top Reviews";
+"detail.noReviews" = "No Reviews in this language";
 "birthYear" = "Year of Birth";
 "city" = "City";
 "bio" = "Biography";
 "popularity" = "Popularity";
+"detail.similar_movies" = "Similar Movies";

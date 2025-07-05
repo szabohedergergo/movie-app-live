@@ -17,33 +17,37 @@ struct MediaItemListView: View {
     ]
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: LayoutConst.largePadding) {
-                ForEach(viewModel.movies.indices, id: \.self) { index in
-                    let movie = viewModel.movies[index]
-                    NavigationLink(destination: DetailView(mediaItem: movie)) {
-                        MediaItemCell(movie: movie)
-                            .onAppear {
-                                if index == viewModel.movies.count - 1 {
-                                    viewModel.reachedBottomSubject.send()
+        ZStack(alignment: .topTrailing){
+            RedPieceBackgroundView()
+            
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: LayoutConst.largePadding) {
+                    ForEach(viewModel.movies.indices, id: \.self) { index in
+                        let movie = viewModel.movies[index]
+                        NavigationLink(destination: DetailView(mediaItem: movie)) {
+                            MediaItemCell(movie: movie)
+                                .onAppear {
+                                    if index == viewModel.movies.count - 1 {
+                                        viewModel.reachedBottomSubject.send()
+                                    }
                                 }
-                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                    .buttonStyle(PlainButtonStyle())
+                }
+                .padding(.horizontal, LayoutConst.normalPadding)
+                .padding(.top, LayoutConst.normalPadding)
+                
+                if viewModel.isLoading {
+                    ProgressView()
+                        .padding()
                 }
             }
-            .padding(.horizontal, LayoutConst.normalPadding)
-            .padding(.top, LayoutConst.normalPadding)
-            
-            if viewModel.isLoading {
-                ProgressView()
-                    .padding()
+            .navigationTitle(genre.name)
+            .showAlert(model: $viewModel.alertModel)
+            .onAppear {
+                viewModel.genreIdSubject.send(genre.id)
             }
-        }
-        .navigationTitle(genre.name)
-        .showAlert(model: $viewModel.alertModel)
-        .onAppear {
-            viewModel.genreIdSubject.send(genre.id)
         }
     }
 }

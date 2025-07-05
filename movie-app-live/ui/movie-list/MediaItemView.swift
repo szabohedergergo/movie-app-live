@@ -8,8 +8,8 @@
 import SwiftUI
 import InjectPropertyWrapper
 
-struct MediaItemView: View {
-    @StateObject private var viewModel = MovieListViewModel()
+struct MediaItemListView: View {
+    @StateObject private var viewModel = MediaItemListViewModel()
     let genre: Genre
     
     let columns = [
@@ -49,5 +49,5 @@ struct MediaItemView: View {
 }
 
 #Preview {
-    MediaItemView(genre: Genre(id: 28, name: "Action") )
+    MediaItemListView(genre: Genre(id: 28, name: "Action") )
 }

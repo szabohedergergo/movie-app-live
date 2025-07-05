@@ -21,7 +21,7 @@ struct GenreSectionCell: View {
     
     var body: some View {
         HStack{
-            NavigationLink(destination: MediaItemView(genre: genre)){
+            NavigationLink(destination: MediaItemListView(genre: genre)){
                 Text(genre.name)
                     .font(Fonts.title)
                     .foregroundStyle(.primary)

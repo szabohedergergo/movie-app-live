@@ -2,7 +2,7 @@
 //  StarView.swift
 //  movie-app-live
 //
-//  Created by Gergo Szabo on 2025. 05. 24..
+//  Created by Zsolt Pete on 2025. 05. 20..
 //
 
 import SwiftUI
@@ -14,7 +14,7 @@ struct StarView: View {
     let onTap: () -> Void
 
     var body: some View {
-        Image(isFilled ? .star : .star)
+        Image(isFilled ? .starFilled : .starUnfilled)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: size, height: size)

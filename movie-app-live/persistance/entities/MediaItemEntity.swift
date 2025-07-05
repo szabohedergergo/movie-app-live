@@ -2,12 +2,8 @@
 //  MediaItemEntity.swift
 //  movie-app-live
 //
-//  Created by Gergo Szabo on 2025. 05. 17..
+//  Created by Zsolt Pete on 2025. 05. 15..
 //
-
-//eddig lokalis volt, most itt a mappaban localdb lesz
-//nem domain modell és nem is dto-kat mentjük le
-//mert ha domain: pl imageurl-be nem url hanem image van benne
 
 import RealmSwift
 import Foundation

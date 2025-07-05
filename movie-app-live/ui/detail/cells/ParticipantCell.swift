@@ -13,9 +13,10 @@ struct ParticipantCell: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12.0) {
+            
             LoadImageView(url: imageUrl)
-            .frame(width: 56, height: 56)
-            .cornerRadius(28)
+                .frame(width: 56, height: 56)
+                .cornerRadius(28)
             
             Text(title)
                 .font(Fonts.subheading)

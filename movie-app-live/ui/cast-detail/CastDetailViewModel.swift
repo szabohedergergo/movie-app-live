@@ -77,4 +77,3 @@ class CastDetailViewModel: ObservableObject, ErrorPresentable {
         return Int(rating + 1.0)
     }
 }
-

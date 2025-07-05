@@ -4,6 +4,7 @@
 //
 //  Created by Gergo Szabo on 2025. 04. 29..
 //
+
 import SwiftUI
 import InjectPropertyWrapper
 import FirebaseCrashlytics
@@ -20,22 +21,16 @@ struct SettingsView: View {
                 HStack(spacing: 12) {
                     StyledButton(style: viewModel.selectedLanguage == "en" ? .filled : .outlined, action: .simple, title: "settings.lang.english".localized())
                         .font(Fonts.detailsTitle)
-                        .lineLimit(1)
-                        .fixedSize()
                         .onTapGesture {
                             viewModel.changeSelectedLanguge("en")
                         }
-                    StyledButton(style: viewModel.selectedLanguage == "de" ? .filled : .outlined, action: .simple, title: "settings.lang.russian".localized())
+                    StyledButton(style: viewModel.selectedLanguage == "ru" ? .filled : .outlined, action: .simple, title: "settings.lang.russian".localized())
                         .font(Fonts.detailsButton)
-                        .lineLimit(1)
-                        .fixedSize()
                         .onTapGesture {
                             viewModel.changeSelectedLanguge("ru")
                         }
                     StyledButton(style: viewModel.selectedLanguage == "hu" ? .filled : .outlined, action: .simple, title: "settings.lang.hungarian".localized())
                         .font(Fonts.detailsButton)
-                        .lineLimit(1)
-                        .fixedSize()
                         .onTapGesture {
                             viewModel.changeSelectedLanguge("hu")
                         }
@@ -46,14 +41,14 @@ struct SettingsView: View {
                     .font(Fonts.subheading)
                     .padding(.bottom, LayoutConst.maxPadding)
                 HStack(spacing: 12) {
-                    StyledButton(style: viewModel.selectedTheme == .light ? .filled : .outlined, action: .simple, title: "settings.theme.light")
+                    StyledButton(style: viewModel.selectedTheme == .light ? .filled : .outlined, action: .simple, title: "settings.theme.light".localized())
                         .font(Fonts.detailsButton)
                         .lineLimit(1)
                         .frame(maxWidth: .infinity)
                         .onTapGesture {
                             viewModel.changeTheme(.light)
                         }
-                    StyledButton(style: viewModel.selectedTheme == .dark ? .filled : .outlined, action: .simple, title: "settings.theme.dark")
+                    StyledButton(style: viewModel.selectedTheme == .dark ? .filled : .outlined, action: .simple, title: "settings.theme.dark".localized())
                         .font(Fonts.detailsButton)
                         .lineLimit(1)
                         .frame(maxWidth: .infinity)
@@ -65,12 +60,13 @@ struct SettingsView: View {
                 
                 Spacer()
                 VStack(spacing: LayoutConst.smallPadding) {
-                    Text("Version \(viewModel.appInfo)")
-                    Text("Created by Hell yeah")
+                    Text("version".localized() + ": \(viewModel.appInfo)")
+                    Text("createdby".localized())
                 }
                 .font(Fonts.subheading)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.bottom, 66)
+
             }
             .padding(LayoutConst.maxPadding)
             .navigationTitle("settings.title".localized())

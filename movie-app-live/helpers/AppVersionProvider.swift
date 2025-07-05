@@ -7,12 +7,12 @@
 
 import Foundation
 
-protocol AppVersionProviding {
+protocol AppVersionProviderProtocol {
     var version: String { get }
     var build: String { get }
 }
 
- class AppVersionProviderProtocol: AppVersionProviding {
+ class AppVersionProvider: AppVersionProviderProtocol {
     let version: String
     let build: String
 

@@ -2,7 +2,7 @@
 //  CastMemberEntity.swift
 //  movie-app-live
 //
-//  Created by Gergo Szabo on 2025. 05. 24..
+//  Created by Zsolt Pete on 2025. 05. 20..
 //
 
 import RealmSwift

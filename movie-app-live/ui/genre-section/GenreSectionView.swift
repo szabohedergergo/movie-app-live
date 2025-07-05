@@ -4,7 +4,7 @@ import FirebaseCrashlytics // Fontos: Importáld a Crashlytics-et!
 
 struct GenreSectionView: View {
     @StateObject private var viewModel = GenreSectionViewModelImpl()
-    @StateObject private var movieListViewModel = MovieListViewModel()
+    @StateObject private var movieListViewModel = MediaItemListViewModel()
     @State private var expandedGenreID: Int?
 
     var body: some View {
@@ -35,7 +35,7 @@ struct GenreSectionView: View {
                     // 2. Műfajok listája
                     ForEach(viewModel.genres) { genre in //
                         ZStack{
-                            NavigationLink(destination: MediaItemView(genre: genre)) {
+                            NavigationLink(destination: MediaItemListView(genre: genre)) {
                                 EmptyView()
                             }
                             .opacity(0)

@@ -1,10 +1,3 @@
-//
-//  Colors.swift
-//  movie-app-live
-//
-//  Created by Gergo Szabo on 2025. 04. 29..
-//
-
 import SwiftUI
 
 extension Color {
@@ -36,4 +29,4 @@ extension Color {
             opacity: Double(a) / 255
         )
     }
-}
+} 

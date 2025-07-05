@@ -1,17 +1,17 @@
 //
-//  MovieReviewsResponse.swift
+//  MediaItemPageReviewResponse.swift
 //  movie-app-live
 //
-//  Created by Gergo Szabo on 2025. 06. 24..
+//  Created by Gergo Szabo on 2025. 07. 05..
 //
 
 
 import Foundation
 
-struct MovieReviewsResponse: Decodable {
+struct MediaItemPageReviewResponse: Decodable {
     let id: Int
     let page: Int
-    let results: [MovieReviewResponse]
+    let results: [MediaItemReviewResponse]
     let totalPages: Int
     let totalResults: Int
     
@@ -24,7 +24,7 @@ struct MovieReviewsResponse: Decodable {
     }
 }
 
-struct MovieReviewResponse: Decodable {
+struct MediaItemReviewResponse: Decodable {
     let author: String
     let content: String
     let createdAt: String

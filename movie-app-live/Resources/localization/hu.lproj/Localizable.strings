@@ -43,7 +43,9 @@
 "version" = "Verzió";
 "createdby" = "Készítette: Névtelen";
 "detail.topReviews" = "Értékelések [EN]";
+"detail.noReviews" = "Nincsenek értékelések ezen a nyelven.";
 "birthYear" = "Születési év";
 "city" = "Város";
 "bio" = "Életrajz";
 "popularity" = "Népszerűség";
+"detail.similar_movies" = "Hasonló filmek";

@@ -73,6 +73,7 @@ struct MediaItemCell: View {
                     
                     Spacer()
                 }
+                .contentShape(Rectangle())
             }
             else{
                 VStack {

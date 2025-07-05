@@ -1,10 +1,3 @@
-//
-//  CustomLottieView.swift
-//  movie-app-live
-//
-//  Created by Zsolt Pete on 2025. 05. 30..
-//
-
 import Lottie
 import SwiftUI
 

@@ -10,7 +10,7 @@ struct ModifyMediaResult {
     let statusCode: Int
     let statusMessage: String
     
-    init(dto: ModifyMediaResponse) {
+    init(dto: ModifyMediaResultResponse) {
         self.success = dto.success
         self.statusCode = dto.statusCode
         self.statusMessage = dto.statusMessage

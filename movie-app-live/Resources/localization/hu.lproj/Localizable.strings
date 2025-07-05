@@ -50,3 +50,6 @@
 "popularity" = "Népszerűség";
 "detail.similar_movies" = "Hasonló filmek";
 "detail.similar_series" = "Hasonló sorozatok";
+"appReview.title" = "Értékeld az appot";
+"appReview.desc" = "Nagyra értékeljük ha az App Store-ban értékeled az alkalmazást. Köszönjük!";
+"appReview.button.title" = "Rendben";

@@ -15,24 +15,24 @@ class ServiceAssembly: Assembly {
     //container: beletesszük azokat az elemeket, melyek majd a service assemblyn keresztül kikérünk
     
     func assemble(container: Container){
-        container.register(MoyaProvider<MultiTarget>.self){ _ in
-            let configuration = URLSessionConfiguration.ephemeral
-            configuration.headers = .default
-            
-            return MoyaProvider<MultiTarget>( //ne a konstruktorban legyen példányositvan a movieservice-ben, hanem di-vel
-                session: Session(configuration: configuration,
-                                 startRequestsImmediately: false),
-                plugins: [
-                    NetworkLoggerPlugin(
-                        configuration: NetworkLoggerPlugin.Configuration(
-                            output: { _, items in
-                                items.forEach { item in
-                                    print("Response \(item)")
-                                }
-                            },
-                            logOptions: .requestBody))
-                ])
-        }.inObjectScope(.container)
+        container.register(MoyaProvider<MultiTarget>.self) { _ in
+                    let configuration = URLSessionConfiguration.ephemeral
+                    configuration.headers = .default
+                    
+                    return MoyaProvider<MultiTarget>(
+                        session: Session(configuration: configuration,
+                                         startRequestsImmediately: false),
+                        plugins: [
+                            NetworkLoggerPlugin(
+                                configuration: NetworkLoggerPlugin.Configuration(
+                                    output: { _, items in
+                                        items.forEach { item in
+                                            print("Response \(item)")
+                                        }
+                                    },
+                                    logOptions: [.verbose, .requestBody]))
+                        ])
+                }.inObjectScope(.container)
         
         
         container.register(MovieRepository.self) { _ in
@@ -45,6 +45,10 @@ class ServiceAssembly: Assembly {
         
         container.register(MediaItemDetailStoreProtocol.self) { _ in
             return MediaItemDetailStore()
+        }.inObjectScope(.container)
+        
+        container.register(ReviewStoreProtocol.self) { _ in
+            return ReviewStore()
         }.inObjectScope(.container)
         
         container.register(CastMemberStoreProtocol.self) { _ in

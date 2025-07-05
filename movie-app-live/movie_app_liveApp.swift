@@ -13,6 +13,4 @@ struct movie_app_liveApp: App {
         }
         
     }
-    
-    
 }

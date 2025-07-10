@@ -1,20 +1,20 @@
-/* 
-  Localizable.strings
-  movie-app-live
+/*
+ Localizable.strings
+ movie-app-live
 
-  Created by Gergo Szabo on 2025. 04. 08..
-  
+ Created by Gergo Szabo on 2025. 04. 08..
+
 */
-
-"genreSection.title" = "Filmes app";
-"search.empty.title" = "Начните вводить\nдля поиска";
-"search.textfield.placeholder" = "Фильмы, Режиссёр, Актёр, Актриса и т.д.";
+//kulcs-érték pár lista
+"genreSection.title" = "Приложение для фильмов";
+"search.empty.title" = "Начните вводить текст\nдля поиска";
+"search.textfield.placeholder" = "Фильмы, Режиссер, Актер, Актриса и т.д.";
 "button.close.text" = "Закрыть";
 "unexpected.error.title" = "Неожиданная ошибка";
 "apierror.error.title" = "Ошибка API";
 "clienterror.error.title" = "Ошибка клиента";
 "mappingerror.error.title" = "Ошибка сопоставления";
-"unexpected.error.message" = "Произошла ошибка. Пожалуйста, попробуйте позже.";
+"unexpected.error.message" = "Что-то пошло не так. Пожалуйста, попробуйте позже.";
 "favoriteMovies.title" = "Избранное";
 "detail.rate.button" = "Оценить фильм";
 "detail.imdb.button" = "Смотреть на IMDB";
@@ -23,25 +23,35 @@
 "detail.language" = "Язык";
 "detail.overview" = "Описание";
 "detail.publishers" = "Издатели и компании";
-"detail.cast" = "Актёрский состав";
+"detail.cast" = "Актеры";
+"detail.adult_only" = "18+";
+"detail.everyone" = "Для всех";
 "available" = "Доступно";
 "unavailable" = "Недоступно";
 "noInternet" = "Нет подключения к интернету";
 "addReview.subTitle" = "Напишите честный отзыв";
 "addReview.buttonTitle" = "Отправить отзыв";
+
 "mediaItem.default.duration" = "1ч 25мин";
+
 "settings.title" = "Настройки";
-"settings.chooseLanguage" = "Выбор языка";
-"settings.chooseTheme" = "Выбор темы";
+"settings.chooseLanguage" = "Выбрать язык";
+"settings.chooseTheme" = "Выбрать тему";
 "settings.lang.english" = "Английский";
 "settings.lang.russian" = "Русский";
 "settings.lang.hungarian" = "Венгерский";
 "settings.theme.light" = "Светлая тема";
-"settings.theme.dark" = "Тёмная тема";
+"settings.theme.dark" = "Темная тема";
 "version" = "Версия";
 "createdby" = "Создано: Аноним";
-"detail.topReviews" = "Лучшие отзывы";
+"detail.topReviews" = "Отзывы";
+"detail.noReviews" = "Отзывов на этом языке нет.";
 "birthYear" = "Год рождения";
 "city" = "Город";
 "bio" = "Биография";
 "popularity" = "Популярность";
+"detail.similar_movies" = "Похожие фильмы";
+"detail.similar_series" = "Похожие сериалы";
+"appReview.title" = "Оцените приложение";
+"appReview.desc" = "Будем благодарны, если вы оцените приложение в App Store. Спасибо!";
+"appReview.button.title" = "Ок";

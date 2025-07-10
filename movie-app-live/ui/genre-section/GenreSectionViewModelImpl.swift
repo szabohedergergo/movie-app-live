@@ -35,7 +35,7 @@ class GenreSectionViewModelImpl: GenreSectionViewModel, ErrorPresentable {
         useCase.showAppearPopup
             .compactMap { showAppearPopup -> AlertModel? in
                 if showAppearPopup {
-                    return AlertModel(title: "[[Értékeld az appot]]", message: "[[Értékeld az appot]]", dismissButtonTitle: "[[Rendber]]")
+                    return AlertModel(title: "appReview.title", message: "appReview.desc", dismissButtonTitle: "appReview.button.title")
                 }
                 return nil
             }

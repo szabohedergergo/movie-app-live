@@ -1,11 +1,12 @@
-/* 
-  Localizable.strings
-  movie-app-live
+/*
+ Localizable.strings
+ movie-app-live
 
-  Created by Gergo Szabo on 2025. 04. 08..
-  
+ Created by Gergo Szabo on 2025. 04. 08..
+
 */
-"genreSection.title" = "Filmes app";
+//kulcs-érték pár lista
+"genreSection.title" = "Movie App";
 "search.empty.title" = "Start typing\nto search";
 "search.textfield.placeholder" = "Movies, Director, Actor, Actress, etc.";
 "button.close.text" = "Close";
@@ -23,12 +24,16 @@
 "detail.overview" = "Overview";
 "detail.publishers" = "Publishers and Companies";
 "detail.cast" = "Cast";
+"detail.adult_only" = "18+";
+"detail.everyone" = "For Everyone";
 "available" = "Available";
 "unavailable" = "Unavailable";
-"noInternet" = "No Internet Connection";
+"noInternet" = "No internet connection";
 "addReview.subTitle" = "Write an honest review";
 "addReview.buttonTitle" = "Submit Review";
+
 "mediaItem.default.duration" = "1h 25min";
+
 "settings.title" = "Settings";
 "settings.chooseLanguage" = "Choose Language";
 "settings.chooseTheme" = "Choose Theme";
@@ -39,11 +44,14 @@
 "settings.theme.dark" = "Dark Mode";
 "version" = "Version";
 "createdby" = "Created by: Anonymous";
-"detail.topReviews" = "Top Reviews";
-"detail.noReviews" = "No Reviews in this language";
-"birthYear" = "Year of Birth";
+"detail.topReviews" = "Reviews";
+"detail.noReviews" = "No reviews available in this language.";
+"birthYear" = "Birth Year";
 "city" = "City";
 "bio" = "Biography";
 "popularity" = "Popularity";
 "detail.similar_movies" = "Similar Movies";
 "detail.similar_series" = "Similar Series";
+"appReview.title" = "Rate the App";
+"appReview.desc" = "We would appreciate it if you could rate the app on the App Store. Thank you!";
+"appReview.button.title" = "Ok";

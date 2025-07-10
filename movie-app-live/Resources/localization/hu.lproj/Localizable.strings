@@ -24,6 +24,8 @@
 "detail.overview" = "Tartalom";
 "detail.publishers" = "Kiadók és cégek";
 "detail.cast" = "Szereplők";
+"detail.adult_only" = "18+";
+"detail.everyone" = "Mindenkinek";
 "available" = "Elérhető";
 "unavailable" = "Nem elérhető";
 "noInternet" = "Nincs internetkapcsolat";
@@ -42,7 +44,7 @@
 "settings.theme.dark" = "Sötét mód";
 "version" = "Verzió";
 "createdby" = "Készítette: Névtelen";
-"detail.topReviews" = "Értékelések [EN]";
+"detail.topReviews" = "Értékelések";
 "detail.noReviews" = "Nincsenek értékelések ezen a nyelven.";
 "birthYear" = "Születési év";
 "city" = "Város";

@@ -1,32 +1,57 @@
-/* 
-  Localizable.strings
-  movie-app-live
+/*
+ Localizable.strings
+ movie-app-live
 
-  Created by Gergo Szabo on 2025. 04. 08..
-  
+ Created by Gergo Szabo on 2025. 04. 08..
+
 */
+//kulcs-érték pár lista
+"genreSection.title" = "Filme App";
+"search.empty.title" = "Beginnen Sie zu tippen\nzum Suchen";
+"search.textfield.placeholder" = "Filme, Regisseur, Schauspieler, Schauspielerin, etc.";
+"button.close.text" = "Schließen";
+"unexpected.error.title" = "Unerwarteter Fehler";
+"apierror.error.title" = "API Fehler";
+"clienterror.error.title" = "Client Fehler";
+"mappingerror.error.title" = "Mapping Fehler";
+"unexpected.error.message" = "Etwas ist schiefgelaufen. Bitte versuchen Sie es später erneut.";
+"favoriteMovies.title" = "Favoriten";
+"detail.rate.button" = "Film bewerten";
+"detail.imdb.button" = "Auf IMDB ansehen";
+"detail.releaseDate" = "Veröffentlichungsdatum";
+"detail.runtime" = "Laufzeit";
+"detail.language" = "Sprache";
+"detail.overview" = "Übersicht";
+"detail.publishers" = "Verlage und Firmen";
+"detail.cast" = "Besetzung";
+"detail.adult_only" = "18+";
+"detail.everyone" = "Für alle";
+"available" = "Verfügbar";
+"unavailable" = "Nicht verfügbar";
+"noInternet" = "Keine Internetverbindung";
+"addReview.subTitle" = "Schreiben Sie eine ehrliche Bewertung";
+"addReview.buttonTitle" = "Bewertung absenden";
 
-"genreSection.title" = "Movie app";
-"search.empty.title" = "Kezdj el gépelni\na kereséshez";
-"search.textfield.placeholder" = "Movies, Director, Actor, Actress, etc.";
-"button.close.text" = "Close";
-"unexpected.error.title" = "Unexpected Error";
-"unexpected.error.message" = "Something went wrong. Please try again later";
-"favoriteMovies.title" = "Favorites";
-"detail.rate.button" = "Rate this movie";
-"detail.imdb.button" = "Visit at IMDB";
-"detail.releaseDate" = "Release Date";
-"detail.runtime" = "Runtime";
-"detail.language" = "Language";
-"detail.overview" = "Synopsis";
-"detail.publishers" = "Publisher and companies";
-"detail.cast" = "Cast";
-"detail.similar_movies" = "Similar Movies";
-"available" = "Available";
-"unavailable" = "Unavailable";
-"noInternet" = "No internet connection";
-"addReview.subTitle" = "Give it  a honest review";
-"addReview.buttonTitle" = "Send my review";
+"mediaItem.default.duration" = "1h 25min";
 
-"cast_member_credits.no_roles_found" = "No available casting.";
-"participant.combined_credits" = "Casting";
+"settings.title" = "Einstellungen";
+"settings.chooseLanguage" = "Sprache wählen";
+"settings.chooseTheme" = "Thema wählen";
+"settings.lang.english" = "Englisch";
+"settings.lang.russian" = "Russisch";
+"settings.lang.hungarian" = "Ungarisch";
+"settings.theme.light" = "Heller Modus";
+"settings.theme.dark" = "Dunkler Modus";
+"version" = "Version";
+"createdby" = "Erstellt von: Anonym";
+"detail.topReviews" = "Bewertungen";
+"detail.noReviews" = "Keine Bewertungen in dieser Sprache verfügbar.";
+"birthYear" = "Geburtsjahr";
+"city" = "Stadt";
+"bio" = "Biografie";
+"popularity" = "Popularität";
+"detail.similar_movies" = "Ähnliche Filme";
+"detail.similar_series" = "Ähnliche Serien";
+"appReview.title" = "App bewerten";
+"appReview.desc" = "Wir würden uns freuen, wenn Sie die App im App Store bewerten würden. Vielen Dank!";
+"appReview.button.title" = "Ok";

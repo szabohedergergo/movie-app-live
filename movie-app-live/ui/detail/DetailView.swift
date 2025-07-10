@@ -75,7 +75,7 @@ struct DetailView: View {
                     
                     if !viewModel.similarMovies.isEmpty || viewModel.isLoadingSimilarMovies {
                         VStack(alignment: .leading, spacing: LayoutConst.largePadding){
-                            Text(Environments.name == .tvlist ? LocalizedStringKey("detail.similar_movies") : LocalizedStringKey("detail.similar_series"))
+                            Text(Environments.name == .tvlist ? LocalizedStringKey("detail.similar_series") : LocalizedStringKey("detail.similar_movies"))
                                 .font(Fonts.overviewText)
                             
                             ScrollView(.horizontal, showsIndicators: false){

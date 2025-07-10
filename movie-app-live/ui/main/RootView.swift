@@ -18,7 +18,6 @@ struct RootView: View {
 
             OfflineBannerView()
                 .padding(.top, viewModel.isBannerAppear ? 0.0 : -200.0)
-                .opacity(viewModel.isBannerAppear ? 1.0 : 0.0)
                 .animation(.easeInOut(duration: 0.3), value: viewModel.isBannerAppear)
         }
     }

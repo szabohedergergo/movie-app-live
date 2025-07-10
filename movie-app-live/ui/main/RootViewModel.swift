@@ -23,6 +23,7 @@ class RootViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self]isConnected in
                 if !isConnected {
+                    self?.isBannerAppear = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
                         self?.isBannerAppear = false
                     }
